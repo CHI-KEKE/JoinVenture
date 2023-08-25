@@ -18,8 +18,11 @@ namespace API.Service
             _client = httpClientFactory.CreateClient();
         }
 
-        private readonly string channelId = "2000459021";
-        private readonly string channelSecretKey = "30f1f58e4f973ed844221fcbea490b5a";
+        private static string ChannelId = Environment.GetEnvironmentVariable("LINEChannelId");
+        private static string ChannelSecretKey = Environment.GetEnvironmentVariable("LINEChannelSecretKey");
+
+        private readonly string channelId = ChannelId;
+        private readonly string channelSecretKey = ChannelSecretKey;
 
 
         private readonly string linePayBaseApiUrl = "https://sandbox-api-pay.line.me";
