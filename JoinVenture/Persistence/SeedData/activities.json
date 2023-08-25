@@ -1,0 +1,102 @@
+[
+  {
+    "Title": "基隆夜船之旅",
+    "Description": "搭乘夜船遊覽基隆港，欣賞港灣夜景，感受浪漫的海上風情。",
+    "Category": "浪漫",
+    "City": "基隆",
+    "Venue": "基隆港",
+    "Image": "https://d1pjwdyi3jyxcs.cloudfront.net/JoinVenture/boat.jpg",
+    "Followers": 55,
+    "Tickets": 90
+  },
+  {
+    "Title": "台北山城步道探險",
+    "Description": "沿著台北山城步道，一窺台北市區和自然山景的絕美風光。",
+    "Category": "探險",
+    "City": "台北",
+    "Venue": "台北山城步道",
+    "Image": "https://d1pjwdyi3jyxcs.cloudfront.net/JoinVenture/taipeimountain.jpg",
+    "Followers": 102,
+    "Tickets": 75
+  },
+  {
+    "Title": "高雄港夜景遊",
+    "Description": "坐船遊覽高雄港，夜晚的繁華夜景讓人流連忘返。",
+    "Category": "夜景",
+    "City": "高雄",
+    "Venue": "高雄港",
+    "Image": "https://d1pjwdyi3jyxcs.cloudfront.net/JoinVenture/portkao.jpg",
+    "Followers": 72,
+    "Tickets": 120
+  },
+  {
+    "Title": "台中古都文化之旅",
+    "Description": "漫遊台中古老街區，感受濃濃的文化氛圍。",
+    "Category": "文化",
+    "City": "台中",
+    "Venue": "台中古老街區",
+    "Image": "https://d1pjwdyi3jyxcs.cloudfront.net/JoinVenture/taichungold.jpg",
+    "Followers": 34,
+    "Tickets": 50
+  },
+  {
+    "Title": "花蓮海岸自行車之旅",
+    "Description": "騎著自行車沿著花蓮海岸線，欣賞大自然美景。",
+    "Category": "運動",
+    "City": "花蓮",
+    "Venue": "花蓮海岸線",
+    "Image": "https://d1pjwdyi3jyxcs.cloudfront.net/JoinVenture/huabike.jpg",
+    "Followers": 91,
+    "Tickets": 40
+  },
+  {
+    "Title": "台南美食之旅",
+    "Description": "品味台南道地美食，嚐遍台南小吃的美味。",
+    "Category": "美食",
+    "City": "台南",
+    "Venue": "台南市區",
+    "Image": "https://d1pjwdyi3jyxcs.cloudfront.net/JoinVenture/tw_tainanfood.jpg",
+    "Followers": 128,
+    "Tickets": 60
+  },
+  {
+    "Title": "新北水湳洞泡湯之旅",
+    "Description": "享受新北水湳洞的溫泉浸浴，舒緩身心疲勞。",
+    "Category": "溫泉",
+    "City": "新北",
+    "Venue": "新北水湳洞",
+    "Image": "https://d1pjwdyi3jyxcs.cloudfront.net/JoinVenture/britohotspring.jpg",
+    "Followers": 42,
+    "Tickets": 80
+  },
+  {
+    "Title": "宜蘭冬山河親子樂活",
+    "Description": "帶著家人一同體驗宜蘭冬山河的親子樂活活動。",
+    "Category": "親子",
+    "City": "宜蘭",
+    "Venue": "宜蘭冬山河",
+    "Image": "https://d1pjwdyi3jyxcs.cloudfront.net/JoinVenture/ilandong.jpg",
+    "Followers": 63,
+    "Tickets": 100
+  },
+  {
+    "Title": "彰化田間體驗之旅",
+    "Description": "走入彰化田間，體驗耕種、農作活動，感受農村生活。",
+    "Category": "農村",
+    "City": "彰化",
+    "Venue": "彰化田野",
+    "Image": "https://d1pjwdyi3jyxcs.cloudfront.net/JoinVenture/farm.jpg",
+    "Followers": 29,
+    "Tickets": 70
+  },
+  {
+    "Title": "雲林天空步道漫遊",
+    "Description": "漫步雲林天空步道，遠離都市喧囂，享受寧靜。",
+    "Category": "自然",
+    "City": "雲林",
+    "Venue": "雲林天空步道",
+    "Image": "https://d1pjwdyi3jyxcs.cloudfront.net/JoinVenture/skywalk.jpg",
+    "Followers": 38,
+    "Tickets": 50
+  }
+]

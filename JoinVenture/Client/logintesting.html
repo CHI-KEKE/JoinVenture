@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+
+        <header>
+        <p class="welcome">Allen's Bank</p>
+        <nav>
+          <a href="#">Checking</a>
+          <a href="#">Savings</a>
+          <a href="#">Credit Cards</a>
+          <a href="#">Home Loans</a>
+          <button class="btnLogin-popup">Login</button>
+
+        </nav>
+    </header>
+<!-- POPUP -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="loginModalLabel">Login</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+            <span class="icon-close"><ion-icon name="close"></ion-icon></span>
+            <div class="form-box login">
+              <h2>Login</h2>
+              <form action="#">
+                <div class="input-box">
+                  <span class="icon"><ion-icon name="mail"></ion-icon></span>
+                  <input type="text" class = "login__input--user" required>
+                  <label>User</label>
+                </div>
+                <div class="input-box">
+                  <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                  <input type="password" class = "login__input--password" required>
+                  <label>Password</label>
+                </div>
+                <div class="remember-forgot">
+                  <label><input type="checkbox">Remember me</label>
+                  <a href="#">Forgot Password?</a>
+                </div>
+                <button type="submit" class="btn login-btn">Login</button>
+                <div class="login-register">
+                  <p>No Account?<a href="#" class="register-link">Register</a></p>
+                </div>
+              </form>
+            </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="registerModalLabel">Register</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+            <div class="form-box register">
+              <h2>Register</h2>
+              <form action="#">
+                <div class="input-box">
+                  <span class="icon"><ion-icon name="person-add"></ion-icon></span>
+                  <input type="text" required>
+                  <label>Username</label>
+                </div>
+                <div class="input-box">
+                  <span class="icon"><ion-icon name="mail"></ion-icon></span>
+                  <input type="email" required>
+                  <label>Email</label>
+                </div>
+                <div class="input-box">
+                  <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                  <input type="password" required>
+                  <label>Password</label>
+                </div>
+                <div class="remember-forgot">
+                  <label><input type="checkbox">I agree to the terms and conditions</label>
+                </div>
+                <button type="submit" class="btn register-btn">Register</button>
+                <div class="login-register">
+                  <p>Already have an Account?<a href="#" class="login-link">Login</a></p>
+                </div>
+              </form>
+            </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- NAvbar -->
+    <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">JoinVenture</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                <a class="nav-link active" href="#">Home
+                    <span class="visually-hidden">(current)</span>
+                </a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="#">Features</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="http://127.0.0.1:5500/Client/Activity-List.html">Event-List</a>
+                </li>
+
+            </ul>
+            <form class="d-flex">
+                <input class="form-control me-sm-2" type="search" placeholder="Search">
+            </form>
+            <button class="btn btn-secondary my-2 my-sm-0" data-bs-toggle="modal" data-bs-target="#loginModal" type="submit">Login</button>
+            </div>
+        </div>
+    </nav>
+
+
+
+
+<script>
+  var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+  var registerModal = new bootstrap.Modal(document.getElementById('registerModal'));
+
+  function openLoginModal() {
+    loginModal.show();
+  }
+
+  function openRegisterModal() {
+    registerModal.show();
+  }
+
+</script>
+<script src="login.js"></script>
+</body>
+</html>
