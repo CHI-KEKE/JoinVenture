@@ -15,7 +15,7 @@ namespace Application.Comments
     {
         public class Query:IRequest<Result<List<CommentDto>>>
         {
-            public Guid ActivityId{get;set;}
+            public int ActivityId{get;set;}
         }
 
 

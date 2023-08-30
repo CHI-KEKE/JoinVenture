@@ -16,7 +16,7 @@ namespace Application.Events
     {
         public class Query : IRequest<ActivityDto>
         {
-            public Guid Id {get;set;}
+            public int Id {get;set;}
         }
 
 
@@ -32,7 +32,7 @@ namespace Application.Events
             }
             public async Task<ActivityDto> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _context.Activities.Include(a => a.TicketPackages).ThenInclude(tp =>tp.Tickets)
+                return await _context.Activities.Include(a => a.TicketPackages).ThenInclude(tp =>tp.Tickets).Include(a => a.Attendees)
                 .ProjectTo<ActivityDto>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(x => x.Id == request.Id);
             }

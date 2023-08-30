@@ -39,9 +39,9 @@ namespace API.Controllers
 
         [AllowAnonymous]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Order>> GetActivity(Guid id)
+        public async Task<ActionResult<Order>> GetOrder(Guid id)
         {
-            return await Mediator.Send(new Detail.Query{ActivityId = id});
+            return await Mediator.Send(new Detail.Query{OrderId = id});
         }
     }
 }

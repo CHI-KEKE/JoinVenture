@@ -7,14 +7,23 @@ using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using Application.Events;
 using Application.Booking;
+using Persistence;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace API.SignalR
 {
     public class ChatHub : Hub
     {
         private readonly IMediator _mediator;
-        public ChatHub(IMediator mediator)
+        private readonly DataContext _context;
+        public ChatHub(IMediator mediator,DataContext context)
         {
+            _context = context;
             _mediator = mediator;
         }
 
@@ -22,26 +31,31 @@ namespace API.SignalR
         {
             var comment = await _mediator.Send(command);
 
+            int activityId = int.Parse(command.ActivityId);
+            Console.WriteLine( "before@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+
+            var activityNow = await _mediator.Send(new Details.Query{Id = activityId});
+            Console.WriteLine(activityNow  + "after@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
             await Clients.Group(command.ActivityId.ToString())
             .SendAsync("Receive Comments", comment.Value);
 
             await Clients.Group($"{command.ActivityId.ToString()}_follow")
-            .SendAsync("Follower Only Messages", comment.Value);
-        }
+            .SendAsync("Follower Only Messages", comment.Value,activityNow);
 
+            
+        }
         public async Task Booking(Booking.Command command)
         {
              var ticketCount = await _mediator.Send(command);
-            Console.WriteLine(ticketCount + "What are Booking return !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
              await Clients.Group(command.ActivityId.ToString())
             .SendAsync("UpdateTicketCount", ticketCount);           
         }
 
-        public async Task FollowActivity()
+        public async Task FollowActivity(string accesstoken)
         {
             var httpContext = Context.GetHttpContext();
             var activityId = httpContext.Request.Query["activityId"];
-            await Groups.AddToGroupAsync(Context.ConnectionId, $"{activityId}_follow");
+            await Groups.AddToGroupAsync(accesstoken, $"{activityId}_follow");
         }
 
 
@@ -58,19 +72,34 @@ namespace API.SignalR
         {
             var httpContext = Context.GetHttpContext();
             var activityId = httpContext.Request.Query["activityId"];
+            var user = Context.User;
 
+            
+            if (user.Identity.IsAuthenticated)
+            {
+                string userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                string username = user.Identity.Name;
+                Console.WriteLine(username + "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=");
+
+                var TheConnectingUser = _context.Users.Where(u => u.Id == userId).Include(u => u.Activities).SingleOrDefault();
+
+                foreach(var activity in TheConnectingUser.Activities)
+                {
+                    await Groups.AddToGroupAsync(Context.ConnectionId, $"{activity.ActivityId}_follow");
+                }
+            }
 
             if(string.IsNullOrEmpty(activityId))
             {
-                Console.WriteLine( "Not a DetailPage now");
+                Console.WriteLine( "no Activity specified");
             }
+
             else{
             await Groups.AddToGroupAsync(Context.ConnectionId, activityId);
 
-            var ActivityInfo = await _mediator.Send(new Details.Query { Id = Guid.Parse(activityId) });
+            var ActivityInfo = await _mediator.Send(new Details.Query { Id = int.Parse(activityId) });
 
-
-            var result = await _mediator.Send(new Application.Comments.List.Query{ActivityId = Guid.Parse(activityId)});
+            var result = await _mediator.Send(new Application.Comments.List.Query{ActivityId = int.Parse(activityId)});
 
             Console.WriteLine( ActivityInfo.Tickets + "What are Loading return !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
@@ -81,9 +110,5 @@ namespace API.SignalR
         }
 
 
-        // public async Task LoadHostedActivities()
-        // {
-
-        // }
     }
 }

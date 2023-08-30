@@ -23,10 +23,11 @@ namespace API.Extensions
             services.AddSwaggerGen();
 
 
-            //sqllite
-            services.AddDbContext<DataContext>(opt =>{
-                opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
-            });
+            //sqlserver
+
+            DotNetEnv.Env.Load();
+            string DefaultConnection = Environment.GetEnvironmentVariable("DB_CONNECTIONSTRING");
+            services.AddDbContext<DataContext>(options => options.UseSqlServer(DefaultConnection));
 
 
             //CORS
@@ -44,6 +45,9 @@ namespace API.Extensions
 
             services.AddMediatR(typeof(List.Handler));
 
+            //BackGoundService
+
+            // services.AddHostedService<ExpiredTicketCleanUpService>();
 
 
             //AutoMapper
@@ -70,6 +74,7 @@ namespace API.Extensions
             //CutomService
 
             services.AddScoped<LINEPayService>();
+            services.AddScoped<TicketBookingService>();
 
 
             return services;

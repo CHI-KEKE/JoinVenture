@@ -43,6 +43,8 @@ app.MapControllers();
 //Hub
 
 app.MapHub<ChatHub>("/chat");
+app.MapHub<TicketHub>("/ticket");
+
 
 
 //Migration
@@ -54,6 +56,7 @@ try
 {
     var context = services.GetRequiredService<DataContext>();
     var userManager = services.GetRequiredService<UserManager<AppUser>>();
+    
     await context.Database.MigrateAsync();
     await SeedData.SeedNewData(context,userManager);
 }

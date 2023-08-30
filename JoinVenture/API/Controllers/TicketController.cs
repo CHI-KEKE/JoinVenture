@@ -9,17 +9,32 @@ using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.VisualBasic;
+using Persistence;
+using System.Text.Json;
+using API.Service;
+using Application.Interface;
 
 namespace API.Controllers
 {
     public class TicketController:BaseController
     {
+
+        private readonly DataContext _dataContext;
+        private readonly TicketBookingService _ticketBookingService;
+
+        public TicketController(DataContext dataContext,TicketBookingService ticketBookingService)
+        {
+            _ticketBookingService = ticketBookingService;
+            _dataContext = dataContext;
+            
+        }
+
+
         [AllowAnonymous]
         [HttpPost("{id}/book")]
-        public async Task<IActionResult> GetAvailibleTickets (Guid id, List<TicketCheckingDto> ticketCheckingDtos)
+        public async Task<IActionResult> GetAvailibleTickets (int id, List<DTOs.Tickets.TicketCheckingDto> ticketCheckingDtos)
         {
-
-            //Get Specific Activity
 
             var ActivityId = id;
             var Activity = await Mediator.Send(new Details.Query{Id = ActivityId});
@@ -27,58 +42,84 @@ namespace API.Controllers
 
             List<AvailibleTicketsDto> ListOfSelectedTicketsToReturn = new List<AvailibleTicketsDto>(); 
             
-            // RequiredAttribute Packages from this Activity
-
             foreach(var packageInfoDto in ticketCheckingDtos)
             {
-                //Get Availible Tickets
                 var TicketPackage = Activity.TicketPackages.SingleOrDefault(tp => tp.Title == packageInfoDto.PackageTitle);
-                var AvailibleTicketList = TicketPackage.Tickets.Where(t => t.Status == "Available").ToList();
+
+                var (Bookedtickets, message) = await _ticketBookingService.BookTickets(TicketPackage,packageInfoDto.Quantity);
+                Console.WriteLine($"outside transaction {Bookedtickets} & {message}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                // var AvailibleTicketList = TicketPackage.Tickets.Where(t => t.Status == "Available").ToList();
 
                 //Random Indices
-                List<int> randomIndices = GenerateRandomIndices(AvailibleTicketList.Count, packageInfoDto.Quantity);
+                // List<int> randomIndices = GenerateRandomIndices(AvailibleTicketList.Count, packageInfoDto.Quantity);
 
-                foreach (int index in randomIndices)
-                {
+                // foreach (int index in randomIndices)
+                // {
                     //Random Avalible Tickets
-                    var RandomPickAvailibleTicket = AvailibleTicketList[index];
-                    Console.WriteLine("!!!!!!!!!!!!!!!!!Before Changed Ticket Id : " + RandomPickAvailibleTicket.Id);
+                    // var RandomPickAvailibleTicket = AvailibleTicketList[index];
 
                     //Update The Picked Tickets
-                    DateTime now = DateTime.Now;
-                    DateTime tenMinutesFromNow = now.AddMinutes(10);
+                    // DateTime now = DateTime.Now;
+                    // DateTime tenMinutesFromNow = now.AddSeconds(20);
 
-                    RandomPickAvailibleTicket.Status = "Pending";
-                    RandomPickAvailibleTicket.ExpiredAt = tenMinutesFromNow;
+                    // RandomPickAvailibleTicket.Status = "Pending";
+                    // RandomPickAvailibleTicket.ExpiredAt = tenMinutesFromNow;
 
-                    var RandomPickAvailibleTicketIsPending = await Mediator.Send(new Application.Booking.Edit.Command {Ticket = RandomPickAvailibleTicket});
-                    
-                    Console.WriteLine("!!!!!!!!!!!!!!!!!After Changed Ticket Id : " + RandomPickAvailibleTicketIsPending.Id);
+                    // var RandomPickAvailibleTicketIsPending = await Mediator.Send(new Application.Booking.Edit.Command {Ticket = RandomPickAvailibleTicket});
 
-
-                    Console.WriteLine(RandomPickAvailibleTicketIsPending.Status + "Status has Changed!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                    Console.WriteLine(RandomPickAvailibleTicketIsPending.UserId + "User has Filled!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                    Console.WriteLine(RandomPickAvailibleTicketIsPending.ExpiredAt + "There is Expriation Time!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                     
                     //Modeling for Return to FrontEnd
-                    var RandomPickAvailibleTicketForReturn = new AvailibleTicketsDto
+                    // var RandomPickAvailibleTicketForReturn = new AvailibleTicketsDto
+                    // {
+                    //     PackageTitle = packageInfoDto.PackageTitle,
+                    //     TicketId = RandomPickAvailibleTicketIsPending.Id,
+                    //     Stauts = RandomPickAvailibleTicketIsPending.Status,
+                    //     ExpiredAt = RandomPickAvailibleTicketIsPending.ExpiredAt,
+                    //     UserId = RandomPickAvailibleTicketIsPending.UserId,
+                    // };
+
+                    // ListOfSelectedTicketsToReturn.Add(RandomPickAvailibleTicketForReturn);
+
+                // }
+                if(Bookedtickets != null)
+
+                {
+                    foreach(var ticket in Bookedtickets)
                     {
-                        PackageTitle = packageInfoDto.PackageTitle,
-                        TicketId = RandomPickAvailibleTicketIsPending.Id,
-                        Stauts = RandomPickAvailibleTicketIsPending.Status,
-                        ExpiredAt = RandomPickAvailibleTicketIsPending.ExpiredAt,
-                        UserId = RandomPickAvailibleTicketIsPending.UserId,
-                    };
+                        var RandomPickAvailibleTicketForReturn = new AvailibleTicketsDto
+                        {
+                                PackageTitle = packageInfoDto.PackageTitle,
+                                TicketId = ticket.Id,
+                                Stauts = ticket.Status,
+                                ExpiredAt = ticket.ExpiredAt,
+                                UserId = ticket.UserId,                    
+                        };
 
-                    ListOfSelectedTicketsToReturn.Add(RandomPickAvailibleTicketForReturn);
+                        ListOfSelectedTicketsToReturn.Add(RandomPickAvailibleTicketForReturn);
 
+                    }
                 }
+
+                if(message == "409")
+                {
+                    return Conflict(message);
+                }
+                if(message == "400")
+                {
+                    return BadRequest(message);
+                }
+
+                if(message == "504")
+                {
+                    return Problem(message);
+                }
+
 
                 
                 
             }
-
-
+            
+            Console.WriteLine($"before return the tickcetListDto {ListOfSelectedTicketsToReturn}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
             return Ok(ListOfSelectedTicketsToReturn);
             
@@ -106,5 +147,33 @@ namespace API.Controllers
 
             return indices;
         }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> TicketToSuccess (List<AvailibleTicketsDto> ticketsDto)
+        {
+            foreach(var dto in ticketsDto)
+            {
+                var ticket = _dataContext.Tickets.SingleOrDefault(t => t.Id == dto.TicketId);
+                if(ticket.Status == "Pending")
+                {
+                    ticket.Status = "Success";
+                    _dataContext.SaveChanges();
+                    var ticketJson = JsonSerializer.Serialize(ticket);
+                    Console.WriteLine(ticketJson);
+                }
+                else{
+                    return BadRequest("Ticket has Release due to Expiration");
+
+                }
+
+
+            }
+
+
+            return Ok("All tickets stats changed to Success successfully!"); 
+        }
+
+
     }
 }

@@ -16,7 +16,7 @@ namespace Application.Orders
     {
          public class Query : IRequest<Order>
         {
-            public Guid ActivityId {get;set;}
+            public Guid OrderId {get;set;}
         }
 
 
@@ -34,18 +34,22 @@ namespace Application.Orders
             }
             public async Task<Order> Handle(Query request, CancellationToken cancellationToken)
             {
-                var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUsername());
-                Console.WriteLine(user+ "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!user here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                // var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUsername());
+                // Console.WriteLine(user+ "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!user here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
-                var selectedOrder = await _context.Orders
-                .SingleOrDefaultAsync(o => o.ActivityId == request.ActivityId && o.AppUserId == user.Id);
+                // var selectedOrder = await _context.Orders
+                // .SingleOrDefaultAsync(o => o.ActivityId == request.ActivityId && o.AppUserId == user.Id);
+
+                var selectedOrder = await _context.Orders.FindAsync(request.OrderId);
                 
                 var orderJson = JsonSerializer.Serialize(selectedOrder);
                 Console.WriteLine(orderJson + "Found Order!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
 
-                return await _context.Orders
-                .SingleOrDefaultAsync(o => o.ActivityId == request.ActivityId && o.AppUserId == user.Id);
+                // return await _context.Orders
+                // .SingleOrDefaultAsync(o => o.ActivityId == request.ActivityId && o.AppUserId == user.Id);
+
+                return selectedOrder;
 
             }
         }       

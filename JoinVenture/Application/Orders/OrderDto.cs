@@ -9,7 +9,7 @@ namespace Application.Orders
     {
         public string ActivityTitle { get; set; }
         public string ActivityImage { get; set; }
-        public Guid ActivityId { get; set; }
+        public int ActivityId { get; set; }
         public List<BookedTicketPackageDto> BookedTicketPackages { get; set; }
         public int TotalPrice { get; set; }
         public bool Discount { get; set; }
@@ -22,7 +22,7 @@ namespace Application.Orders
         public int Price { get; set; }
         public string Description { get; set; }
         public int Quantity { get; set; }
-        public Guid ActivityId { get; set; }
+        public int ActivityId { get; set; }
         public string ValidDate { get; set; }
     }
 }

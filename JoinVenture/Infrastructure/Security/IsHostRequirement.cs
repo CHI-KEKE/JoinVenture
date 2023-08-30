@@ -34,7 +34,7 @@ namespace Infrastructure.Security
 
             if(userID == null) return Task.CompletedTask;
 
-            var activityId = Guid.Parse(_httpContextAccessor.HttpContext?.Request.RouteValues.SingleOrDefault(x => x.Key == "id").Value?.ToString());
+            var activityId = _httpContextAccessor.HttpContext?.Request.RouteValues.SingleOrDefault(x => x.Key == "id").Value as int?;
             Console.WriteLine(activityId);
 
             // var attendee = _dbContext.ActivityAttendees.FindAsync(userID,activityId).Result;

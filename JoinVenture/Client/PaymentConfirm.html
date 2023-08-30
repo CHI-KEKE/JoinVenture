@@ -155,6 +155,7 @@
                         },
                         success: (res) => {
                             console.log("Order API Test Success" + res)
+                            localStorage.setItem('orderId',res);
                         },
                         error: (err) =>{
                             console.log(err);
@@ -163,7 +164,7 @@
                     })
 
                     setTimeout(() => {
-                        window.location = `https://fff5-2402-7500-4d5-a113-e930-21d7-3d9c-cf18.ngrok-free.app/Client/Payment-step2.html?autoClickStep3=true&id=${listOfActivityPackages[0].activityId}`;
+                        window.location = `https://fff5-2402-7500-4d5-a113-e930-21d7-3d9c-cf18.ngrok-free.app/Client/payment/Payment.html?autoClickStep3=true&id=${listOfActivityPackages[0].activityId}`;
                     }, 2000);
                 },
                 error: (err) => {

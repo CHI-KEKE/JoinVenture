@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.DTOs.Tickets;
 using Application.Activities;
 using Application.Core;
+using Application.Events;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
@@ -16,7 +18,7 @@ namespace Application.Booking
     {
         public class Command:IRequest<Result<int>>
         {
-            public Guid ActivityId{get;set;}
+            public int ActivityId{get;set;}
         }
 
 
@@ -49,5 +51,7 @@ namespace Application.Booking
             }
 
         }        
+
+
     }
 }

@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JoinVenture</title>
+    <!-- logo -->
+    <link rel="shortcut icon" type="image/png" href="../../logo.png" />
+    <!-- bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+        <!-- bootwatch -->
+    <link rel="stylesheet" href="../bootwatch.css">
+    <!-- fontawesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+      <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+    integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <!-- axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- payment-step2 -->
+    <link rel="stylesheet" href="Payment.css">
+
+    <!-- CDNSSSSSSSSSSSSSss -->
+    <link href="https://unpkg.com/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker3.min.css" rel="stylesheet"/>
+    <script src="https://unpkg.com/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
+    
+    <link rel="stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+
+    <!-- SIgnalR -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.11/signalr.min.js"></script>
+
+
+</head>
+<body class="sidebar-mini sidebar-closed sidebar-collapse">
+    <div class="row">
+  <div class="col-md-12">
+    <div id="content"></div>
+  </div>
+</div>
+    <!-- Login-PopUp -->
+    <!-- <main class="app"> -->
+        <div class="wrapper">
+            <span class="icon-close"><ion-icon name="close"></ion-icon></span>
+            <div class="form-box login">
+              <h2>Login</h2>
+              <form action="#" id="loginForm">
+                <div class="input-box">
+                  <span class="icon"><ion-icon name="mail"></ion-icon></span>
+                  <input type="text" class = "login__input--user" required>
+                  <label>User</label>
+                </div>
+                <div class="input-box">
+                  <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                  <input type="password" class = "login__input--password" required>
+                  <label>Password</label>
+                </div>
+                <div class="remember-forgot">
+                  <label><input type="checkbox">Remember me</label>
+                  <a href="#">Forgot Password?</a>
+                </div>
+                <button type="submit" class="btn login-btn" style="font-size: 1.5rem;margin-left: 35%;border-color:#484D6D;">Login</button>
+                <div class="login-register">
+                  <p>No Account?<a href="#" class="register-link">Register</a></p>
+                </div>
+              </form>
+            </div>
+
+            <div class="form-box register">
+              <h2>Register</h2>
+              <form action="#">
+                <div class="input-box">
+                  <span class="icon"><ion-icon name="person-add"></ion-icon></span>
+                  <input type="text" required>
+                  <label>Username</label>
+                </div>
+                <div class="input-box">
+                  <span class="icon"><ion-icon name="mail"></ion-icon></span>
+                  <input type="email" required>
+                  <label>Email</label>
+                </div>
+                <div class="input-box">
+                  <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                  <input type="password" required>
+                  <label>Password</label>
+                </div>
+                <div class="remember-forgot">
+                  <label><input type="checkbox">I agree to the terms and conditions</label>
+                </div>
+                <button type="submit" class="btn register-btn">Register</button>
+                <div class="login-register">
+                  <p>Already have an Account?<a href="#" class="login-link">Login</a></p>
+                </div>
+              </form>
+            </div>
+        </div>
+    <!-- </main> -->
+
+
+
+<!-- Nav -->
+<div id="navbarContainer"></div>
+<!-- Nav -->
+
+
+
+<!-- Booking Profile -->
+
+<div class="container mt-5">
+<div class="row gutters">
+<!-- Activity--info -->
+<div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+<div class="card h-100">
+	<div class="card-body">
+		<div class="account-settings">
+			<div class="user-profile">
+				<div class="activity-image">
+					<img src="https://d1pjwdyi3jyxcs.cloudfront.net/JoinVenture/moji.jpg" alt="Maxwell Admin">
+				</div>
+                    <h6 class="activity-title">三咖啡喜劇夜 - 吃土也曜笑</h6>
+				<h6 class="activity-validatedate">2023.08.26 (Sat) 20:00 - 21:30 (GMT+8)</h6>
+                <br>
+                <h6 class="activity-location">台灣台北市臺北市中山區建國北路二段18號2樓</h6>
+
+			</div>
+			<div class="about">
+				<h5>Refund policy</h5>
+				<p>The refund process of this event is delegated to ACCUPASS and is abided by refund policy. If you need to apply for a refund, please do it "24 hours after completing purchase and 8 days before available period of your ticket starts." 10% of ticket price will be reserved as refund handling fee. Application will not be accepted after expiration.How to request a refund?</p>
+			</div>
+			<div class="about">
+				<h5>Booking Notice</h5>
+				<p>Please note that you should complete your current order before creating next. In order to protect customer rights and prevent ticket hoarding, one user can only create one order at the same time. If multiple orders are created by different windows at the same time, only the last order is reserved by the system while the other incomplete orders are cancelled. Thank you for understanding and cooperation.</p>
+			</div>
+
+		</div>
+	</div>
+</div>
+</div>
+
+<!-- Right-hand side information -->
+<div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+<div class="card h-100">
+	<div class="card-body">
+		<div class="row gutters">
+            <!-- title -->
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+				<h6 class="mb-2 text-primary">Enter Attendee's Information</h6>
+                <h6 class="mb-2 text-secondary">Registration data will be provided to organizer to arrange the event. Ticket information for attending will be sent to your inbox. If you want to change your email address, please do it from Account Management.</h6>
+			</div>
+		</div>
+
+        <!-- Stepper & Form -->
+		<div class="row gutters">
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                
+                    <div class="container">
+                        <div class="wrapStepperAndTimer d-flex justify-content-between">
+                            <!-- Stepper -->
+                                <div class="stepwizard col-md-offset-3 mt-4">
+                                    <div class="stepwizard-row setup-panel">
+                                        <div class="stepwizard-step">
+                                            <a href="#step-1" type="button" class="btn btn-primary btn-circle">1</a>
+                                            <p>Step 1</p>
+                                        </div>
+                                        <div class="stepwizard-step">
+                                            <a href="#step-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
+                                            <p>Step 2</p>
+                                        </div>
+                                        <div class="stepwizard-step">
+                                            <a href="#step-3" type="button" id = "step-3-button" class="btn btn-default btn-circle" disabled="disabled">3</a>
+                                            <p>Step 3</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            <!-- Stepper -->
+                            <!-- Timer! -->
+                                <div class=" count text-right">
+                                <!-- This part will display Minutes left till the event -->
+                                    <div class="box t3"> <span class="Count_time" id="min"></span><span class="name">Minutes</span></div>
+                                    <!-- This part will display Seconds left till the event -->
+                                    <div class="box t4"> <span class="Count_time" id="sec"></span> <span class="name">Seconds</span></div>
+                                </div>
+
+                            <!-- Timer! -->
+                        </div>
+                            <!-- Form -->
+                            <form role="form" action="" method="post">
+                                <!-- step1 -->
+
+                                <div class="row setup-content" id="step-1">
+                                    <div class="col-xs-6 col-md-offset-3">
+                                        <div class="col-md-12">
+                                        <h3> Step 1</h3>
+
+                                        <div class="form-group mt-3">
+                                            <label class="control-label">姓名</label>
+                                            <input id = "name" maxlength="100" type="text" required="required" class="form-control mt-2" placeholder="Enter First Name">
+                                        </div>
+
+                                        <div class="form-group mt-3">
+                                            <label for="email">電子郵件</label>
+                                            <input type="email" id="email"  class="form-control mt-2" required="required" placeholder="Enter email">
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="form-group col-3">
+                                            <label>行動電話</label>
+                                                <select class="form-control mt-2">
+                                                <option>Taiwan +886</option>
+                                                <option>China +86</option>
+                                                <option>Hong Kong +852</option>
+                                                <option>Macau +853</option>
+                                                <option>Manalasia +60</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-9 mt-2">
+                                                <label></label>
+                                                <input type="text" id = "phoneNumber" class="form-control" placeholder="行動電話">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group mt-3">
+                                            <label  for="datepicker">出生年月日</label>
+                                            <div id="datepicker" 
+                                                class="input-group date mt-2" 
+                                                data-date-format="mm-dd-yyyy">
+                                                <input id = "dateOfBirth" class="form-control" 
+                                                    type="text" readonly />
+                                                <span class="input-group-addon">
+                                                    <i class="glyphicon glyphicon-calendar"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <fieldset class="form-group mt-3">
+                                        <legend class="mt-4">開立發票</legend>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="optionsRadios" id="optionsRadios1" value="不開立" checked="">
+                                            <label class="form-check-label" for="optionsRadios1">
+                                            不開立
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="optionsRadios" id="optionsRadios2" value="二聯式">
+                                            <label class="form-check-label" for="optionsRadios2">
+                                            二聯式
+                                            </label>
+                                        </div>
+                                        <div class="form-check disabled">
+                                            <input class="form-check-input" type="radio" name="optionsRadios" id="optionsRadios3" value="三聯式">
+                                            <label class="form-check-label" for="optionsRadios3">
+                                            三聯式
+                                            </label>
+                                        </div>
+                                        </fieldset>
+
+                                        <!-- 聲明 -->
+                                        <fieldset class="form-group mt-5">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                            Follow the organizer and get notified right after a new event is published.
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input id="MustBeChecked" class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked="">
+                                            <label class="form-check-label" for="flexCheckChecked">
+                                            I have read and agree to ACCUPASS' Ticket Purchase and User Guide, Refund Policy and Booking Notice.
+                                            </label>
+                                        </div>
+                                        </fieldset>
+
+
+                                        <div button-wrapper class = "mt-5" style="display: flex;justify-content: space-between;">
+                                            <button class="btn btn-primary RegisterAgainButton btn-lg pull-right" type="button" style="width: calc(50% - 10px);">Register Again</button>
+                                            <button id="nextButton" class="btn btn-primary nextBtn btn-lg pull-right" type="button" style="width: calc(50% - 10px);">Next</button>
+                                        </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                                <!-- step2 -->
+                            <div class="row gutters">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <!-- Accordin -->
+                                <div class="accordion" id="accordionExample">
+                                <div class="row setup-content" id="step-2">
+                                    <div class="col-xs-6 col-md-offset-3">
+                                        <div class="col-md-12">
+                                        <h3> Step 2</h3>
+                                        <div class="accordion-item">
+                                            <div class="accordion-header">
+                                                <div class="accordion-title">
+                                                    <h5 class="p-3 paymentSummary">Payment Amount NT $100</h5>
+                                                </div>
+                                            </div>
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="color:#5D99E2;">
+                                                Exapnd Order Detail
+                                            </button>
+                                            </h2>
+                                            <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                            <!-- Accordin for PackageDetail -->
+                                            <div class="accordion-body">
+                                                <table class="table table-hover text-nowrap">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Item</th>
+                                                            <th>Quantity</th>
+                                                            <th>Subtotal</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class = "packagesInfo">
+                                                        <!-- Each Package row -->
+
+                                                        <!-- Each Package row -->
+
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                            <!-- Accordin for PackageDetail -->
+                                            </div>
+                                        </div>
+                                        <!-- Online Payment -->
+                                        <div class="col-md-12 mt-4">
+
+                                            <div class="card card-widget widget-user-2">
+
+
+                                                <div class="p-0">
+                                                <ul class="nav flex-column">
+                                                    <li class="nav-item d-flex align-items-center pt-4 " style="vertical-align: center;color:darkgrey;padding-left: 30px;">
+                                                        <h6 class="m-0">Online Payment</h6>
+                                                    </li>
+                                                     <hr>
+                                                    <li class="nav-item d-flex align-items-center"  style="vertical-align: center;color:darkgrey">
+                                                        <button type="button" class="btn"><img width="50" height="50" class= "me-2" src="https://img.icons8.com/ios/50/bank-card-back-side--v1.png" alt="bank-card-back-side--v1"/>Credit Cards - VISA / Master Card / JCB</button>
+                                                    </li>
+                                                    <hr>
+                                                    <li class="nav-item d-flex align-items-center"  style="vertical-align: center;color:darkgrey">
+                                                        <button class="btn" type="button" onclick="requestPayment()"><img width="48" height="48" class= "me-2" src="https://img.icons8.com/color/48/line-me.png" alt="line-me" >LINE Pay </button>
+                                                    </li>
+
+
+
+                                                </ul>
+                                                
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <!-- Buttons -->
+                                        <div button-wrapper class = "mt-5" style="display: flex;justify-content: space-between;">
+                                            <button class="btn btn-primary RegisterAgainButton btn-lg pull-right" type="button" style="width: calc(50% - 10px);">Back</button>
+                                            <!-- <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" style="width: calc(50% - 10px);" ">Checkout</button> -->
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- step3 -->
+
+                                <div class="row setup-content" id="step-3">
+                                    <div class="col-xs-6 col-md-offset-3">
+                                        <div class="col-md-12">
+                                            <!-- step-3-content -->
+                                                <div class="container-fluid my-5  d-flex  justify-content-center">
+                                                        <div class="card card-1">
+                                                            <div class="card-header bg-white">
+                                                                <div class="media flex-sm-row flex-column-reverse justify-content-between  ">
+                                                                    <div class="col my-auto"> <h4 class="mb-0">訂購成功,<span class="change-color">宥辰</span> !</h4> </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="row justify-content-between mb-3">
+                                                                    <div class="col-auto"> <h6 class="color-1 mb-0 change-color receiptName">Receipt</h6> </div>
+                                                                    <div class="col-auto  "> </div>
+                                                                </div>
+                                                                <div class="packageCardsContainer d-flex justify-content-center">
+                                                                <!-- Put into the Packages -->
+
+
+                                                                <!-- Put into the Packages -->
+                                                                </div>
+                                                                <div class="row mt-4 mb-4">
+                                                                    <div class="col">
+                                                                        <div class="row justify-content-between">
+                                                                            <div class="col-auto"><p class="mb-1 text-dark"><b>Order Details</b></p></div>
+                                                                            <div class="flex-sm-col col-auto"> <p class="mb-1 finalTotalPrice">&#8377;4,835</p> </div>
+                                                                        </div>
+                                                                        <div class="row justify-content-between">
+                                                                            <div class="col-auto"><p class="mb-1 text-dark"><b>Discount</b></p></div>
+                                                                            <div class="flex-sm-col col-auto"><p class="mb-1">None</p></div>
+                                                                        </div>
+                                                                      
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row invoice" style = "margin-top:100px;">
+                                                                    <div class="col"><p class="mb-1 invoiceNumber"> Invoice Number : 788152</p><p class="mb-1 invoiceDate">Invoice Date : 22 Dec,2019</p><p class="mb-1"></p></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-footer">
+                                                                <div class="jumbotron-fluid">
+                                                                    <div class="row justify-content-between ">
+                                                                        <div class="col-auto my-auto "><h2 class="mb-0 font-weight-bold">TOTAL PAID</h2></div>
+                                                                        <div class="col-auto my-auto ml-auto"><h1 class="display-3 finalTotalPrice">&#8377; 5,528</h1></div>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+    <!-- Step-3-End -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                            
+                    
+                    </div>
+
+
+                
+
+		    </div>
+            <br>
+            <br>
+
+
+
+	    </div>
+</div>
+</div>
+
+
+
+
+</div>
+</div>
+<script>
+    // Use jQuery to load the content of navbar.html into the #navbarContainer div
+    $(document).ready(function () {
+        $('#navbarContainer').load('../navbar.html');
+    });
+  </script>
+
+<script src="Payment-step2.js"></script>
+
+<script>
+
+        // DatePicker
+        $(function () {
+            $("#datepicker").datepicker({ 
+                autoclose: true, 
+                todayHighlight: true,
+            }).datepicker('update', new Date());
+        });
+
+        //Grab Info From LocalStorage
+        
+        var listOfActivityPackagesStr = localStorage.getItem("selectedTickets");  
+        var totalPriceStr = localStorage.getItem("totalPrice");  
+
+
+        console.log(typeof totalPriceStr);
+        console.log(typeof listOfActivityPackages)
+
+
+        var totalPrice = parseInt(totalPriceStr, 10);
+        var listOfActivityPackages = JSON.parse(listOfActivityPackagesStr);
+
+
+        //PayemtnSheet
+
+        const tableBody = document.querySelector('.packagesInfo');
+
+        const paymentSummary = $(".paymentSummary");
+        paymentSummary.text("Payment Amount NT$ " + totalPrice);
+
+        
+
+        listOfActivityPackages.forEach((package) =>{
+            const row = document.createElement('tr');
+            const rowTemplate = `
+                    <td class="ticketPackageAndDate">${package.title} <br>Valid Time ${package.validDate}</td>
+                    <td class="quantity" style="padding-top: 20px;">${package.quantity}</td>
+                    <td class="packagePrice" style="padding-top: 20px;">NT$ ${package.price}</td>
+                `;
+
+            // Set the row's innerHTML to the generated template
+            row.innerHTML = rowTemplate;
+
+            // Append the row to the table's tbody
+            tableBody.appendChild(row);
+        })
+        
+        
+        var packages = [];
+
+        listOfActivityPackages.forEach(function (packageItem) {
+            // Create a package object for each item in listOfActivityPackages
+            var packageObj = {
+                id: "20191011I001",
+                amount: packageItem.price*packageItem.quantity,
+                name: packageItem.activityTitle,
+                products: [
+                    {
+                        name: packageItem.title,
+                        imageUrl: packageItem.activityImage,
+                        quantity: packageItem.quantity,
+                        price: packageItem.price,
+                    },
+                ],
+            };
+            
+            // Add the package object to the packages array
+            packages.push(packageObj);
+        });
+
+
+        //LINE Pay Request
+
+        let baseLinePayUrl = 'http://localhost:5000/api/LinePay/';
+
+        function requestPayment(){
+            payment = {
+                amount: totalPrice,
+                currency: "TWD",
+                orderId: Date.now().toString(), //使用 Timestamp 當作 orderId
+                packages: packages,
+                RedirectUrls: {
+                    ConfirmUrl: "https://fff5-2402-7500-4d5-a113-e930-21d7-3d9c-cf18.ngrok-free.app/Client/PaymentConfirm.html",
+                    CancelUrl: "https://2af6-2402-7500-4d5-a113-e930-21d7-3d9c-cf18.ngrok-free.app/api/LinePay/Cancel",
+                },
+            };
+
+            console.log(baseLinePayUrl + "Create");
+            $.post({
+                url: baseLinePayUrl + "Create",
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify(payment),
+                success: (res) => {
+                    console.log(res)
+                    console.log(res.info)
+                    window.location = res.info.paymentUrl.web;
+                },
+                error: (err) => {
+                    console.log(err);
+                }
+            })
+
+        }
+
+        //AutoClick step3 after direct from ConfirmPage
+            function autoClickStep3() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const autoClickStep3Param = urlParams.get('autoClickStep3');
+
+                if (autoClickStep3Param === 'true') {
+                    // Get the step3 button element
+                    const step3Button = document.getElementById('step-3-button');
+
+                    // Trigger a click event on the step3 button
+                    if (step3Button) {
+                        step3Button.click();
+                    }
+
+
+//////////////////////////////////////////////////////////////////////////////////////Step3 Page Info
+
+                            //Price Info
+                            let totalPrice = localStorage.getItem("totalPrice");
+                            $(".finalTotalPrice").text("NT$ " + totalPrice);
+
+                            //For Order Info
+
+                            var listOfActivityPackagesStr = localStorage.getItem("selectedTickets");
+                            var listOfActivityPackages = JSON.parse(listOfActivityPackagesStr);
+                            var activityId = listOfActivityPackages[0].activityId;
+                            var jwtToken = localStorage.getItem("token");
+                            var orderId = localStorage.getItem("orderId");
+
+                            $.get({
+                                url: `http://localhost:5000/api/Order/${orderId}`,
+                                dataType: "json",
+                                contentType: "application/json",
+                                beforeSend: function (xhr) {
+                                // Set the Authorization header with the JWT token
+                                xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
+                                },
+                                success: (res) => {
+                                $(".invoiceNumber").text("Invoice Number : " + res.id);
+                                var date = new Date(res.invoiceDate);
+                                var formattedDate =
+                                    date.getFullYear() +
+                                    "-" +
+                                    ("0" + (date.getMonth() + 1)).slice(-2) +
+                                    "-" +
+                                    ("0" + date.getDate()).slice(-2) +
+                                    " " +
+                                    ("0" + date.getHours()).slice(-2) +
+                                    ":" +
+                                    ("0" + date.getMinutes()).slice(-2) +
+                                    ":" +
+                                    ("0" + date.getSeconds()).slice(-2);
+
+                                $(".invoiceDate").text("Invoice Date: " + formattedDate);
+                                },
+                                error: (err) => {
+                                console.log(err);
+                                },
+                            });
+
+                            //for TicketPackages  card Info
+                            var PackageContainer = document.querySelector(".packageCardsContainer");
+
+                            listOfActivityPackages.forEach(function (package){
+
+                                var packageDiv = document.createElement("div");
+                                packageDiv.className = "row mt-4";
+                                packageDiv.innerHTML = `
+                                    <div class="col">
+                                        <div class="card card-2">
+                                            <div class="card-body">
+                                                <div class="media">
+                                                    <div class="sq align-self-center"> <img class="img-fluid  my-auto align-self-center mr-2 mr-md-4 pl-0 p-0 m-0" src="https://t4.ftcdn.net/jpg/04/77/44/03/240_F_477440329_x4AOe1grWqyOQu335eqsifroDiVefft0.jpg" width="135" height="135" /> </div>
+                                                    <div class="media-body my-auto text-right">
+                                                        <div class="row  my-auto flex-column flex-md-row">
+                                                            <div class="d-flex flex-column">
+                                                            <div class="col-auto mt-3"> <h6 class="mb-0">票種 : ${package.title}</h6> </div>
+                                                            <div class="col mt-2"> <small>活動場地: ${package.venue}</small></div>
+                                                            <div class="col mt-2 "> <small>活動時間: ${package.validDate}</small></div>
+                                                            </div>
+                                                            <div class = "d-flex justify-content-between mt-2">
+                                                            <div class="col my-auto  "> <small>票數 : ${package.quantity}</small></div>
+                                                            <div class="my-auto">  <h6 class="mb-0">NT$ ${package.price}</h6></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+
+                                // Append the packageDiv to the container
+                                PackageContainer.insertAdjacentElement("afterend", packageDiv);
+
+                            })
+
+//////////////////////////////////////////////////////////////////////////////////////Step3 Page Info
+
+                    ////Selected Ticket Status To Success//////////////////////////
+                    var ticketInfo = localStorage.getItem("ticketInfo");
+                    var ticketInfoArray = JSON.parse(ticketInfo);
+                    console.log(ticketInfoArray);
+
+
+                     $.post({
+                            url: "http://localhost:5000/api/Ticket",
+                            dataType: "json",
+                            contentType: "application/json",
+                            data: JSON.stringify(ticketInfoArray),
+                            success: (res) => {
+                                console.log("Ticket SUccess API ok!!!!!!!!!" + res);
+
+                            },
+                            error: (err) => {
+                                console.log(err);
+                            }
+                    })
+                   
+
+                    ///Selected Ticket Status To Success//////////////////////////
+
+                }
+            }
+
+            // Call the function when the page loads
+            window.onload = autoClickStep3;
+    </script>
+</body>
+</html>
+
+
+
+
+

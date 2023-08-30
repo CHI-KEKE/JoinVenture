@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Domain
@@ -12,6 +13,7 @@ namespace Domain
         public int Price { get; set; }
         public string Description { get; set; }
         public int Count { get; set; }
+        [JsonIgnore]
         public Activity Activity { get; set; }
         public  DateTime ValidatedDateStart { get; set; }
         public DateTime ValidatedDateEnd { get; set; }

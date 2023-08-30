@@ -19,7 +19,7 @@ namespace Application.Comments
         public class Command : IRequest<Result<CommentDto>>
         {
             public string Body { get; set; }
-            public Guid ActivityId { get; set; }
+            public string ActivityId { get; set; }
         }
 
         // public class CommandValidator:AbstractValidator<Command>
@@ -44,27 +44,37 @@ namespace Application.Comments
 
             public async Task<Result<CommentDto>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var activity = await _context.Activities.FindAsync(request.ActivityId);
 
-                if(activity == null) return null;
-
-                var user = await _context.Users.Include(u => u.Photos).SingleOrDefaultAsync(x => x.UserName == _userAccessor.GetUsername());
-                Console.WriteLine("Found the user~~~~~~~~~~~~~~~~" + user);
-
-                var comment  = new Comment
+                if (int.TryParse(request.ActivityId, out int activityId))
                 {
-                    Author = user,
-                    Activity = activity,
-                    Body = request.Body
-                };
+                    var activity = await _context.Activities.FindAsync(activityId);
+                    var user = await _context.Users.Include(u => u.Photos).SingleOrDefaultAsync(x => x.UserName == _userAccessor.GetUsername());
+                    Console.WriteLine("Found the user~~~~~~~~~~~~~~~~" + user);
 
-                activity.Comments.Add(comment);
+                    var comment  = new Comment
+                    {
+                        Author = user,
+                        Activity = activity,
+                        Body = request.Body
+                    };
 
-                var success = await _context.SaveChangesAsync() > 0;
+                    activity.Comments.Add(comment);
 
-                if(success) return Result<CommentDto>.Success(_mapper.Map<CommentDto>(comment));
+                    var success = await _context.SaveChangesAsync() > 0;
 
-                return Result<CommentDto>.Failure("Failed to add comment");
+                    if(success) return Result<CommentDto>.Success(_mapper.Map<CommentDto>(comment));
+
+                    return Result<CommentDto>.Failure("Failed to add comment");
+
+                }
+                
+                else
+                {
+                    return null;
+                }
+
+
+
             }
         }
     }
