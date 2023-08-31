@@ -13,9 +13,7 @@ namespace API.SignalR
         }       
         public async Task UpdateTickets(Application.Booking.GetTicketCount.Query query)
         {
-            Console.WriteLine("BE Hub Method init!!!..................................................................................................");
             var TicketCountData = await _mediator.Send(query);
-            Console.WriteLine($"This is what hub serber should return!!!{TicketCountData} ..................................................................................................");
 
             await Clients.Group(query.ActivityId.ToString())
             .SendAsync("ReturnUpdatedTickets", TicketCountData);

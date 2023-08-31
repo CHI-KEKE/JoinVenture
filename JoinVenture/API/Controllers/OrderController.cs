@@ -25,13 +25,11 @@ namespace API.Controllers
          [HttpPost]
         public async Task<IActionResult> CreateOrder(OrderDto orderDto)
         {
-            // Serialize the OrderDto object to JSON format
             var orderDtoJson = JsonSerializer.Serialize(orderDto);
-            Console.WriteLine(orderDtoJson);
             Order order = _autoMapper.Map<OrderDto,Order>(orderDto);
-            var orderJson = JsonSerializer.Serialize(order);
-            Console.WriteLine(orderJson);
-            // Print the JSON representation of the DTO
+
+            // var orderJson = JsonSerializer.Serialize(order);
+            // Console.WriteLine(orderJson);
 
             return Ok(await Mediator.Send(new Create.Command {Order = order}));
 

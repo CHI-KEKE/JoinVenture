@@ -49,10 +49,9 @@
         </div>
     </div>
 
+    <script src="shareVar.js"></script>
 
     <script>
-        let baseLoginPayUrl = 'http://localhost:5000/api/LinePay/';
-        let baseOrderUrl ='http://localhost:5000/api/Order';
         let transactionId = "";
         let orderId = "";
         // Handle TotalPrice
@@ -124,7 +123,7 @@
             };
             //  送出確認交易
             $.post({
-                url: baseLoginPayUrl + `Confirm?transactionId=${transactionId}&orderId=${orderId}`,
+                url: baseUrl + `LinePay/Confirm?transactionId=${transactionId}&orderId=${orderId}`,
                 dataType: "json",
                 contentType: "application/json",
                 data: JSON.stringify(payment),
@@ -145,7 +144,7 @@
                     const jwtToken = localStorage.getItem("token");
 
                     $.post({
-                        url: baseOrderUrl,
+                        url: baseUrl + "Order",
                         dataType: "json",
                         contentType: "application/json",
                         data: JSON.stringify(orderData),

@@ -1,12 +1,9 @@
-const baseUrl = "http://localhost:5000/api/";
 const activityDetail = document.querySelector(".activity-detail");
 const FollowButton = document.querySelector(".follow-btn");
 const bookingButton = document.querySelector(".booking-btn");
 
 const queryParams = new URLSearchParams(window.location.search);
 const activityId = queryParams.get("id");
-const accessToken = localStorage.getItem("token");
-
 
 //NotificationBell
 
@@ -18,11 +15,9 @@ const dropdownMenu = document.getElementById("dropdownMenu");
 
 // badge.textContent = itemCount.toString();
 
-
-
 // Fetch Activity Data
 axios
-  .get(`http://localhost:5000/api/Activities/${activityId}`)
+  .get(`${baseUrl}Activities/${activityId}`)
   .then(function (response) {
     const activity = response.data;
 
@@ -30,14 +25,12 @@ axios
     // Populate the template with activity details
     document.querySelector(".activity-title").textContent = activity.title;
     console.log(activity.title);
-    document.querySelector(".activity-description").textContent = activity.description;
+    document.querySelector(".activity-description").textContent =
+      activity.description;
     document.querySelector(".activity-ticket").textContent = activity.tickets;
-
 
     const hostAttendee = activity.hostUserName;
 
-
-    console.log(hostAttendee);
     if (hostAttendee) {
       document.querySelector(".activity-host").textContent = hostAttendee;
     }
@@ -46,21 +39,25 @@ axios
     const activityDate = new Date(activity.date);
     document.querySelector(
       ".activity-date"
-    ).textContent = `${activityDate.getFullYear()}-${activityDate.getMonth() + 1}-${activityDate.getDate()}`;
-    document.querySelector(".activity-date-2").textContent = `${activityDate.getFullYear()}-${activityDate.getMonth() + 1}-${activityDate.getDate()}`;
-    document.querySelector(".activity-city-venue").textContent = `${activity.city}, ${activity.venue}`;
+    ).textContent = `${activityDate.getFullYear()}-${
+      activityDate.getMonth() + 1
+    }-${activityDate.getDate()}`;
+    document.querySelector(
+      ".activity-date-2"
+    ).textContent = `${activityDate.getFullYear()}-${
+      activityDate.getMonth() + 1
+    }-${activityDate.getDate()}`;
+    document.querySelector(
+      ".activity-city-venue"
+    ).textContent = `${activity.city}, ${activity.venue}`;
 
     const bgContainer = document.querySelector(".activity-image");
     bgContainer.style.backgroundImage = `url('${activity.image}')`;
-
   })
-
 
   .catch(function (error) {
     console.error("Error fetching activity details:", error);
   });
-
-
 
 // //Hub
 
@@ -70,11 +67,9 @@ axios
 // //   })
 // //   .build();
 
-
 // // hubConnection
 // //   .start()
 // //   .catch((error) => console.error("Error establishing connection:", error));
-
 
 class CommentStore {
   constructor() {
@@ -85,7 +80,7 @@ class CommentStore {
   // Method to create the hub connection
   createHubConnection(activityId) {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(`http://localhost:5000/chat?activityId=${activityId}`, {
+      .withUrl(`${baseUrl}chat?activityId=${activityId}`, {
         accessTokenFactory: () => accessToken,
       })
       .withAutomaticReconnect()
@@ -119,7 +114,7 @@ class CommentStore {
       updateTicketCountUI(updatedTicketCount.value);
     });
 
-    this.hubConnection.on("Follower Only Messages", (comment,activityNow) => {
+    this.hubConnection.on("Follower Only Messages", (comment, activityNow) => {
       console.log(comment, activityNow);
       var ActivityTitle = activityNow.title;
       AddItemToNotification(comment, ActivityTitle);
@@ -164,22 +159,20 @@ class CommentStore {
   //Testing Group
 
   async follow(accessToken) {
-    await this.hubConnection.send("FollowActivity",accessToken);
+    await this.hubConnection.send("FollowActivity", accessToken);
   }
 }
 // // Function to update the UI with received comments
 
+function updateUIWithComments(comments) {
+  const commentSection = document.querySelector(".panel-body");
+  commentSection.innerHTML = "";
 
-
-function updateUIWithComments(comments){
-     const commentSection = document.querySelector(".panel-body");
-    commentSection.innerHTML = "";
-
-    // Iterate through comments and update the UI with each comment
-    comments.forEach((comment) => {
-        const newComment = document.createElement("div");
-        newComment.className = "media-block";
-        newComment.innerHTML = `
+  // Iterate through comments and update the UI with each comment
+  comments.forEach((comment) => {
+    const newComment = document.createElement("div");
+    newComment.className = "media-block";
+    newComment.innerHTML = `
           <a class="media-left" href="#"><img class="img-circle img-sm" alt="Profile Picture" src="${comment.image}"></a>
           <div class="media-body">
               <div class="mar-btm">
@@ -197,13 +190,11 @@ function updateUIWithComments(comments){
               <hr>
           </div>
       `;
-        console.log(newComment);
+    console.log(newComment);
 
-        commentSection.insertAdjacentElement("afterbegin", newComment);
-    });   
+    commentSection.insertAdjacentElement("afterbegin", newComment);
+  });
 }
-
-
 
 // // Function to add a new comment to the UI
 function addCommentToUI(comment) {
@@ -231,13 +222,12 @@ function addCommentToUI(comment) {
 `;
 
   // Insert the new comment at the beginning of the commentSection
-  commentSection.insertBefore(newComment, commentSection.firstChild); 
+  commentSection.insertBefore(newComment, commentSection.firstChild);
 
   setTimeout(() => {
     newComment.classList.add("show");
   }, 10);
 }
-
 
 //Update ticketsCount
 
@@ -246,8 +236,6 @@ function updateTicketCountUI(ticketCount) {
   const ticketCountElement = document.querySelector(".activity-ticket");
   ticketCountElement.textContent = ticketCount;
 }
-
-
 
 //Add Notification UI
 function AddItemToNotification(comment, ActivityTitle) {
@@ -280,26 +268,7 @@ function AddItemToNotification(comment, ActivityTitle) {
 const commentStore = new CommentStore();
 commentStore.createHubConnection(activityId);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //NewComment
-
 
 function addNewComment() {
   const newCommentText = document.querySelector(".newComment").value;
@@ -308,17 +277,15 @@ function addNewComment() {
   commentStore.addComment(newCommentText);
 }
 
-
 // Booking
 
-function BookingActivity(){
+function BookingActivity() {
+  BookingTransition();
 
-  BookingTransition()
-  
   // bookingButton.classList.add("clicked");
   // setTimeout(() => {
   //   bookingButton.classList.remove("clicked");
-  // }, 200); 
+  // }, 200);
   setTimeout(BookingRecover, 500);
 
   commentStore.bookTicket(activityId);
@@ -328,7 +295,7 @@ function BookingActivity(){
 
 //Booking Transition
 
-function BookingTransition(){
+function BookingTransition() {
   bookingButton.style.backgroundColor = "#7D7C7A";
   bookingButton.innerText = "o(´^｀)o";
 }
@@ -342,32 +309,29 @@ function BookingRecover() {
 
 //Following
 
+function FollowActivity() {
+  $.post({
+    url: baseUrl + `Activities/${activityId}/follow`,
+    dataType: "json",
+    contentType: "application/json",
+    beforeSend: function (xhr) {
+      // Set the Authorization header with the JWT token
+      xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
+    },
 
-function FollowActivity(){
+    success: (res) => {
+      console.log(res);
+    },
 
-     $.post({
-       url: baseUrl +`Activities/${activityId}/follow`,
-       dataType: "json",
-       contentType: "application/json",
-       beforeSend: function (xhr) {
-         // Set the Authorization header with the JWT token
-         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
-       },
-
-       success: (res) => {
-         console.log(res);
-       },
-
-       error: (err) => {
-         console.log(err);
-       },
-     });
+    error: (err) => {
+      console.log(err);
+    },
+  });
 
   FollowButton.disabled = true;
   FollowButton.innerText = "已追蹤";
   FollowButton.style.backgroundColor = "#A0A0A0";
   FollowButton.style.borderColor = "#A0A0A0";
 
-  
   commentStore.follow(accessToken);
 }

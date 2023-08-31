@@ -1,6 +1,6 @@
 const queryParams = new URLSearchParams(window.location.search);
 const activityId = queryParams.get("id");
-
+// const baseUrl = "http://localhost:5000/";
 
 const selectedTickets = [];
 
@@ -84,7 +84,7 @@ $(document).ready(function () {
   localStorage.removeItem("orderId");
 
   axios
-    .get(`http://localhost:5000/api/Activities/${activityId}`)
+    .get(`${baseUrl}Activities/${activityId}`)
     .then(function (response) {
       //the overall data
       const activity = response.data;
@@ -300,8 +300,6 @@ $(document).ready(function () {
     })
     // Update total Cost
 
-
-
     .catch(function (error) {
       console.error("Error fetching activities:", error);
     });
@@ -352,7 +350,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 //Go to pay - Register Button////////////////////////////////////////////////////////////////////////////////////
 
-var GetTicketUrl = `http://localhost:5000/api/Ticket/${activityId}/book`;
+var GetTicketUrl = `${baseUrl}Ticket/${activityId}/book`;
 var jwtToken = localStorage.getItem('token'); 
 
   function CheckTicketAvailible() {
@@ -425,7 +423,6 @@ var jwtToken = localStorage.getItem('token');
 
 
 ///HUb..............................................................................................................................
-const accessToken = localStorage.getItem("token");
 
 class TicketStore {
   constructor() {
@@ -435,7 +432,7 @@ class TicketStore {
   // Method to create the hub connection
   createHubConnection(activityId) {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(`http://localhost:5000/ticket?activityId=${activityId}`, {
+      .withUrl(`${baseUrl}ticket?activityId=${activityId}`, {
         accessTokenFactory: () => accessToken,
       })
       .withAutomaticReconnect()

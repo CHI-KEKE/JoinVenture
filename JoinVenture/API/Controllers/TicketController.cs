@@ -48,39 +48,7 @@ namespace API.Controllers
 
                 var (Bookedtickets, message) = await _ticketBookingService.BookTickets(TicketPackage,packageInfoDto.Quantity);
                 Console.WriteLine($"outside transaction {Bookedtickets} & {message}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                // var AvailibleTicketList = TicketPackage.Tickets.Where(t => t.Status == "Available").ToList();
-
-                //Random Indices
-                // List<int> randomIndices = GenerateRandomIndices(AvailibleTicketList.Count, packageInfoDto.Quantity);
-
-                // foreach (int index in randomIndices)
-                // {
-                    //Random Avalible Tickets
-                    // var RandomPickAvailibleTicket = AvailibleTicketList[index];
-
-                    //Update The Picked Tickets
-                    // DateTime now = DateTime.Now;
-                    // DateTime tenMinutesFromNow = now.AddSeconds(20);
-
-                    // RandomPickAvailibleTicket.Status = "Pending";
-                    // RandomPickAvailibleTicket.ExpiredAt = tenMinutesFromNow;
-
-                    // var RandomPickAvailibleTicketIsPending = await Mediator.Send(new Application.Booking.Edit.Command {Ticket = RandomPickAvailibleTicket});
-
-                    
-                    //Modeling for Return to FrontEnd
-                    // var RandomPickAvailibleTicketForReturn = new AvailibleTicketsDto
-                    // {
-                    //     PackageTitle = packageInfoDto.PackageTitle,
-                    //     TicketId = RandomPickAvailibleTicketIsPending.Id,
-                    //     Stauts = RandomPickAvailibleTicketIsPending.Status,
-                    //     ExpiredAt = RandomPickAvailibleTicketIsPending.ExpiredAt,
-                    //     UserId = RandomPickAvailibleTicketIsPending.UserId,
-                    // };
-
-                    // ListOfSelectedTicketsToReturn.Add(RandomPickAvailibleTicketForReturn);
-
-                // }
+  
                 if(Bookedtickets != null)
 
                 {

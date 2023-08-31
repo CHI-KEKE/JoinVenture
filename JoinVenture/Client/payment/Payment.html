@@ -441,12 +441,15 @@
 
 </div>
 </div>
+
+<script src="../shareVar.js"></script>
+
 <script>
     // Use jQuery to load the content of navbar.html into the #navbarContainer div
     $(document).ready(function () {
         $('#navbarContainer').load('../navbar.html');
     });
-  </script>
+</script>
 
 <script src="Payment-step2.js"></script>
 
@@ -524,7 +527,7 @@
 
         //LINE Pay Request
 
-        let baseLinePayUrl = 'http://localhost:5000/api/LinePay/';
+        let baseLinePayUrl = `${baseUrl}LinePay/`;
 
         function requestPayment(){
             payment = {
@@ -586,7 +589,7 @@
                             var orderId = localStorage.getItem("orderId");
 
                             $.get({
-                                url: `http://localhost:5000/api/Order/${orderId}`,
+                                url: `${baseUrl}Order/${orderId}`,
                                 dataType: "json",
                                 contentType: "application/json",
                                 beforeSend: function (xhr) {
@@ -662,7 +665,7 @@
 
 
                      $.post({
-                            url: "http://localhost:5000/api/Ticket",
+                            url: `${baseUrl}Ticket`,
                             dataType: "json",
                             contentType: "application/json",
                             data: JSON.stringify(ticketInfoArray),

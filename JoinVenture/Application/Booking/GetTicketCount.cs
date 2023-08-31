@@ -36,7 +36,6 @@ namespace Application.Booking
             }
             public async Task<List<TicketRemainCountDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                Console.WriteLine("I am inside getTicket Count Method...............................................................");
                 List<TicketRemainCountDto> TicketCounts = new List<TicketRemainCountDto>(); 
 
 
@@ -47,7 +46,6 @@ namespace Application.Booking
 
                     foreach(var packageInfoDto in request.TicketCheckingDtos)
                     {
-                        Console.WriteLine("Inside get ticket Count loop...............................................................");
 
                         var TicketPackage = Activity.TicketPackages.SingleOrDefault(tp => tp.Title == packageInfoDto.PackageTitle);
 

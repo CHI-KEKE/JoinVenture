@@ -132,15 +132,21 @@
     </article>   
 
 
-    <!-- <script src="Authentication.js"></script> -->
-    <script src="list.js"></script>
+    <!-- script -->
+    <script src="../shareVar.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#navbarContainer').load('../navbar.html');
+        });
+    </script>
 
-  <script>
-      // Use jQuery to load the content of navbar.html into the #navbarContainer div
-      $(document).ready(function () {
-          $('#navbarContainer').load('../navbar.html');
-      });
-  </script>
+    <script src="list.js"></script>
+    
+    
+
+
+
+
 
 </body>
 </html>

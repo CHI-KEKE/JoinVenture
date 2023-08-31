@@ -14,9 +14,6 @@ namespace API.Service
     public class TicketBookingService
     {
 
-        // private IMediator _mediator;
-        
-        // protected IMediator Mediator => _mediator ??=HttpContext.RequestServices.GetService<IMediator>();
         private readonly IMediator _mediator;
         private readonly IUserAccessor _userAccessor;
 
@@ -38,7 +35,6 @@ namespace API.Service
             
             using (var transaction = await _dbContext.Database.BeginTransactionAsync(transactionCancellationTokenSource.Token))
             {
-                    // Console.WriteLine("just inside the transaction!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
                     // int maxRetries = 3; 
                     // int retryDelayMilliseconds = 100; 
@@ -77,7 +73,7 @@ namespace API.Service
                                         ";
 
                             var lockedTickets = _dbContext.Tickets.FromSqlRaw(rawSql).ToList();
-                            await Task.Delay(8000);
+                            // await Task.Delay(8000);
                             // Thread.Sleep(11000);
 
 

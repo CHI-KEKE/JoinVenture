@@ -1,5 +1,3 @@
-var accessToken = localStorage.getItem("token");
-
 /////////////////////////////////////////////////////////////////////////////////////Date Transfer
 
 function formatDate(dateString) {
@@ -12,8 +10,6 @@ function formatDate(dateString) {
   return `${year}-${month}-${day} ${hours}:${minutes}`;
 }
 
-
-
 $(document).ready(function () {
   ///////////////////////////////////////////////////////////////////////////////////////Activity Theme
 
@@ -21,7 +17,7 @@ $(document).ready(function () {
   const activityIdFromURL = queryParams.get("id");
 
   axios
-    .get(`http://localhost:5000/api/Activities/${activityIdFromURL}`)
+    .get(`${baseUrl}Activities/${activityIdFromURL}`)
     .then(function (response) {
       const activity = response.data;
       console.log("For theme" + response.data);
@@ -70,7 +66,6 @@ $(document).ready(function () {
 
   $("div.setup-panel div a.btn-primary").trigger("click");
 
-
   //////////////////////////////////////////////////////////////////////////////////////Timer/////////////////////////////////////////
 
   function format(time) {
@@ -78,14 +73,13 @@ $(document).ready(function () {
     return time < 10 ? `0${time}` : time;
   }
 
-
   let totalseconds = 600;
 
-  function updateTime(){
-    console.log('called me!')
+  function updateTime() {
+    console.log("called me!");
 
     totalseconds = --totalseconds;
-    
+
     const totalmins = Math.floor(totalseconds / 60);
     // Total Secounds remaining till the event Excluding the upper days
     const totalsecs = Math.floor(totalseconds) % 60;
@@ -95,76 +89,69 @@ $(document).ready(function () {
 
     if (totalmins == "00" && totalsecs == "00") {
       // Calls the animated funtion to show the animation
-        window.location.href = `https://fff5-2402-7500-4d5-a113-e930-21d7-3d9c-cf18.ngrok-free.app/Client/ticket-selecting/Ticket-Selecting.html?id=${activityIdFromURL}`;
+      window.location.href = `https://fff5-2402-7500-4d5-a113-e930-21d7-3d9c-cf18.ngrok-free.app/Client/ticket-selecting/Ticket-Selecting.html?id=${activityIdFromURL}`;
     }
-
   }
 
-
-setInterval(updateTime, 1000);
-
-
+  setInterval(updateTime, 1000);
 });
-
 
 ///////////////////////////////////////////////////////////////////////////////////////Step 1 terms must be checked !! + Next Button logic
 
-    const agreeCheckbox = document.getElementById("MustBeChecked");
-    const nextButton = document.getElementById('nextButton');
+const agreeCheckbox = document.getElementById("MustBeChecked");
+const nextButton = document.getElementById("nextButton");
 
-    // Add a click event listener to the Next button
-    nextButton.addEventListener('click', function (e) {
-        // Check if the checkbox is checked
-        if (!agreeCheckbox.checked) {
-            alert('Please agree to the terms and conditions.');
-            e.preventDefault();
+// Add a click event listener to the Next button
+nextButton.addEventListener("click", function (e) {
+  // Check if the checkbox is checked
+  if (!agreeCheckbox.checked) {
+    alert("Please agree to the terms and conditions.");
+    e.preventDefault();
+  } else {
+    const name = document.querySelector("#name").value;
+    const email = document.querySelector("#email").value;
+    const phoneNumber = document.querySelector("#phoneNumber").value;
+    const dateOfBirth = document.querySelector("#dateOfBirth").value;
 
-        } else {
+    // Get the selected value of the radio buttons
+    const selectedOption = document.querySelector(
+      "input[name='optionsRadios']:checked"
+    ).value;
 
-            const name = document.querySelector("#name").value;
-            const email = document.querySelector("#email").value;
-            const phoneNumber = document.querySelector("#phoneNumber").value;
-            const dateOfBirth = document.querySelector("#dateOfBirth").value;
+    // Create an object with the collected data
+    const userInfoData = {
+      name: name,
+      email: email,
+      phoneNumber: phoneNumber,
+      dateOfBirth: dateOfBirth,
+      selectedOption: selectedOption,
+    };
 
-            // Get the selected value of the radio buttons
-            const selectedOption = document.querySelector(
-              "input[name='optionsRadios']:checked"
-            ).value;
+    // Store the serialized form data in local storage
+    localStorage.setItem("step1FormData", JSON.stringify(userInfoData));
 
-            // Create an object with the collected data
-            const userInfoData = {
-              name: name,
-              email: email,
-              phoneNumber: phoneNumber,
-              dateOfBirth: dateOfBirth,
-              selectedOption: selectedOption,
-            };
+    (allNextBtn = $(".nextBtn")),
+      allNextBtn.click(function () {
+        var curStep = $(this).closest(".setup-content"),
+          curStepBtn = curStep.attr("id"),
+          nextStepWizard = $(
+            'div.setup-panel div a[href="#' + curStepBtn + '"]'
+          )
+            .parent()
+            .next()
+            .children("a"),
+          curInputs = curStep.find("input[type='text'],input[type='url']"),
+          isValid = true;
 
-            // Store the serialized form data in local storage
-            localStorage.setItem("step1FormData", JSON.stringify(userInfoData));
-
-            allNextBtn = $(".nextBtn"),
-
-            allNextBtn.click(function () {
-              var curStep = $(this).closest(".setup-content"),
-                curStepBtn = curStep.attr("id"),
-                nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]')
-                  .parent()
-                  .next()
-                  .children("a"),
-                curInputs = curStep.find("input[type='text'],input[type='url']"),
-                isValid = true;
-
-              $(".form-group").removeClass("has-error");
-              for (var i = 0; i < curInputs.length; i++) {
-                if (!curInputs[i].validity.valid) {
-                  isValid = false;
-                  $(curInputs[i]).closest(".form-group").addClass("has-error");
-                }
-              }
-
-              if (isValid) nextStepWizard.removeAttr("disabled").trigger("click");
-            });
-
+        $(".form-group").removeClass("has-error");
+        for (var i = 0; i < curInputs.length; i++) {
+          if (!curInputs[i].validity.valid) {
+            isValid = false;
+            $(curInputs[i]).closest(".form-group").addClass("has-error");
+          }
         }
-    });
+
+        if (isValid) nextStepWizard.removeAttr("disabled").trigger("click");
+      });
+  }
+});

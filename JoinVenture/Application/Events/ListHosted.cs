@@ -40,7 +40,6 @@ namespace Application.Events
             public async Task<Result<List<Activity>>> Handle(Query request, CancellationToken cancellationToken)
             {
 
-                Console.WriteLine("Just to get User now!!!!!!!!!!!!!!!!!!");
                 Console.WriteLine(_userAccessor.GetUsername());
                 
                 var user = await _context.Users.Include(u => u.Photos).SingleOrDefaultAsync(x => x.UserName == _userAccessor.GetUsername());
@@ -50,7 +49,6 @@ namespace Application.Events
                 {
                     var activitiesHosted = await _context.Activities.Where(a => a.Attendees.Any(aa => aa.AppUserId == user.Id && aa.IsHost))
                     .ToListAsync();
-                    Console.WriteLine("Catch the activities now!!!!!!!!!!!!!!" + activitiesHosted);
                  
                     return Result<List<Activity>>.Success(activitiesHosted);
                 }

@@ -1,10 +1,3 @@
-//Token
-
-const accessToken = localStorage.getItem("token");
-
-
-
-
 // Card Creating
 function createCard(activity, formattedDate) {
   return `
@@ -40,16 +33,13 @@ function createCard(activity, formattedDate) {
         `;
 }
 
-
-
 $(document).ready(function () {
   axios
-    .get("http://localhost:5000/api/Activities") 
+    .get(`${baseUrl}Activities`)
     .then(function (response) {
       const activities = response.data;
 
       activities.forEach(function (activity, index) {
-
         //DateTime Formatted
         const activityDate = new Date(activity.date);
         const formattedDate = `${activityDate.getFullYear()}-${
@@ -58,7 +48,7 @@ $(document).ready(function () {
 
         //Card Creating
         const newCardHTML = createCard(activity, formattedDate);
-        const columnIndex = index % 3; 
+        const columnIndex = index % 3;
 
         $(".col-md-4").eq(columnIndex).append(newCardHTML);
       });
@@ -77,7 +67,7 @@ $(document).ready(function () {
     if (confirm("Are you sure you want to delete this activity?")) {
       // Send DELETE request to API
       axios
-        .delete(`http://localhost:5000/api/Activities/${activityId}`)
+        .delete(`${baseUrl}Activities/${activityId}`)
         .then(function (response) {
           // Remove the deleted card from the UI
           card.remove();
@@ -89,93 +79,6 @@ $(document).ready(function () {
   });
 });
 
-
-
-//Hub Connection
-
-
-
-// class CommentStore {
-//   constructor() {
-//     this.comments = [];
-//     this.hubConnection = null;
-//   }
-
-//   // Method to create the hub connection
-//   createHubConnection(accessToken) {
-//     this.hubConnection = new signalR.HubConnectionBuilder()
-//       .withUrl("http://localhost:5000/chat", {
-//         accessTokenFactory: () => accessToken,
-//       })
-//       .withAutomaticReconnect()
-//       .configureLogging(signalR.LogLevel.Information)
-//       .build();
-
-//     this.hubConnection
-//       .start()
-//       .then(() => {
-//         this.GetHostedNotifications(accessToken);
-//       })
-//       .catch((error) => console.log("Error establishing connection:", error));
-
-//     // this.hubConnection.invoke("LoadHostedActivities");
-
-//     this.hubConnection.on("ReceiveHostedActivities", (hostedActivities) => {
-//       // Handle the received message
-//       AddItemToNotification(hostedActivities);
-//     });
-//   }
-
-//   stopHubConnection() {
-//     this.hubConnection
-//       .stop()
-//       .catch((error) => console.log("Error stopping connection: ", error));
-//   }
-
-//   clearComments() {
-//     this.comments = [];
-//     this.stopHubConnection();
-//   }
-
-//   async addComment(newCommentText) {
-//     try {
-//       await this.hubConnection.invoke("SendComment", {
-//         activityId: activityId,
-//         body: newCommentText,
-//       });
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   }
-
-//   async bookTicket(activityId) {
-//     try {
-//       await this.hubConnection.invoke("Booking", {
-//         activityId: activityId,
-//       });
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   }
-
-//   //Testing Group
-
-//   async follow() {
-//     await this.hubConnection.send("FollowActivity");
-//   }
-
-//   //LoadNotification mthod
-
-//   async GetHostedNotifications(accessToken) {
-//     try {
-//       await this.hubConnection.invoke("LoadHostedNotifications", {
-//         accessToken: accessToken,
-//       });
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   }
-// }
 // // Function to update the UI with received comments
 
 function updateUIWithCommentsNotification(comments) {
@@ -210,56 +113,25 @@ function updateUIWithCommentsNotification(comments) {
   });
 }
 
+//
 
+// class CommentStore {
+//   constructor() {
+//     this.comments = [];
+//     this.hubConnection = null;
+//   }
 
-// //Add Notification UI
-// function AddItemToNotification(activities) {
-//   console.log(activities + "I am inside the building notification UI processes!!!!!!!!!!!1")
-//   const dropdownMenu = document.querySelector(".dropdown-menu");
-
-
-//   activities.forEach(activity => {
-
-//   activity.comments.forEach(comment => {
-
-//           const listItem = document.createElement("li");
-//           const link = document.createElement("a");
-//           link.classList.add("dropdown-item");
-//           link.href = "#";
-
-//           link.textContent = `(${activity.title})${comment.author.showName} 說 : ${comment.body}`;
-//           let image = document.createElement("img");
-//           image.classList.add("img-circle", "img-sm");
-//           image.alt = "Profile Picture";
-//           image.src = comment.image;
-
-//           image.style.borderRadius = "50%";
-//           image.style.width = "50px";
-//           image.style.height = "50px";
-//           image.style.objectFit = "cover";
-//           image.style.display = "inline-block";
-
-//           link.appendChild(image);
-
-//           listItem.appendChild(link);
-//           dropdownMenu.appendChild(listItem);
-//       });
-
-//   })
+//   // Method to create the hub connection
+//   createHubConnection(activityId) {
+//     this.hubConnection = new signalR.HubConnectionBuilder()
+//       .withUrl(`http://localhost:5000/chat?activityId=${activityId}`, {
+//         accessTokenFactory: () => accessToken,
+//       })
+//       .withAutomaticReconnect()
+//       .configureLogging(signalR.LogLevel.Information)
+//       .build();
+//     this.hubConnection
+//       .start()
+//       .catch((error) => console.log("Error establishing connection:", error));
+//   }
 // }
-
-
-// Usage
-
-
-
-
-//NotificationBell
-
-// const badge = document.getElementById("notificationBadge");
-
-// const dropdownMenu = document.getElementById("dropdownMenu");
-
-// let itemCount = dropdownMenu.getElementsByTagName("li").length;
-
-// badge.textContent = itemCount.toString();

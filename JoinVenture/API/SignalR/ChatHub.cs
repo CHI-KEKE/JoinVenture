@@ -32,10 +32,8 @@ namespace API.SignalR
             var comment = await _mediator.Send(command);
 
             int activityId = int.Parse(command.ActivityId);
-            Console.WriteLine( "before@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
             var activityNow = await _mediator.Send(new Details.Query{Id = activityId});
-            Console.WriteLine(activityNow  + "after@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
             await Clients.Group(command.ActivityId.ToString())
             .SendAsync("Receive Comments", comment.Value);
 
@@ -101,7 +99,6 @@ namespace API.SignalR
 
             var result = await _mediator.Send(new Application.Comments.List.Query{ActivityId = int.Parse(activityId)});
 
-            Console.WriteLine( ActivityInfo.Tickets + "What are Loading return !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
             await Clients.Caller.SendAsync("LoadTicketCount", ActivityInfo.Tickets);
             await Clients.Caller.SendAsync("LoadComments", result.Value);

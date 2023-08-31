@@ -1,6 +1,5 @@
 const wrapper = document.querySelector(".wrapper");
 const iconClose = document.querySelector(".icon-close");
-
 // const EmailValue = document.querySelector(".login__input--user").value;
 // const PasswordValue = document.querySelector(".login__input--password").value;
 // const LoginSent = document.querySelector(".login-btn");
@@ -66,7 +65,7 @@ document
     };
 
     $.ajax({
-      url: "http://localhost:5000/api/Account/login",
+      url: `${baseUrl}Account/login`,
       type: "POST",
       contentType: "application/json",
       data: JSON.stringify(loginData),
@@ -74,7 +73,6 @@ document
         // Handle the success response
         console.log(res);
         localStorage.setItem("token", res.token);
-        
       },
       error: (xhr, status, error) => {
         // Handle the error response

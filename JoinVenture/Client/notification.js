@@ -1,7 +1,7 @@
 // const accessToken = localStorage.getItem("token");
 
 
-class CommentStore {
+class NotificationHub {
   constructor() {
     this.comments = [];
     this.hubConnection = null;
@@ -10,7 +10,7 @@ class CommentStore {
   // Method to create the hub connection
   createHubConnection() {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl("http://localhost:5000/chat", {
+      .withUrl(`${baseUrl}chat`, {
         accessTokenFactory: () => accessToken,
       })
       .withAutomaticReconnect()
@@ -70,7 +70,7 @@ function AddItemToNotification(comment, ActivityTitle) {
 }
 
 
-const commentStore = new CommentStore();
-commentStore.createHubConnection();
+const notificationHub = new NotificationHub();
+notificationHub.createHubConnection();
 
 

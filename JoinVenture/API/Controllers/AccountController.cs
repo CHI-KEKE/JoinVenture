@@ -17,7 +17,7 @@ namespace API.Controllers
 {
     
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class AccountController:ControllerBase
     {
 
@@ -62,7 +62,7 @@ namespace API.Controllers
 
             if(await _userManager.Users.AnyAsync(x => x.Email == registerDto.Email))
             {
-                return BadRequest("Email is alreadt taken");
+                return BadRequest("Email is already taken");
             }
 
             var user = new AppUser
@@ -99,7 +99,7 @@ namespace API.Controllers
                 return Ok(user);
             }
 
-            return BadRequest("Usr not Found!");
+            return BadRequest("User not Found!");
             
         }
 

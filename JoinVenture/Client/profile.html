@@ -169,14 +169,17 @@
 
 
 </body>
+  <script src="shareVar.js"></script>
+
   <script>
-      // Use jQuery to load the content of navbar.html into the #navbarContainer div
+    //   const baseUrl = "http://localhost:5000/";
+
       $(document).ready(function () {
           $('#navbarContainer').load('navbar.html');
       });
   </script>
 <script>
-    var GetUserUrl = 'http://localhost:5000/api/Account';
+    var GetUserUrl = `${baseUrl}Account`;
     var jwtToken = localStorage.getItem("token");
 
     $(document).ready(function () {

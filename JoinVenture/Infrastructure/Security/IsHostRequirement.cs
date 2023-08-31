@@ -28,7 +28,6 @@ namespace Infrastructure.Security
 
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, IsHostRequirement requirement)
         {
-            Console.WriteLine("inside!!!!!!!!!!!!!!!!!!");
             var userID = context.User.FindFirstValue(ClaimTypes.NameIdentifier);
             Console.WriteLine(userID);
 
