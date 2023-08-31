@@ -1,6 +1,6 @@
 # JoinVenture
 
-# Project Description
+## Project Description
 
 A web application for event hosting and ticket booking built using HTML, CSS, JavaScript, ASP.NET Core, and Entity Framework Core.
 
@@ -32,7 +32,7 @@ Will soon release for Usage...
 To configure the app, create a `.env` file and add the following variables:
 
 ```env
-TokenKey="super_super_super_super_super_key_key_key_key_key_super_super_super_super_super_key_key_key_key_key"
+TokenKey="YourTokenKey"
 LINEChannelId = "YourLineChannelID"
 LINEChannelSecretKey = "YourLineScretKey"
 DB_CONNECTIONSTRING = "Database Connection String"
