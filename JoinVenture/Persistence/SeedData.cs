@@ -32,28 +32,41 @@ namespace Persistence
                 }
             }
 
-
-            var userAllen = context.Users.FirstOrDefault(u => u.ShowName == "Allen");
-            var photo = new Photo
+            if(!context.Photos.Any())
             {
-                Url = "https://d1pjwdyi3jyxcs.cloudfront.net/JoinVenture/cat.jpg",
-                IsMain = true // Set this as the main photo if needed
-            };
+                var userAllen = context.Users.FirstOrDefault(u => u.ShowName == "Allen");
+                var photo = new Photo
+                {
+                    Url = "https://d1pjwdyi3jyxcs.cloudfront.net/JoinVenture/cat.jpg",
+                    IsMain = true // Set this as the main photo if needed
+                };
 
-            // Add the Photo to the user's Photos collection
-            userAllen.Photos.Add(photo);
+                // Add the Photo to the user's Photos collection
+                userAllen.Photos.Add(photo);
 
-            var userMoji = context.Users.FirstOrDefault(u => u.ShowName == "Moji");
-            var photoMoji = new Photo
-            {
-                Url = "https://d1pjwdyi3jyxcs.cloudfront.net/JoinVenture/moji.jpg",
-                IsMain = true // Set this as the main photo if needed
-            };
+                var userMoji = context.Users.FirstOrDefault(u => u.ShowName == "Moji");
+                var photoMoji = new Photo
+                {
+                    Url = "https://d1pjwdyi3jyxcs.cloudfront.net/JoinVenture/moji.jpg",
+                    IsMain = true // Set this as the main photo if needed
+                };
 
-            // Add the Photo to the user's Photos collection
-            userMoji.Photos.Add(photoMoji);
+                // Add the Photo to the user's Photos collection
+                userMoji.Photos.Add(photoMoji);
 
-            context.SaveChanges();
+                var userGina = context.Users.FirstOrDefault(u => u.ShowName == "Gina");
+                var photoGina = new Photo
+                {
+                    Url = "https://d1pjwdyi3jyxcs.cloudfront.net/JoinVenture/ginacat.png",
+                    IsMain = true // Set this as the main photo if needed
+                };
+
+                // Add the Photo to the user's Photos collection
+                userGina.Photos.Add(photoGina);
+
+                context.SaveChanges();
+            }
+
 
 
             

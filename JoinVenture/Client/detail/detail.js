@@ -5,15 +5,6 @@ const bookingButton = document.querySelector(".booking-btn");
 const queryParams = new URLSearchParams(window.location.search);
 const activityId = queryParams.get("id");
 
-//NotificationBell
-
-const badge = document.getElementById("notificationBadge");
-
-const dropdownMenu = document.getElementById("dropdownMenu");
-
-// let itemCount = dropdownMenu.getElementsByTagName("li").length;
-
-// badge.textContent = itemCount.toString();
 
 // Fetch Activity Data
 axios
@@ -59,17 +50,7 @@ axios
     console.error("Error fetching activity details:", error);
   });
 
-// //Hub
 
-// // const hubConnection = new signalR.HubConnectionBuilder()
-// //   .withUrl(`http://localhost:5000/chat?activityId=${activityId}`, {
-// //     accessTokenFactory: () => accessToken,
-// //   })
-// //   .build();
-
-// // hubConnection
-// //   .start()
-// //   .catch((error) => console.error("Error establishing connection:", error));
 
 class CommentStore {
   constructor() {
@@ -114,14 +95,7 @@ class CommentStore {
       updateTicketCountUI(updatedTicketCount.value);
     });
 
-    this.hubConnection.on("Follower Only Messages", (comment, activityNow) => {
-      console.log(comment, activityNow);
-      var ActivityTitle = activityNow.title;
-      AddItemToNotification(comment, ActivityTitle);
-      itemCount = dropdownMenu.getElementsByTagName("li").length;
 
-      badge.textContent = itemCount.toString();
-    });
   }
 
   stopHubConnection() {
@@ -190,7 +164,6 @@ function updateUIWithComments(comments) {
               <hr>
           </div>
       `;
-    console.log(newComment);
 
     commentSection.insertAdjacentElement("afterbegin", newComment);
   });
@@ -237,32 +210,7 @@ function updateTicketCountUI(ticketCount) {
   ticketCountElement.textContent = ticketCount;
 }
 
-//Add Notification UI
-function AddItemToNotification(comment, ActivityTitle) {
-  const dropdownMenu = document.querySelector(".dropdown-menu");
-  const listItem = document.createElement("li");
-  const link = document.createElement("a");
-  link.classList.add("dropdown-item");
-  link.href = "#";
 
-  link.textContent = `(${ActivityTitle})${comment.showName} 說 : ${comment.body}`;
-
-  const image = document.createElement("img");
-  image.classList.add("img-circle", "img-sm");
-  image.alt = "Profile Picture";
-  image.src = comment.image;
-
-  image.style.borderRadius = "50%";
-  image.style.width = "50px";
-  image.style.height = "50px";
-  image.style.objectFit = "cover";
-  image.style.display = "inline-block";
-
-  link.appendChild(image);
-
-  listItem.appendChild(link);
-  dropdownMenu.appendChild(listItem);
-}
 
 // Usage
 const commentStore = new CommentStore();
@@ -270,11 +218,28 @@ commentStore.createHubConnection(activityId);
 
 //NewComment
 
+const overlay = document.querySelector(".overlay");
+const wrapper2 = document.querySelector(".wrapper");
+
+const openPopup = function () {
+  wrapper2.classList.add("active-popup");
+  overlay.style.display = "block";
+};
+
+const closePopup = function () {
+  wrapper2.classList.remove("active-popup");
+  overlay.style.display = "none";
+};
+
 function addNewComment() {
-  const newCommentText = document.querySelector(".newComment").value;
-  document.querySelector(".newComment").value = "";
-  console.log(newCommentText);
-  commentStore.addComment(newCommentText);
+  if (accessToken != null) {
+    const newCommentText = document.querySelector(".newComment").value;
+    document.querySelector(".newComment").value = "";
+    console.log(newCommentText);
+    commentStore.addComment(newCommentText);
+  } else {
+    openPopup();
+  }
 }
 
 // Booking
@@ -290,7 +255,7 @@ function BookingActivity() {
 
   commentStore.bookTicket(activityId);
 
-  window.location.href = `https://fff5-2402-7500-4d5-a113-e930-21d7-3d9c-cf18.ngrok-free.app/Client/ticket-selecting/Ticket-Selecting.html?id=${activityId}`;
+  window.location.href = `https://cofstyle.shop/ticket-selecting/Ticket-Selecting.html?id=${activityId}`;
 }
 
 //Booking Transition

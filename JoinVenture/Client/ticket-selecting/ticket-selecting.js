@@ -1,9 +1,20 @@
 const queryParams = new URLSearchParams(window.location.search);
 const activityId = queryParams.get("id");
-// const baseUrl = "http://localhost:5000/";
+
+const wrapper2 = document.querySelector(".wrapper");
+const overlay = document.querySelector(".overlay");
+const openPopup = function () {
+  wrapper2.classList.add("active-popup");
+  overlay.style.display = "block";
+};
+const closePopup = function () {
+  wrapper2.classList.remove("active-popup");
+  overlay.style.display = "none";
+};
+
+
 
 const selectedTickets = [];
-
 
 //Packages////////////////////////////////////////////////////////////////
 
@@ -11,8 +22,6 @@ function countAvailableTickets(package) {
   return package.tickets.filter((ticket) => ticket.status === "Available")
     .length;
 }
-
-
 
 function createPackage(package, index, availableCount) {
   const isHidden = availableCount === 0;
@@ -29,8 +38,12 @@ function createPackage(package, index, availableCount) {
                         }" class ="ps-3 remainCount" style = "color:#DBBEA1;">剩餘票數 : ${availableCount} 張</h6>
                     </div>
                     <div class="buttons">
-                        <button id = "addButton-${package.title}" class="subbutton add" style="display: ${buttonDisplay};" >+</button>
-                        <button id = "minusButton-${package.title}"class="subbutton minus" style="display: ${buttonDisplay};">-</button>
+                        <button id = "addButton-${
+                          package.title
+                        }" class="subbutton add" style="display: ${buttonDisplay};" >+</button>
+                        <button id = "minusButton-${
+                          package.title
+                        }"class="subbutton minus" style="display: ${buttonDisplay};">-</button>
                     </div>
                 </div>
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#${index}" aria-expanded="false" aria-controls="${index}">
@@ -61,8 +74,6 @@ function createPackage(package, index, availableCount) {
 
 //Packages/////////////////////////////////////////////////////////////////////////////////
 
-
-
 ///////////////////////////////////////////////////////////////////////////////////left hand side ActivityInfo//////////////
 
 function formatDate(dateString) {
@@ -77,6 +88,10 @@ function formatDate(dateString) {
 
 $(document).ready(function () {
 
+  if (accessToken == null) {
+    openPopup();
+  }
+  
   localStorage.removeItem("selectedTickets");
   localStorage.removeItem("totalPrice");
   localStorage.removeItem("step1FormData");
@@ -303,26 +318,9 @@ $(document).ready(function () {
     .catch(function (error) {
       console.error("Error fetching activities:", error);
     });
-
-
 });
 
-
-
 ///////////////////////////////////////////////////////////////////////////////////Add the functionality for the add/minus buttons
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //More info / Hide info Toggling//////////////////////////////////////////////////////////////////
 
@@ -343,84 +341,68 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-
-
-
-
-
 //Go to pay - Register Button////////////////////////////////////////////////////////////////////////////////////
 
 var GetTicketUrl = `${baseUrl}Ticket/${activityId}/book`;
-var jwtToken = localStorage.getItem('token'); 
+var jwtToken = localStorage.getItem("token");
 
-  function CheckTicketAvailible() {
+function CheckTicketAvailible() {
+  var selectedPackages = localStorage.getItem("selectedTickets");
+  const selectedPackagesArray = JSON.parse(selectedPackages);
 
+  if (selectedPackagesArray && selectedPackagesArray.length > 0) {
+    const ticketRequiredArray = selectedPackagesArray.map((item) => ({
+      packageTitle: item.title,
+      quantity: item.quantity,
+    }));
 
-    var selectedPackages = localStorage.getItem("selectedTickets");  
-    const selectedPackagesArray = JSON.parse(selectedPackages);
+    console.log(ticketRequiredArray);
 
+    $.post({
+      url: GetTicketUrl,
+      dataType: "json",
+      contentType: "application/json",
+      data: JSON.stringify(ticketRequiredArray),
+      beforeSend: function (xhr) {
+        // Set the Authorization header with the JWT token
+        xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
+      },
 
-    if (selectedPackagesArray && selectedPackagesArray.length > 0) {
+      success: (res) => {
+        console.log(res);
 
-      const ticketRequiredArray = selectedPackagesArray.map((item) => ({
-        packageTitle: item.title,
-        quantity: item.quantity,
-      }));
+        localStorage.setItem("ticketInfo", JSON.stringify(res));
 
-      console.log(ticketRequiredArray);
+        const totalPriceElement = document.querySelector(".total-price");
+        const totalPriceText = totalPriceElement.textContent;
+        const numericPart = totalPriceText.match(/\d+/);
+        const totalPrice = parseInt(numericPart, 10);
+        localStorage.setItem("totalPrice", totalPrice);
 
-      $.post({
-        url: GetTicketUrl,
-        dataType: "json",
-        contentType: "application/json",
-        data: JSON.stringify(ticketRequiredArray),
-        beforeSend: function (xhr) {
-          // Set the Authorization header with the JWT token
-          xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
-        },
+        //Websocket Update ticket count in real time
 
-        success: (res) => {
-          console.log(res);
+        ticketStore.updateTickets(activityId, ticketRequiredArray);
 
-          localStorage.setItem("ticketInfo", JSON.stringify(res));
+        window.location.href = `https://cofstyle.shop/payment/Payment.html?id=${activityId}`;
+      },
 
-          const totalPriceElement = document.querySelector(".total-price");
-          const totalPriceText = totalPriceElement.textContent;
-          const numericPart = totalPriceText.match(/\d+/);
-          const totalPrice = parseInt(numericPart, 10);
-          localStorage.setItem("totalPrice", totalPrice);
+      error: (err) => {
+        console.log(err);
 
-          //Websocket Update ticket count in real time
-
-          ticketStore.updateTickets(activityId, ticketRequiredArray);
-
-
-          window.location.href = `https://fff5-2402-7500-4d5-a113-e930-21d7-3d9c-cf18.ngrok-free.app/Client/payment/Payment.html?id=${activityId}`;
-        },
-
-        error: (err) => {
-            console.log(err);
-
-            if (err.status === 400) {
-              // Handle client-side validation errors
-              toastr["warning"]("票數不足", "請刷新頁面");
-            } else if (err.status === 409) {
-              // Handle concurrency conflicts
-              toastr["warning"]("伺服器繁忙,請稍後再試", "Warning");
-            } else {
-              // Handle other server errors
-              toastr["error"]("伺服器異常,請稍後再試", "Error");
-            }
-        },
-      });
-
-
-    }
-
-
-
+        if (err.status === 400) {
+          // Handle client-side validation errors
+          toastr["warning"]("票數不足", "請刷新頁面");
+        } else if (err.status === 409) {
+          // Handle concurrency conflicts
+          toastr["warning"]("伺服器繁忙,請稍後再試", "Warning");
+        } else {
+          // Handle other server errors
+          toastr["error"]("伺服器異常,請稍後再試", "Error");
+        }
+      },
+    });
+  }
 }
-
 
 ///HUb..............................................................................................................................
 
@@ -458,9 +440,9 @@ class TicketStore {
       .catch((error) => console.log("Error stopping connection: ", error));
   }
 
-  async updateTickets(activityId,ticketCountData) {
+  async updateTickets(activityId, ticketCountData) {
     try {
-      console.log("hub update init method!!")
+      console.log("hub update init method!!");
       await this.hubConnection.invoke("UpdateTickets", {
         activityId: activityId,
         ticketCheckingDtos: ticketCountData,
@@ -474,13 +456,10 @@ class TicketStore {
 const ticketStore = new TicketStore();
 ticketStore.createHubConnection(activityId);
 
-
-
-function updateTicketCountNumber(updatedTicketCountData)
-{
+function updateTicketCountNumber(updatedTicketCountData) {
   updatedTicketCountData.forEach((ticketCountData) => {
     console.log(ticketCountData);
-    
+
     const packageTitle = ticketCountData.packageTitle;
     const count = ticketCountData.count;
     console.log(packageTitle, count);
@@ -491,22 +470,22 @@ function updateTicketCountNumber(updatedTicketCountData)
     );
 
     if (ticketCountElement) {
-
       // Update the ticket count element's content
       ticketCountElement.textContent = `剩餘票數 : ${count} 張`;
     }
 
     if (count == 0) {
-     const addButton = document.getElementById(`addButton-${packageTitle}`);
-     const minusButton = document.getElementById(`minusButton-${packageTitle}`);
+      const addButton = document.getElementById(`addButton-${packageTitle}`);
+      const minusButton = document.getElementById(
+        `minusButton-${packageTitle}`
+      );
 
-     if (addButton && minusButton) {
-       // Set the display property based on the count value
-       addButton.style.display = count === 0 ? "none" : "block";
-       minusButton.style.display = count === 0 ? "none" : "block";
-     }     
+      if (addButton && minusButton) {
+        // Set the display property based on the count value
+        addButton.style.display = count === 0 ? "none" : "block";
+        minusButton.style.display = count === 0 ? "none" : "block";
+      }
     }
   });
-
 }
 ///HUb..............................................................................................................................

@@ -10,16 +10,16 @@
     <!-- jquery CDN include -->
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"
         integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="confirm.css">
     <!-- bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-        <!-- bootwatch -->
-    <link rel="stylesheet" href="bootwatch.css">
-
     <!-- CSS -->
     <link rel="stylesheet" href="profile.css">
+        <!-- bootwatch -->
+    <link rel="stylesheet" href="../bootwatch.css">
+
+    <link rel="stylesheet" href="loginform.css">
 
     <!-- fontawesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
@@ -31,6 +31,67 @@
 
 
 <body>
+
+  <div class="overlay" style="display:none;"></div>
+
+     <!-- Login-PopUp -->
+    <!-- <main class="app"> -->
+        <div class="wrapper">
+            <span class="icon-close"><ion-icon name="close"></ion-icon></span>
+            <div class="form-box login">
+              <h2>Login</h2>
+              <form action="#" id="loginForm">
+                <div class="input-box">
+                  <span class="icon"><ion-icon name="mail"></ion-icon></span>
+                  <input type="text" class = "login__input--user" required>
+                  <label>User</label>
+                </div>
+                <div class="input-box">
+                  <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                  <input type="password" class = "login__input--password" required>
+                  <label>Password</label>
+                </div>
+                <div class="remember-forgot">
+                  <label><input type="checkbox">Remember me</label>
+                  <a href="#">Forgot Password?</a>
+                </div>
+                <button type="submit" class="btn login-btn" style="font-size: 1.5rem;margin-left: 35%;border-color:#484D6D;">Login</button>
+                <div class="login-register">
+                  <p>No Account?<a href="#" class="register-link">Register</a></p>
+                </div>
+              </form>
+            </div>
+
+            <div class="form-box register">
+              <h2>Register</h2>
+              <form action="#">
+                <div class="input-box">
+                  <span class="icon"><ion-icon name="person-add"></ion-icon></span>
+                  <input type="text" required>
+                  <label>Username</label>
+                </div>
+                <div class="input-box">
+                  <span class="icon"><ion-icon name="mail"></ion-icon></span>
+                  <input type="email" required>
+                  <label>Email</label>
+                </div>
+                <div class="input-box">
+                  <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                  <input type="password" required>
+                  <label>Password</label>
+                </div>
+                <div class="remember-forgot">
+                  <label><input type="checkbox">I agree to the terms and conditions</label>
+                </div>
+                <button type="submit" class="btn register-btn">Register</button>
+                <div class="login-register">
+                  <p>Already have an Account?<a href="#" class="login-link">Login</a></p>
+                </div>
+              </form>
+            </div>
+        </div>
+    <!-- </main> -->
+
 
 <!-- Nav -->
 <div id="navbarContainer"></div>
@@ -47,11 +108,10 @@
                             <div class="card">
                                 <div class="card-body">
                                 <div class="d-flex flex-column align-items-center text-center">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle userImage" width="150" height="150" style = "object-fit: cover;object-position: center;">
+                                    <img src="../../ananymous.jpg" alt="Admin" class="rounded-circle userImage" width="150" height="150" style = "object-fit: cover;object-position: center;">
                                     <div class="mt-3">
-                                    <h4 class = "showName">John Doe</h4>
-                                    <!-- <p class="text-secondary mb-1">Full Stack Developer</p>
-                                    <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p> -->
+                                    <h4 class = "showName"></h4>
+
 
                                     </div>
                                 </div>
@@ -64,23 +124,23 @@
                                 <ul class="list-group list-group-flush">
                                 <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                                     <h6 class="mb-0"><img width="24" height="24" src="https://img.icons8.com/plumpy/24/person-male--v1.png" alt="person-male--v1"/>暱稱</h6>
-                                    <span class="text-secondary showName">https://bootdey.com</span>
+                                    <span class="text-secondary showName"></span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                                     <h6 class="mb-0"><img width="24" height="24" src="https://img.icons8.com/material-sharp/24/person-male.png" alt="person-male"/>姓名</h6>
-                                    <span class="text-secondary userName">bootdey</span>
+                                    <span class="text-secondary userName"></span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                                     <h6 class="mb-0"><img width="24" height="24" src="https://img.icons8.com/material/24/phone--v1.png" alt="phone--v1"/>電話</h6>
-                                    <span class="text-secondary phoneNumber">@bootdey</span>
+                                    <span class="text-secondary phoneNumber"></span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                                     <h6 class="mb-0"><img width="24" height="24" src="https://img.icons8.com/material-outlined/24/iphone--v2.png" alt="iphone--v2"/>手機</h6>
-                                    <span class="text-secondary mobile">bootdey</span>
+                                    <span class="text-secondary mobile"></span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                                     <h6 class="mb-0"><img width="24" height="24" src="https://img.icons8.com/material/24/address--v2.png" alt="address--v2"/>地址</h6>
-                                    <span class="text-secondary address">bootdey</span>
+                                    <span class="text-secondary address"></span>
                                 </li>
                                 </ul>
                                 <div class="row p-2 text-center">
@@ -166,99 +226,17 @@
         </div>
     </div>
 
-
+    
 
 </body>
-  <script src="shareVar.js"></script>
+  <script src="../shareVar.js"></script>
 
   <script>
-    //   const baseUrl = "http://localhost:5000/";
 
       $(document).ready(function () {
-          $('#navbarContainer').load('navbar.html');
+          $('#navbarContainer').load('../navbar.html');
       });
   </script>
-<script>
-    var GetUserUrl = `${baseUrl}Account`;
-    var jwtToken = localStorage.getItem("token");
+  <script src="profile.js"></script>
 
-    $(document).ready(function () {
-            $.get({
-            url: GetUserUrl,
-            dataType: "json",
-            contentType: "application/json",
-            beforeSend: function(xhr) {
-                // Set the Authorization header with the JWT token
-                xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
-            },
-            success: (res) => {
-
-                // UserProfile Part
-                $(".showName").text(res.showName);
-                $(".userName").text(res.userName);
-                $(".phoneNumber").text(res.phoneNumber);
-                $(".mobile").text(res.mobile);
-                $(".address").text(res.address);
-                $(".userImage").attr("src",res.photos[0].url)
-
-                // User Orders Part
-                const OrderSection = $(".OrderSection");
-                       res.orders.forEach((order) => {
-                        const orderCard = `
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <!-- Activity Title -->
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <h6 class="mb-0 activityName">${order.activityTitle}</h6>
-                                        </div>
-                                    </div>
-                                    <hr>
-
-                                    <!-- TicketPackage -->
-                                    ${order.bookedTicketPackages.map((package) => `
-                                        <div class="ticket m-3">
-                                            <div class="left">
-                                                <div class="image activityImage" style="background-image: url(${order.activityImage});background-size: cover; background-position: center;">
-                                                </div>
-                                                <div class="ticket-info">
-                                                    <p class="date">
-                                                        <span class="validDate">${package.validDate}</span>
-                                                    </p>
-                                                    <div class=".ticket-infot">
-                                                        <h3 class="ticketTitle">${package.title}</h3>
-                                                        <h5 class="ticketQuantity">${package.quantity} 張</h5>
-                                                    </div>
-                                                    <p class="location"><span>祝您愉快</span><i class="far fa-smile"></i></p>
-                                                </div>
-                                            </div>
-                                            <div class="right">
-                                                <div class="right-info-container">
-                                                    <div class="barcode">
-                                                        <img src="https://external-preview.redd.it/cg8k976AV52mDvDb5jDVJABPrSZ3tpi1aXhPjgcDTbw.png?auto=webp&s=1c205ba303c1fa0370b813ea83b9e1bddb7215eb" alt="QR code">
-                                                    </div>
-                                                    <p class="ticket-number OrderId">#${order.id.substring(0, 8)}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    `).join('')}
-                                    <!-- TicketPackage -->
-                                </div>
-                            </div>
-                        `;
-
-                        // Insert the order card after the UserProfile card
-                        OrderSection.append(orderCard);
-                 });
-
-
-            },
-            error: (err) =>{
-                console.log(err);
-            }
-
-        })
-    })
-
-</script>
 </html>

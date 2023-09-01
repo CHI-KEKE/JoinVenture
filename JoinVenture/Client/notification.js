@@ -1,5 +1,3 @@
-// const accessToken = localStorage.getItem("token");
-
 
 class NotificationHub {
   constructor() {
@@ -21,14 +19,10 @@ class NotificationHub {
       .start()
       .catch((error) => console.log("Error establishing connection:", error));
 
-
     this.hubConnection.on("Follower Only Messages", (comment, activityNow) => {
       console.log(comment, activityNow);
       var ActivityTitle = activityNow.title;
       AddItemToNotification(comment, ActivityTitle);
-      itemCount = dropdownMenu.getElementsByTagName("li").length;
-
-      badge.textContent = itemCount.toString();
     });
   }
 
@@ -37,10 +31,7 @@ class NotificationHub {
       .stop()
       .catch((error) => console.log("Error stopping connection: ", error));
   }
-
-
 }
-
 
 //Add Notification UI
 function AddItemToNotification(comment, ActivityTitle) {
@@ -67,10 +58,11 @@ function AddItemToNotification(comment, ActivityTitle) {
 
   listItem.appendChild(link);
   dropdownMenu.appendChild(listItem);
+  itemCount = dropdownMenu.getElementsByTagName("li").length;
+  console.log(itemCount+"!!!!!!!!!!!!!!!!!!!!!!");
+  const badge = document.getElementById("notificationBadge");
+  badge.textContent = itemCount.toString();
 }
-
 
 const notificationHub = new NotificationHub();
 notificationHub.createHubConnection();
-
-

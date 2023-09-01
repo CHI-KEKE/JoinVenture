@@ -6,7 +6,15 @@ A web application for event hosting and ticket booking built using HTML, CSS, Ja
 
 ## Demo
 
-Will soon be deployed on AWS server...
+### Event List
+
+https://cofstyle.shop/list/Activity-List.html
+
+### Click View to check the Detail
+
+ex: https://cofstyle.shop/detail/Activity-Detail.html?id=2
+
+...more website service info will be updated soon on README
 
 ## Prerequisites
 

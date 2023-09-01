@@ -1,120 +1,20 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* Overlay */
 
-html {
-  font-size: 62.5%;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Poppins', sans-serif;
-  color: #444;
-  background-image: url("city.png");
-  max-height: 100vh;
-  padding: 2rem;
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  background-size: cover;
-  background-position: center;
-  overflow: scroll;
-}
-
-
-/* /////////////////////////////////////////// */
-
-
-header{
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  padding:6px 80px;
-  height: 20vh;
-  /* background:#777; */
-  display:flex;
-  justify-content: space-between;
-  align-items:center;
-  z-index:99;
-  margin-bottom: 10px;
-}
-
-
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 2rem 1.5rem;
-}
-
-
-nav a{
-  position:relative;
-  font-size:2rem;
-  color:#444;
-  font-weight:500;
-  margin-left:40px;
-  text-decoration:none;
-
-}
-
-.welcome {
-  font-size: 3rem;
-  font-weight: 500;
-  color:#444
-}
-
-
-nav .btnLogin-popup{
-  width: 130px;
-  height: 50px;
-  background: transparent;
-  border: 2px solid #444;
-  outline: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 2rem;
-  color: #444;
-  font-weight: 700;
-  margin-left: 40px;
-  transition: .5s;
-}
-
-nav .btnLogin-popup:hover{
-  background: #444;
-  color:beige
-}
-
-nav a::after{
-  content: '';
-  position: absolute;
+.overlay{
+  position: fixed;          
+  top: 0;
   left: 0;
-  bottom: -6px;
   width: 100%;
-  height: 3px;
-  background: #444;
-  border-radius: 5px;
-  transform-origin: right;
-  transform: scaleX(0);
-  transition: transform .5s;
-}
-
-nav a:hover::after{
-  transform-origin: left;
-  transform:scaleX(1);
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  z-index: 98;
+  transition: all 0.5s;
 }
 
 
-
-
-
-
-
-/* /////////////////////////////////////////////// */
-
+/* wrapper */
+/* Login-Popup */
 
 .app {
   position: relative;
@@ -126,12 +26,14 @@ nav a:hover::after{
   /* NOTE This creates the fade in/out anumation */
   /* opacity: 0; */
   /* transition: all 1s; */
-  z-index:10;
+  z-index:100;
   height: 100vh;
 } 
 
 .wrapper {
   position: fixed;
+  margin-left: 40%;
+  margin-top: 10%;
   width: 400px;
   height: 440px;
   background: transparent;
@@ -145,7 +47,7 @@ nav a:hover::after{
   overflow: hidden;
   transform: scale(0);
   transition: transform .5s ease,height .2s ease;
-  z-index:90;
+  z-index:100;
 }
 
 .wrapper.active-popup{
@@ -273,7 +175,7 @@ nav a:hover::after{
 }
 
 .remember-forgot{
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   color: #444;
   font-weight: 500;
   margin: -15px 0 15px;
@@ -295,18 +197,7 @@ nav a:hover::after{
   text-decoration:underline;
 }
 
-.btn{
-  width: 100%;
-  height: 45px;
-  background:#444;
-  border:none;
-  outline:none;
-  border-radius: 6px;
-  cursor:pointer;
-  font-size: 1.5rem;
-  color: #fff;
-  font-weight: 700;
-}
+
 
 .login-register{
   font-size: 1.5rem;

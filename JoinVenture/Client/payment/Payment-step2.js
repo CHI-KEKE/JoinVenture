@@ -89,7 +89,7 @@ $(document).ready(function () {
 
     if (totalmins == "00" && totalsecs == "00") {
       // Calls the animated funtion to show the animation
-      window.location.href = `https://fff5-2402-7500-4d5-a113-e930-21d7-3d9c-cf18.ngrok-free.app/Client/ticket-selecting/Ticket-Selecting.html?id=${activityIdFromURL}`;
+      window.location.href = `https://cofstyle.shop/ticket-selecting/Ticket-Selecting.html?id=${activityIdFromURL}`;
     }
   }
 

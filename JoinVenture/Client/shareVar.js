@@ -1,2 +1,2 @@
-const baseUrl = "http://localhost:5000/";
+const baseUrl = "https://cofstyle.shop/api/";
 const accessToken = localStorage.getItem("token");
