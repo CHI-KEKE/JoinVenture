@@ -20,7 +20,6 @@ namespace API.Controllers
             
         }
 
-        [AllowAnonymous]
         [HttpPost("Create")]
         public async Task<PaymentRequestResponseDto> CreatePayment(PaymentRequestDto dto)
         {
@@ -30,13 +29,12 @@ namespace API.Controllers
             return result;
         }
 
-        [AllowAnonymous]
         [HttpPost("Confirm")]
         public async Task<PaymentRequestConfirmResponseDto> ConfirmPayment([FromQuery] string transactionId, [FromQuery] string orderId, PaymentRequestConfirmDto dto )
         {
             return await _linePayService.ConfirmPayment(transactionId, orderId,dto);
         }
-        [AllowAnonymous]
+
         [HttpGet("Cancel")]
         public async void CancelTransaction([FromQuery] string transactionId)
         {

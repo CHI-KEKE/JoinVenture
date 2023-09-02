@@ -130,8 +130,8 @@ nextButton.addEventListener("click", function (e) {
     // Store the serialized form data in local storage
     localStorage.setItem("step1FormData", JSON.stringify(userInfoData));
 
-    (allNextBtn = $(".nextBtn")),
-      allNextBtn.click(function () {
+    // (allNextBtn = $(".nextBtn")),
+      // allNextBtn.click(function () {
         var curStep = $(this).closest(".setup-content"),
           curStepBtn = curStep.attr("id"),
           nextStepWizard = $(
@@ -152,6 +152,6 @@ nextButton.addEventListener("click", function (e) {
         }
 
         if (isValid) nextStepWizard.removeAttr("disabled").trigger("click");
-      });
+      // });
   }
 });

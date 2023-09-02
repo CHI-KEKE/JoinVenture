@@ -21,7 +21,7 @@ namespace API.Controllers
             _autoMapper = autoMapper;
             
         }
-        [AllowAnonymous]
+        
          [HttpPost]
         public async Task<IActionResult> CreateOrder(OrderDto orderDto)
         {
@@ -35,7 +35,6 @@ namespace API.Controllers
 
         }
 
-        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<Order>> GetOrder(Guid id)
         {

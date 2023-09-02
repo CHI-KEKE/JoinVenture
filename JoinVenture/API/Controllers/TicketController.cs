@@ -31,7 +31,6 @@ namespace API.Controllers
         }
 
 
-        [AllowAnonymous]
         [HttpPost("{id}/book")]
         public async Task<IActionResult> GetAvailibleTickets (int id, List<DTOs.Tickets.TicketCheckingDto> ticketCheckingDtos)
         {
@@ -116,7 +115,6 @@ namespace API.Controllers
             return indices;
         }
 
-        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> TicketToSuccess (List<AvailibleTicketsDto> ticketsDto)
         {

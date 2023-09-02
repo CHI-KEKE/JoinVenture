@@ -24,9 +24,11 @@ namespace API.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly TokenService _tokenService;
         private readonly DataContext _context;
+        private readonly SaveUploadedFileService _fileService;
 
-        public AccountController(UserManager<AppUser> userManager, TokenService tokenService,DataContext context)
+        public AccountController(UserManager<AppUser> userManager, TokenService tokenService,DataContext context,SaveUploadedFileService fileService)
         {
+            _fileService = fileService;
             _context = context;
             _tokenService = tokenService;
             _userManager = userManager;
@@ -53,8 +55,9 @@ namespace API.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
+        public async Task<ActionResult<UserDto>> Register([FromForm] RegisterDto registerDto)
         {
+            //Duplicate Checking
             if(await _userManager.Users.AnyAsync(x => x.UserName == registerDto.UserName))
             {
                 return BadRequest("User is already exist");
@@ -65,12 +68,23 @@ namespace API.Controllers
                 return BadRequest("Email is already taken");
             }
 
+
+            //Image Handling
+            string CloudFrontImagePath = await _fileService.SaveUploadedFileMethod(registerDto.MainImage);
+
             var user = new AppUser
             {
                 ShowName = registerDto.ShowName,
                 Email = registerDto.Email,
                 UserName = registerDto.UserName
             };
+            var photo = new Photo
+            {
+                Url = CloudFrontImagePath,
+                IsMain = true 
+            };
+
+            user.Photos.Add(photo);
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
 
@@ -82,7 +96,6 @@ namespace API.Controllers
             return BadRequest(result.Errors);
         }
 
-        [Authorize]
         [HttpGet]
         public async Task<ActionResult<UserDto>> GetCurrentUser()
         {
@@ -103,7 +116,6 @@ namespace API.Controllers
             
         }
 
-        [Authorize]
         [HttpPost("edit")]
         public async Task<ActionResult<UserDto>> EditUser(UserDto userDto)
         {

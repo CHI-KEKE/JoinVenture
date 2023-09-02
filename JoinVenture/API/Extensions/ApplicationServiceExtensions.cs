@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.Provider;
 using API.Service;
+using API.Service.IService;
 using Application.Core;
 using Application.Events;
 using Application.Interface;
@@ -75,6 +76,15 @@ namespace API.Extensions
 
             services.AddScoped<LINEPayService>();
             services.AddScoped<TicketBookingService>();
+            services.AddScoped<SaveUploadedFileService>();
+
+
+            //S3
+            services.AddScoped<IStorageService,StorageService>();
+
+            //ImageHandling
+
+            services.AddScoped<SaveUploadedFileService>();
 
 
             return services;

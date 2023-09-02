@@ -1,18 +1,6 @@
 const queryParams = new URLSearchParams(window.location.search);
 const activityId = queryParams.get("id");
 
-const wrapper2 = document.querySelector(".wrapper");
-const overlay = document.querySelector(".overlay");
-const openPopup = function () {
-  wrapper2.classList.add("active-popup");
-  overlay.style.display = "block";
-};
-const closePopup = function () {
-  wrapper2.classList.remove("active-popup");
-  overlay.style.display = "none";
-};
-
-
 
 const selectedTickets = [];
 
@@ -89,9 +77,11 @@ function formatDate(dateString) {
 $(document).ready(function () {
 
   if (accessToken == null) {
+    console.log("I am at ticketselecting.js!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
     openPopup();
   }
-  
+
   localStorage.removeItem("selectedTickets");
   localStorage.removeItem("totalPrice");
   localStorage.removeItem("step1FormData");

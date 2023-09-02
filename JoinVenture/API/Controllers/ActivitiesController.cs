@@ -21,6 +21,7 @@ namespace API.Controllers
         {
             return await Mediator.Send(new List.Query());
         }
+
         [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<ActivityDto>> GetActivity(int id)
@@ -50,7 +51,6 @@ namespace API.Controllers
             return Ok(await Mediator.Send(new Delete.Command {Id = id}));
         }
         
-        [AllowAnonymous]
         [HttpPost("{id}/follow")]
         public async Task<IActionResult> Follow(int id)
         {

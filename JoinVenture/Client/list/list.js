@@ -1,28 +1,41 @@
 let thisUser = "";
+// const overlay = document.querySelector(".overlay");
 
-$(document).ready(function () {
-  //check user
 
-  $.get({
-    url: `${baseUrl}Account`,
-    dataType: "json",
-    contentType: "application/json",
-    beforeSend: function (xhr) {
-      // Set the Authorization header with the JWT token
-      xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
-    },
-    success: (res) => {
-      thisUser = res.userName;
-      //Get Activities
-      SearchActivities();
-    },
-    error: (err) => {
-      if (err.status === 401) {
+    $(document).ready(function () {
+      //check user
+      if (accessToken) {
+        $.get({
+          url: `${baseUrl}Account`,
+          dataType: "json",
+          contentType: "application/json",
+          beforeSend: function (xhr) {
+            // Set the Authorization header with the JWT token
+            xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
+          },
+          success: (res) => {
+            thisUser = res.userName;
+            //Get Activities
+            SearchActivities();
+          },
+          error: (xhr, status, error) => {
+            try {
+              // Attempt to handle the error gracefully without console output
+              // Log your custom message
+              console.log("just..no login user right now");
+
+              // Continue processing as needed
+              SearchActivities();
+            } catch (e) {
+              // Handle any other unexpected errors here
+              console.error(""); // Log an empty string or a harmless message
+            }
+          },
+        });
+      } else {
         SearchActivities();
       }
-    },
-  });
-});
+    });
 
 // Card Creating
 function createCard(activity, formattedDate, ifhost) {
@@ -120,36 +133,3 @@ function SearchActivities() {
   });
 }
 
-// // Function to update the UI with received comments
-
-// function updateUIWithCommentsNotification(comments) {
-//   const commentSection = document.querySelector(".panel-body");
-//   commentSection.innerHTML = "";
-
-//   // Iterate through comments and update the UI with each comment
-//   comments.forEach((comment) => {
-//     const newComment = document.createElement("div");
-//     newComment.className = "media-block";
-//     newComment.innerHTML = `
-//           <a class="media-left" href="#"><img class="img-circle img-sm" alt="Profile Picture" src="${comment.image}"></a>
-//           <div class="media-body">
-//               <div class="mar-btm">
-//                   <a href="#" class="btn-link text-semibold media-heading box-inline">${comment.showName}</a>
-//                   <p class="text-muted text-sm"><i class="fa fa-mobile fa-lg"></i> - From Mobile - Just now</p>
-//               </div>
-//               <p>${comment.body}</p>
-//               <div class="pad-ver">
-//                   <div class="btn-group">
-//                       <a class="btn btn-sm btn-default btn-hover-success" href="#"><i class="fa fa-thumbs-up"></i></a>
-//                       <a class="btn btn-sm btn-default btn-hover-danger" href="#"><i class="fa fa-thumbs-down"></i></a>
-//                   </div>
-//                   <a class="btn btn-sm btn-default btn-hover-primary" href="#">Comment</a>
-//               </div>
-//               <hr>
-//           </div>
-//       `;
-//     console.log(newComment);
-
-//     commentSection.insertAdjacentElement("afterbegin", newComment);
-//   });
-// }
