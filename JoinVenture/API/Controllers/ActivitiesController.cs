@@ -1,9 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
+using API.Provider;
+using API.Service;
 using Application.Activities;
 using Application.Events;
+using AutoMapper;
 using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -15,6 +19,17 @@ namespace API.Controllers
 {
     public class ActivitiesController:BaseController
     {
+        private readonly IMapper _mapper;
+        private readonly SaveUploadedFileService _fileService;
+        private readonly JsonProvider _jsonProvider;
+
+        public ActivitiesController(IMapper mapper, SaveUploadedFileService fileService,JsonProvider jsonProvider)
+        {
+            _jsonProvider = jsonProvider;
+            _fileService = fileService;
+            _mapper = mapper;
+            
+        }
         [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<List<ActivityDto>>> GetActivities()
@@ -30,9 +45,64 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateActivity(Activity activity)
+        public async Task<IActionResult> CreateActivity([FromForm] ActivityCreateRequestDto activityCreateRequestDto)
         {
-            return Ok(await Mediator.Send(new Create.Command {Activity = activity}));
+            var jsonData = JsonSerializer.Serialize(activityCreateRequestDto);
+            Console.WriteLine(jsonData+"nice catch@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+
+            var activityTransformed = _mapper.Map<ActivityCreateRequestDto, Activity>(activityCreateRequestDto);
+            Console.WriteLine(activityTransformed+"Transformed done##################################################");
+            Console.WriteLine(activityCreateRequestDto.Image+"Image!?????????????????????????????????????????????");
+
+            //Image Handling
+            string CloudFrontImagePath = await _fileService.SaveUploadedFileMethod(activityCreateRequestDto.Image);
+            activityTransformed.Image = CloudFrontImagePath;
+            Console.WriteLine(CloudFrontImagePath+"Image done##################################################");
+
+
+            var ticketPackagesJson = HttpContext.Request.Form["ticketPackages"];
+            var ticketPackages = _jsonProvider.Deserialize<List<TicketPackageDTO>>(ticketPackagesJson);
+
+            var ticketPackagesTransformed = _mapper.Map<List<TicketPackageDTO>, List<TicketPackage>>(ticketPackages);
+
+            // TicketPackages Handling
+            if (ticketPackagesTransformed != null)
+            {
+                foreach (var ticketPackagetrans in ticketPackagesTransformed)
+                {
+                    var ticketPackage = new TicketPackage
+                    {
+                        Title = ticketPackagetrans.Title,
+                        Price = (int)ticketPackagetrans.Price,
+                        Description = ticketPackagetrans.Description,
+                        Count = ticketPackagetrans.Count,
+                        ValidatedDateStart = ticketPackagetrans.ValidatedDateStart,
+                        ValidatedDateEnd = ticketPackagetrans.ValidatedDateEnd,
+                        BookingAvailableStart = ticketPackagetrans.BookingAvailableStart,
+                        BookingAvailableEnd = ticketPackagetrans.BookingAvailableEnd,
+                    };
+
+                    for (int i = 0; i < ticketPackage.Count; i++) 
+                    {
+                        var ticket = new Ticket
+                        {
+                            Status = "Available", 
+                            UserId = null,
+                            Version =null,
+                        };
+
+                        ticketPackage.Tickets.Add(ticket);
+                    }
+
+                    // Add the TicketPackage to the Activity
+                    activityTransformed.TicketPackages.Add(ticketPackage);
+                }
+            Console.WriteLine(ticketPackagesTransformed+"TicketPackages done##################################################");
+
+            }
+            // return Ok();
+
+            return Ok(await Mediator.Send(new Create.Command {Activity = activityTransformed}));
         }
 
         [Authorize(Policy = "IsActivityHost")]

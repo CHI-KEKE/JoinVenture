@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JoinVenture</title>
+    <!-- logo -->
+    <link rel="shortcut icon" type="image/png" href="../../logo.png" />
+  
+    <!-- jquery CDN include -->
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <!-- bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+        <!-- bootwatch -->
+    <link rel="stylesheet" href="../bootwatch.css">
+
+    <!-- CSS -->
+
+    <!-- fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+
+    <!-- SIgnalR -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.11/signalr.min.js"></script>
+
+    <!-- DateTimePicker -->
+    <link href="https://unpkg.com/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker3.min.css" rel="stylesheet"/>
+    <script src="https://unpkg.com/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
+    
+    <link rel="stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+
+</head>
+
+
+<body>
+
+   <!-- Login-PopUp -->
+    <!-- <main class="app"> -->
+        <div class="wrapper">
+            <span class="icon-close"><ion-icon name="close"></ion-icon></span>
+            <div class="form-box login">
+              <h2>Login</h2>
+              <form action="#" id="loginForm">
+                <div class="input-box">
+                  <span class="icon"><ion-icon name="mail"></ion-icon></span>
+                  <input type="text" class = "login__input--user" required>
+                  <label>User</label>
+                </div>
+                <div class="input-box">
+                  <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                  <input type="password" class = "login__input--password" required>
+                  <label>Password</label>
+                </div>
+                <div class="remember-forgot">
+                  <label><input type="checkbox">Remember me</label>
+                  <a href="#">Forgot Password?</a>
+                </div>
+                <button type="submit" class="btn login-btn" style="font-size: 1.5rem;margin-left: 35%;border-color:#484D6D;">Login</button>
+                <div class="login-register">
+                  <p>No Account?<a href="#" class="register-link">Register</a></p>
+                </div>
+              </form>
+            </div>
+
+            <div class="form-box register">
+              <h2>Register</h2>
+              <form action="#">
+                <div class="input-box">
+                  <span class="icon"><ion-icon name="person-add"></ion-icon></span>
+                  <input type="text" required>
+                  <label>Username</label>
+                </div>
+                <div class="input-box">
+                  <span class="icon"><ion-icon name="mail"></ion-icon></span>
+                  <input type="email" required>
+                  <label>Email</label>
+                </div>
+                <div class="input-box">
+                  <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                  <input type="password" required>
+                  <label>Password</label>
+                </div>
+                <div class="remember-forgot">
+                  <label><input type="checkbox">I agree to the terms and conditions</label>
+                </div>
+                <button type="submit" class="btn register-btn">Register</button>
+                <div class="login-register">
+                  <p>Already have an Account?<a href="#" class="login-link">Login</a></p>
+                </div>
+              </form>
+            </div>
+        </div>
+    <!-- </main> -->
+
+<!-- Nav -->
+<div id="navbarContainer"></div>
+<!-- Nav -->
+
+<!-- oveyLay -->
+<div class="overlay" style="display:none;"></div>
+<!-- overLay -->
+
+<!-- Create Activity Form -->
+
+<form id="activity-form" class ="mt-5" method="post" enctype="multipart/form-data">
+  <fieldset>
+    <div class="container" mx="auto">
+        <legend class="legend">Create Activity</legend>
+
+        <div class="form-group">
+        <label for="Categoy" class="form-label mt-4">Category</label>
+            <select class="form-select" id="Category" name="category">
+                <option>浪漫</option>
+                <option>探險</option>
+                <option>夜景</option>
+                <option>文化</option>
+                <option>運動</option>
+                <option>美食</option>
+                <option>溫泉</option>
+                <option>親子</option>
+                <option>農村</option>
+                <option>自然</option>
+            </select>
+        </div>
+
+
+        <div class="form-group">
+            <label for="Title" class="form-label mt-4">活動名稱</label>
+            <input type="text" class="form-control" id="Title" placeholder="請描述你的活動標題" name="title">
+        </div>
+
+        <div class="form-group">
+            <label for="Description" class="form-label mt-4">說明</label>
+            <textarea class="form-control" id="Description" rows="3" name="description" placeholder="這是一個怎麼樣的活動?"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="city" class="form-label mt-4">城市</label>
+            <input type="text" class="form-control" id="city" name="city"></textarea>
+        </div>
+
+
+
+        <div class="form-group">
+            <label for="venue" class="form-label mt-4">場地</label>
+            <input type="text" class="form-control" id="venue"  name="venue">
+        </div>
+
+
+        <div class="form-group">
+            <label for="image" class="form-label mt-4">圖檔</label>
+            <input type="file" id="image" class="form-control" name="image" required>
+        </div>
+
+        <div class="form-group mt-3">
+            <label  for="datepicker">舉辦日期</label>
+            <div id="datepicker" 
+                class="input-group date mt-2" 
+                data-date-format="mm-dd-yyyy">
+                <input id = "dateOfActivity" class="form-control" 
+                    type="text" readonly />
+                <span class="input-group-addon">
+                    <i class="glyphicon glyphicon-calendar"></i>
+                </span>
+            </div>
+        </div>       
+
+        <button type="button" id="ticketPackage_btn" class="btn btn-info ticketPackage_btn mt-4 mx-3">增加票種</button>
+
+        <div id="ticketPackage-container">
+            <div class="ticketPackage form-group">
+                <label for="ticketPackage-title" class="form-label mt-4 mx-3">票種</label>
+                <input type="text" class="ticketPackage-title mx-3" name = "Titles[]" required>
+    
+                <label for="ticketPackage-price" class="form-label mt-4 mx-3">價格</label>
+                <input type="text" class="ticketPackage-price mx-3" name = "Prices[]" required>
+
+                <label for="ticketPackage-description" class="form-label mt-4 mx-3">說明</label>
+                <input type="text" class="ticketPackage-description mx-3" name = "Descriptions[]" required>
+
+                <label for="ticketPackage-count" class="form-label mt-4 mx-3">票數</label>
+                <input type="number" class="ticketPackage-count mx-3" name = "Counts[]" required>
+                <br>
+
+                    <label  class = "mt-3" for="datepicker1">開始日期</label>
+                    <div id="datepicker1" 
+                        class="ticketPackage-validateDateStart date mt-2" 
+                        data-date-format="mm-dd-yyyy">
+                        <input id = "dateOfActivityStart" class="form-control" 
+                            type="text" readonly  name = "TicketPackage-validateDateStarts[]"/>
+                        <span class="input-group-addon">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                        </span>
+                    </div>
+
+                <label  for="datepicker2">結束日期</label>
+                <div id="datepicker2" 
+                    class="ticketPackage-validateDateEnd date mt-2" 
+                    data-date-format="mm-dd-yyyy">
+                    <input id = "datepicker2" class="form-control" 
+                        type="text" readonly name = "TicketPackage-validateDateEnds[]"/>
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                    </span>
+                </div>
+                <label  for="datepicker3">訂購開始日</label>
+                <div id="datepicker3" 
+                    class="ticketPackage-bookingAvailibleStart date mt-2" 
+                    data-date-format="mm-dd-yyyy">
+                    <input id = "datepicker3" class="form-control" 
+                        type="text" readonly name = "TicketPackage-BookingAvailibleStarts[]"/>
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                    </span>
+                </div>
+                <label  for="datepicker4">訂購結束日</label>
+                <div id="datepicker4" 
+                    class="ticketPackage-bookingAvailibleEnd date mt-2" 
+                    data-date-format="mm-dd-yyyy">
+                    <input id = "datepicker4" class="form-control" 
+                        type="text" readonly name = "TicketPackage-BookingAvailibleEnds[]"/>
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                    </span>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="mb-5 row p-2 text-center">
+            <div class="col-sm-12">
+                <button class="btn btn-primary submit_btn" type ="button">Submit</a>
+            </div>
+        </div>
+    </div>
+
+
+  </fieldset>
+</form>
+
+<!-- Create Activity Form -->
+
+
+</body>
+  <script src="../shareVar.js"></script>
+
+  <script>
+
+      $(document).ready(function () {
+          $('#navbarContainer').load('../navbar.html');
+      });
+  </script>
+
+  <script>
+        // DatePicker
+        $(function () {
+            $("#datepicker").datepicker({ 
+                autoclose: true, 
+                todayHighlight: true,
+            }).datepicker('update', new Date());
+        });
+        $(function () {
+            $("#datepicker1").datepicker({ 
+                autoclose: true, 
+                todayHighlight: true,
+            }).datepicker('update', new Date());
+        });
+        $(function () {
+            $("#datepicker2").datepicker({ 
+                autoclose: true, 
+                todayHighlight: true,
+            }).datepicker('update', new Date());
+        });
+        $(function () {
+            $("#datepicker3").datepicker({ 
+                autoclose: true, 
+                todayHighlight: true,
+            }).datepicker('update', new Date());
+        });
+        $(function () {
+            $("#datepicker4").datepicker({ 
+                autoclose: true, 
+                todayHighlight: true,
+            }).datepicker('update', new Date());
+        });
+  </script>
+  <script>
+    $(document).ready(function () {
+        var ticketPackageCounter = 1; // Counter for tracking the number of ticket packages
+        
+        // Handle the click event of the "增加票種" button
+        $("#ticketPackage_btn").click(function () {
+            // Clone the existing ticket package form group
+            var newTicketPackage = $(".ticketPackage:first").clone();
+
+            // Increment the ticketPackageCounter
+            ticketPackageCounter++;
+
+            // Modify the IDs of datepicker elements and labels in the cloned form group
+            newTicketPackage.find(".date").each(function () {
+                var currentId = $(this).attr("id");
+                var newId = currentId + ticketPackageCounter;
+                $(this).attr("id", newId);
+            });
+
+            newTicketPackage.find("label[for]").each(function () {
+                var currentFor = $(this).attr("for");
+                var newFor = currentFor + ticketPackageCounter;
+                $(this).attr("for", newFor);
+            });
+
+            // Clear the input fields in the cloned form group
+            newTicketPackage.find("input").val("");
+
+            // Append the cloned form group to the container
+            $("#ticketPackage-container").append(newTicketPackage);
+
+            // Initialize datepickers for the new date input fields
+            newTicketPackage.find(".date").datepicker({
+                autoclose: true,
+                todayHighlight: true
+            }).datepicker('update', new Date());
+        });
+
+        // Initialize datepickers for the existing date input fields
+        $(".date").datepicker({
+            autoclose: true,
+            todayHighlight: true
+        }).datepicker('update', new Date());
+    });
+  </script>
+  <script src="host.js"></script>
+
+</html>

@@ -12,6 +12,7 @@ using Infrastructure.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
+using StackExchange.Redis;
 
 namespace API.Extensions
 {
@@ -86,6 +87,27 @@ namespace API.Extensions
 
             services.AddScoped<SaveUploadedFileService>();
 
+            //JsonProvider
+            services.AddScoped<JsonProvider>();
+
+
+            //Redis
+            services.AddSingleton<IConnectionMultiplexer>(c => {
+                var options = ConfigurationOptions.Parse(config.GetConnectionString("Redis"));
+                var connection =  ConnectionMultiplexer.Connect(options);
+                if (connection.IsConnected)
+                {
+                    Console.WriteLine("Redis connection established.@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                }
+                else
+                {
+                    Console.WriteLine("Failed to connect to Redis.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+                }
+
+                return connection;
+            });
+
+            services.AddSingleton<IResponseCacheService,ResponseCacheService>();
 
             return services;
         }

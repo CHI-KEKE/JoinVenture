@@ -4,12 +4,15 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using API.DTOs;
+using API.Helpers;
 using API.Service;
+using Application.Interface;
 using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration.UserSecrets;
 using Persistence;
 using SQLitePCL;
 
@@ -25,9 +28,11 @@ namespace API.Controllers
         private readonly TokenService _tokenService;
         private readonly DataContext _context;
         private readonly SaveUploadedFileService _fileService;
+        private readonly IUserAccessor _userAccessor;
 
-        public AccountController(UserManager<AppUser> userManager, TokenService tokenService,DataContext context,SaveUploadedFileService fileService)
+        public AccountController(UserManager<AppUser> userManager, TokenService tokenService,DataContext context,SaveUploadedFileService fileService,IUserAccessor userAccessor)
         {
+            _userAccessor = userAccessor;
             _fileService = fileService;
             _context = context;
             _tokenService = tokenService;
@@ -96,6 +101,7 @@ namespace API.Controllers
             return BadRequest(result.Errors);
         }
 
+        [UserProfileCache(300)]
         [HttpGet]
         public async Task<ActionResult<UserDto>> GetCurrentUser()
         {

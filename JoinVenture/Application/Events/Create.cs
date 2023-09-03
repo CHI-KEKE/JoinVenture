@@ -45,6 +45,8 @@ namespace Application.Events
                 _context.Activities.Add(request.Activity);
 
                 await _context.SaveChangesAsync();
+                Console.WriteLine("Save done!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Check DB now!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
 
                 return Unit.Value;
             }
