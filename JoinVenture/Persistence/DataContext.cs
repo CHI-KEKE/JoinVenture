@@ -51,6 +51,11 @@ namespace Persistence
                 .WithMany(t => t.TicketPackages)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Entity<Ticket>()
+                .HasOne(a => a.TicketPackage)
+                .WithMany(t => t.Tickets)
+                .OnDelete(DeleteBehavior.Cascade);
+
             builder.Entity<BookedTicketPackage>()
                 .HasOne(o => o.Order)
                 .WithMany(b => b.BookedTicketPackages)

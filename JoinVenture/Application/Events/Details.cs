@@ -32,7 +32,10 @@ namespace Application.Events
             }
             public async Task<ActivityDto> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _context.Activities.Include(a => a.TicketPackages).ThenInclude(tp =>tp.Tickets).Include(a => a.Attendees)
+                return await _context.Activities
+                .Include(a => a.TicketPackages)
+                .ThenInclude(tp =>tp.Tickets)
+                .Include(a => a.Attendees)
                 .ProjectTo<ActivityDto>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(x => x.Id == request.Id);
             }

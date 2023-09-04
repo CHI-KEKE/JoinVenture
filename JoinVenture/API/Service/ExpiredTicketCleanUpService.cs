@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Interface;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace API.Service
@@ -30,13 +32,14 @@ namespace API.Service
             return Task.CompletedTask;
         }
 
-        private void DoWork(object state)
+        private async void DoWork(object state)
         {
 
-            Console.WriteLine( DateTime.Now.ToString() + "Start Cleanning!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine( DateTime.Now.ToString() + "  Start Cleanning!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             using (var scope = _scopeFactory.CreateScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+                var _responseCacheService = scope.ServiceProvider.GetRequiredService<IResponseCacheService>();
 
                 var currentTime = DateTime.Now;
 
@@ -55,15 +58,23 @@ namespace API.Service
                         ticket.ExpiredAt = null; // Clear the expiration time
                         ticket.UserId = null;
 
-                        Console.WriteLine(ticket.Status + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                        Console.WriteLine(ticket.ExpiredAt + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                        Console.WriteLine(ticket.UserId + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                         Console.WriteLine(ticket.Id + "Was Released!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                     }
 
-                    dbContext.SaveChanges();
+                    await dbContext.SaveChangesAsync();
 
-                    Console.WriteLine( DateTime.Now.ToString() + " Clean Done!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                    foreach (var ticket in expiredTickets)
+                    {
+                        var CorresspondingTicketPackageId = await dbContext.Tickets.Where(t => t.Id == ticket.Id).Select(t => t.TicketPackage.Id).FirstOrDefaultAsync();
+                        var CorresspondingActivityId = await dbContext.TicketPackages.Where(tp => tp.Id == CorresspondingTicketPackageId).Select(t => t.Activity.Id).FirstOrDefaultAsync();
+
+                        Console.WriteLine(CorresspondingActivityId + "Corressponding ActivityId found+++++++++++++++++++++++++++++++++++++++++++");
+                        var deleteRedisActivity = _responseCacheService.RemoveDataAsync($"/Activities/{CorresspondingActivityId}");
+
+                    }
+
+
+                    Console.WriteLine( DateTime.Now.ToString() + "  Clean Done!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
                 }
                 else{

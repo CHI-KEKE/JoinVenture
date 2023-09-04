@@ -101,7 +101,7 @@ namespace API.Controllers
             return BadRequest(result.Errors);
         }
 
-        [UserProfileCache(300)]
+        [UserProfileCache(600)]
         [HttpGet]
         public async Task<ActionResult<UserDto>> GetCurrentUser()
         {

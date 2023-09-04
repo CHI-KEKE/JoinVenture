@@ -29,12 +29,15 @@ namespace Infrastructure.Security
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, IsHostRequirement requirement)
         {
             var userID = context.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            Console.WriteLine(userID);
+            Console.WriteLine(userID+"Checking Deleting UserId********************************************************************");
 
             if(userID == null) return Task.CompletedTask;
 
-            var activityId = _httpContextAccessor.HttpContext?.Request.RouteValues.SingleOrDefault(x => x.Key == "id").Value as int?;
-            Console.WriteLine(activityId);
+            var activityIdString = _httpContextAccessor.HttpContext?.Request.RouteValues.SingleOrDefault(x => x.Key == "id").Value as string;
+            if (int.TryParse(activityIdString, out int activityId))
+            {
+                Console.WriteLine(activityId + " Checking Deleting ActivityId)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))");
+            }
 
             // var attendee = _dbContext.ActivityAttendees.FindAsync(userID,activityId).Result;
             var attendee = _dbContext.ActivityAttendees
@@ -45,7 +48,7 @@ namespace Infrastructure.Security
 
 
 
-            Console.WriteLine(attendee);
+            Console.WriteLine(attendee+"Checking Deleting Attendee********************************************************************");
 
             if(attendee == null) return Task.CompletedTask;
 

@@ -12,13 +12,22 @@ axios
   .then(function (response) {
     const activity = response.data;
 
+    let ticketCounts = 0;
+    for (const ticketPackage of activity.ticketPackages) {
+      for (const ticket of ticketPackage.tickets) {
+        if (ticket.status === "Available") {
+          ticketCounts++;
+        }
+      }
+    }
+
     console.log(response);
-    // Populate the template with activity details
+
     document.querySelector(".activity-title").textContent = activity.title;
     console.log(activity.title);
     document.querySelector(".activity-description").textContent =
       activity.description;
-    document.querySelector(".activity-ticket").textContent = activity.tickets;
+    document.querySelector(".activity-ticket").textContent = ticketCounts;
 
     const hostAttendee = activity.hostUserName;
 
@@ -26,7 +35,6 @@ axios
       document.querySelector(".activity-host").textContent = hostAttendee;
     }
 
-    // document.querySelector(".activity-host").textContent = activity.host;
     const activityDate = new Date(activity.date);
     document.querySelector(
       ".activity-date"
@@ -50,7 +58,7 @@ axios
     console.error("Error fetching activity details:", error);
   });
 
-
+////////////////////////////////////////////////////////Hub///////////////////////////////////////////////////
 
 class CommentStore {
   constructor() {
@@ -85,16 +93,6 @@ class CommentStore {
       addCommentToUI(comment);
     });
 
-    this.hubConnection.on("LoadTicketCount", (initialTicketCount) => {
-      // Update the UI with the initial ticket count
-      updateTicketCountUI(initialTicketCount);
-    });
-
-    this.hubConnection.on("UpdateTicketCount", (updatedTicketCount) => {
-      // Update the UI with the updated ticket count
-      updateTicketCountUI(updatedTicketCount.value);
-    });
-
 
   }
 
@@ -120,29 +118,22 @@ class CommentStore {
     }
   }
 
-  async bookTicket(activityId) {
-    try {
-      await this.hubConnection.invoke("Booking", {
-        activityId: activityId,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  //Testing Group
-
   async follow(accessToken) {
     await this.hubConnection.send("FollowActivity", accessToken);
   }
 }
+
+////////////////////////////////////////////////////////Hub///////////////////////////////////////////////////
+
+
+
+
 // // Function to update the UI with received comments
 
 function updateUIWithComments(comments) {
   const commentSection = document.querySelector(".panel-body");
   commentSection.innerHTML = "";
 
-  // Iterate through comments and update the UI with each comment
   comments.forEach((comment) => {
     const newComment = document.createElement("div");
     newComment.className = "media-block";
@@ -168,6 +159,8 @@ function updateUIWithComments(comments) {
     commentSection.insertAdjacentElement("afterbegin", newComment);
   });
 }
+
+
 
 // // Function to add a new comment to the UI
 function addCommentToUI(comment) {
@@ -202,13 +195,6 @@ function addCommentToUI(comment) {
   }, 10);
 }
 
-//Update ticketsCount
-
-function updateTicketCountUI(ticketCount) {
-  console.log(ticketCount);
-  const ticketCountElement = document.querySelector(".activity-ticket");
-  ticketCountElement.textContent = ticketCount;
-}
 
 
 
@@ -234,13 +220,7 @@ function addNewComment() {
 function BookingActivity() {
   BookingTransition();
 
-  // bookingButton.classList.add("clicked");
-  // setTimeout(() => {
-  //   bookingButton.classList.remove("clicked");
-  // }, 200);
   setTimeout(BookingRecover, 500);
-
-  commentStore.bookTicket(activityId);
 
   window.location.href = `https://cofstyle.shop/ticket-selecting/Ticket-Selecting.html?id=${activityId}`;
 }

@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using API.Helpers;
 using API.Provider;
 using API.Service;
 using Application.Activities;
 using Application.Events;
+using Application.Interface;
 using AutoMapper;
 using Domain;
 using MediatR;
@@ -22,26 +24,31 @@ namespace API.Controllers
         private readonly IMapper _mapper;
         private readonly SaveUploadedFileService _fileService;
         private readonly JsonProvider _jsonProvider;
+        private readonly IResponseCacheService _responseCacheService;
 
-        public ActivitiesController(IMapper mapper, SaveUploadedFileService fileService,JsonProvider jsonProvider)
+        public ActivitiesController(IMapper mapper, SaveUploadedFileService fileService,JsonProvider jsonProvider,IResponseCacheService responseCacheService)
         {
+            _responseCacheService = responseCacheService;
             _jsonProvider = jsonProvider;
             _fileService = fileService;
             _mapper = mapper;
             
         }
+
+        [ActivityListCacheAttribute(600)]
         [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<List<ActivityDto>>> GetActivities()
         {
-            return await Mediator.Send(new List.Query());
+            return Ok(await Mediator.Send(new List.Query()));
         }
 
+        [ActivityDetailCache(600)]
         [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<ActivityDto>> GetActivity(int id)
         {
-            return await Mediator.Send(new Details.Query{Id = id});
+            return Ok(await Mediator.Send(new Details.Query{Id = id}));
         }
 
         [HttpPost]
@@ -100,9 +107,22 @@ namespace API.Controllers
             Console.WriteLine(ticketPackagesTransformed+"TicketPackages done##################################################");
 
             }
-            // return Ok();
 
-            return Ok(await Mediator.Send(new Create.Command {Activity = activityTransformed}));
+            try
+            {
+                var NewActivity = await Mediator.Send(new Create.Command {Activity = activityTransformed});
+                await _responseCacheService.RemoveDataAsync("/Activities");
+
+                 return Ok(NewActivity);
+
+            }
+            catch(Exception ex)
+            {
+                Console.Error.WriteLine($"Error creating activity: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error creating activity"); 
+
+            }
+
         }
 
         [Authorize(Policy = "IsActivityHost")]
@@ -115,7 +135,7 @@ namespace API.Controllers
         }
 
         [Authorize(Policy = "IsActivityHost")]
-        [HttpDelete("{Id}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteActivity(int id)
         {
             return Ok(await Mediator.Send(new Delete.Command {Id = id}));

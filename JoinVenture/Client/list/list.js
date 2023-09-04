@@ -39,6 +39,14 @@ let thisUser = "";
 
 // Card Creating
 function createCard(activity, formattedDate, ifhost) {
+  let ticketCounts = 0;
+  for (const ticketPackage of activity.ticketPackages) {
+    for (const ticket of ticketPackage.tickets) {
+      if (ticket.status === "Available") {
+        ticketCounts++;
+      }
+    }
+  }
   const deleteButton = ifhost
     ? `<div class="ftr text-center delete-btn"> 
               <a href="#" class="btn btn-black btn-round btn-danger" data-id="${activity.id}">Delete</a> 
@@ -64,8 +72,8 @@ function createCard(activity, formattedDate, ifhost) {
                       </div>
                           <div class ="statusss">
                               <div class="stats"> <i class="fa-solid fa-calendar"></i> ${formattedDate} </div>
-                              <div class="stats"> <i class="fa-sharp fa-solid fa-heart"></i> ${activity.followers} </div>
-                              <div class="stats"> <i class="fa-solid fa-ticket"></i> ${activity.tickets} </div>
+                              <div class="stats"> <i class="fa-sharp fa-solid fa-heart"></i> ${activity.attendees.length} </div>
+                              <div class="stats"> <i class="fa-solid fa-ticket"></i> ${ticketCounts} </div>
                           </div>
                           <div class="btn-wrapper">
                               <div class="ftr text-center"> <a href="https://cofstyle.shop/detail/Activity-Detail.html?id=${activity.id}" class="btn btn-black btn-round btn-info">View</a> </div>
@@ -115,20 +123,29 @@ function SearchActivities() {
   $(document).on("click", ".delete-btn", function () {
     const activityId = $(this).find("a").data("id");
     console.log(this);
-    const card = $(this).closest(".card-blog"); // Store reference to the card
+    const card = $(this).closest(".card-blog");
 
     // Confirm before deleting
     if (confirm("Are you sure you want to delete this activity?")) {
-      // Send DELETE request to API
-      axios
-        .delete(`${baseUrl}Activities/${activityId}`)
-        .then(function (response) {
-          // Remove the deleted card from the UI
-          card.remove();
-        })
-        .catch(function (error) {
-          console.error("Error deleting activity:", error);
+        // Send DELETE request to API
+
+        console.log(accessToken+"token is valid now!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+
+        $.ajax({
+          url: `${baseUrl}Activities/${activityId}`,
+          type: "DELETE",
+          headers: {
+            Authorization: "Bearer " + accessToken,
+          },
+          success: function (response) {
+            // Remove the deleted card from the UI
+            card.remove();
+          },
+          error: function (error) {
+            console.error("Error deleting activity:", error);
+          },
         });
+
     }
   });
 }

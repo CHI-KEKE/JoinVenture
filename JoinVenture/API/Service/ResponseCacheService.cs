@@ -45,5 +45,22 @@ namespace API.Service
 		
 				return cacheResponse;
 		}
+
+        public async Task<object> RemoveDataAsync(string cacheKey)
+        {
+            var exists = await _database.KeyExistsAsync(cacheKey);
+
+            if(exists)
+            {
+                Console.WriteLine( await _database.StringGetAsync(cacheKey) + "before deleteCacheKey%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+                await _database.KeyDeleteAsync(cacheKey);
+                Console.WriteLine( await _database.StringGetAsync(cacheKey) + "after deleteCacheKey%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+
+				return await _database.StringGetAsync(cacheKey);
+
+            }
+
+            return false;
+        }
     }
 }

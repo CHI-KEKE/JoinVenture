@@ -49,6 +49,8 @@ $(".submit_btn").click(function () {
     },
     success: (res) => {
       console.log(res);
+
+      window.location.href = "https://cofstyle.shop/list/Activity-List.html";
     },
     error: (err) => {
       console.log(err);

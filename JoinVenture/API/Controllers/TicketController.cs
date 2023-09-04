@@ -22,9 +22,13 @@ namespace API.Controllers
 
         private readonly DataContext _dataContext;
         private readonly TicketBookingService _ticketBookingService;
+        private readonly IUserAccessor _userAccessor;
+        private readonly IResponseCacheService _responseCacheService;
 
-        public TicketController(DataContext dataContext,TicketBookingService ticketBookingService)
+        public TicketController(DataContext dataContext,TicketBookingService ticketBookingService,IResponseCacheService responseCacheService ,IUserAccessor userAccessor)
         {
+            _responseCacheService = responseCacheService;
+            _userAccessor = userAccessor;
             _ticketBookingService = ticketBookingService;
             _dataContext = dataContext;
             
@@ -65,6 +69,10 @@ namespace API.Controllers
                         ListOfSelectedTicketsToReturn.Add(RandomPickAvailibleTicketForReturn);
 
                     }
+
+                    var deleteRedisActivity = await _responseCacheService.RemoveDataAsync($"/Activities/{id}");
+
+
                 }
 
                 if(message == "409")
@@ -87,6 +95,7 @@ namespace API.Controllers
             }
             
             Console.WriteLine($"before return the tickcetListDto {ListOfSelectedTicketsToReturn}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
 
             return Ok(ListOfSelectedTicketsToReturn);
             
@@ -125,17 +134,21 @@ namespace API.Controllers
                 {
                     ticket.Status = "Success";
                     _dataContext.SaveChanges();
-                    var ticketJson = JsonSerializer.Serialize(ticket);
-                    Console.WriteLine(ticketJson);
                 }
                 else{
-                    return BadRequest("Ticket has Release due to Expiration");
+
+                    return BadRequest("Ticket has Release due to Expiration or There is something wrong");
 
                 }
 
 
             }
+            Console.WriteLine($"/Account|User:{_userAccessor.GetUsername()}"+"dellllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll");
 
+            var deleteRedisUserProfile = await _responseCacheService.RemoveDataAsync($"/Account|User:{_userAccessor.GetUsername()}");
+
+
+            Console.WriteLine(deleteRedisUserProfile+"dellllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll");
 
             return Ok("All tickets stats changed to Success successfully!"); 
         }

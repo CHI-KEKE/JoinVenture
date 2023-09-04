@@ -10,5 +10,7 @@ namespace Application.Interface
 		Task CacheResponseAsync(string cacheKey, object response, TimeSpan timeToLive);
 
 		Task<string> GetCacheResponseAsync(string cacheKey);
+
+        Task<object> RemoveDataAsync(string cacheKey);
     }
 }
