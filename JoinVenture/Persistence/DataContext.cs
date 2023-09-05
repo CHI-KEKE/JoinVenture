@@ -60,6 +60,7 @@ namespace Persistence
                 .HasOne(o => o.Order)
                 .WithMany(b => b.BookedTicketPackages)
                 .OnDelete(DeleteBehavior.Cascade);
+
         }
     }
 }

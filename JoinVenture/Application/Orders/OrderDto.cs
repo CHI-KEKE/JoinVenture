@@ -14,6 +14,7 @@ namespace Application.Orders
         public int TotalPrice { get; set; }
         public bool Discount { get; set; }
         public DateTime InvoiceDate { get; set; }
+        public List<string> Tickets { get; set; }
     }
 
     public class BookedTicketPackageDto

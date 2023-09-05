@@ -21,12 +21,24 @@ namespace API.Service
         }
         public string CreateToken(AppUser user)
         {
-            var claims = new List<Claim>
+
+            var claims = new List<Claim>();
+
+            if (user.UserName == "admin")
             {
-                new Claim(ClaimTypes.Name,user.UserName),
-                new Claim(ClaimTypes.NameIdentifier,user.Id),
-                new Claim(ClaimTypes.Email,user.Email),
-            };
+                claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+                claims.Add(new Claim(ClaimTypes.Name, user.UserName));
+                claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id));
+                claims.Add(new Claim(ClaimTypes.Email, user.Email));
+            }
+            else
+            {
+                // For regular users, add the "Member" role claim
+                claims.Add(new Claim(ClaimTypes.Role, "Member"));
+                claims.Add(new Claim(ClaimTypes.Name, user.UserName));
+                claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id));
+                claims.Add(new Claim(ClaimTypes.Email, user.Email));
+            }
 
             DotNetEnv.Env.Load();
             string TokenKey = Environment.GetEnvironmentVariable("TokenKey");

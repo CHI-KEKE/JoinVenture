@@ -19,7 +19,7 @@ namespace Domain
         public DateTime InvoiceDate { get; set; }
 
         public string AppUserId  { get; set; }
-        public string TicketId { get; set; }
+        public List<Ticket> Tickets { get; set; }
     }
     
 }

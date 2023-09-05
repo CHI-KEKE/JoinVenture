@@ -167,6 +167,17 @@
                 success: (res) => {
                     $("#paymentStatus").text("交易狀態 : 成功")
                     console.log("ConfirmPage Transaction Success Message : " + res);
+
+
+                    ////Selected Ticket Status To Success//////////////////////////
+                    var ticketInfo = localStorage.getItem("ticketInfo");
+                    var ticketInfoArray = JSON.parse(ticketInfo);
+                    var bookedTicketList = [];
+
+                    ticketInfoArray.forEach(function (ticket) {
+                        bookedTicketList.push(ticket.ticketId);
+                    });
+
                     
                     orderData = {
                         activityTitle: listOfActivityPackages[0].activityTitle,
@@ -175,7 +186,9 @@
                         bookedTicketPackages: bookedTicketPackages,
                         totalPrice: totalPrice,
                         discount: false,
-                        invoiceDate: formattedDate
+                        invoiceDate: formattedDate,
+                        tickets:bookedTicketList,
+
                     }
 
 

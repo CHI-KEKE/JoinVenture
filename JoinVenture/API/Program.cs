@@ -56,6 +56,22 @@ try
 {
     var context = services.GetRequiredService<DataContext>();
     var userManager = services.GetRequiredService<UserManager<AppUser>>();
+
+    using(var Rolescope = services.CreateScope())
+    {
+        var roleManager = Rolescope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+        var roles = new []{"Admin","Manager","Member"};
+
+        foreach(var role in roles)
+        {
+            if(! await roleManager.RoleExistsAsync(role))
+            {
+                await roleManager.CreateAsync(new IdentityRole(role));
+            }
+        }
+    }
+
     
     await context.Database.MigrateAsync();
     await SeedData.SeedNewData(context,userManager);

@@ -31,6 +31,26 @@ namespace Persistence
                     await UserManager.CreateAsync(user,"Pa$$w0rd");
                 }
             }
+            if(UserManager.Users.FirstOrDefault(u => u.UserName == "admin") == null)
+            {
+                var admin = new AppUser{ShowName = "Admin",UserName = "admin",Email = "admin@gmail.com"};
+
+                await UserManager.CreateAsync(admin,"Pa$$w0rd");
+                await UserManager.AddToRoleAsync(admin,"Admin");
+
+            }
+
+            // var userAdimin = context.Users.FirstOrDefault(u => u.UserName == "admin");
+            // Console.WriteLine(userAdimin+"Admin founded~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            // var adminPhoto = new Photo
+            // {
+            //     Url ="https://d1pjwdyi3jyxcs.cloudfront.net/JoinVenture/admin.png",
+            //     IsMain =true,
+            // };
+            // Console.WriteLine(adminPhoto+"adminPhoto founded~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+            // userAdimin.Photos.Add(adminPhoto);
+            // context.SaveChanges();
 
             if(!context.Photos.Any())
             {

@@ -146,7 +146,7 @@ namespace API.Controllers
             Console.WriteLine($"/Account|User:{_userAccessor.GetUsername()}"+"dellllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll");
 
             var deleteRedisUserProfile = await _responseCacheService.RemoveDataAsync($"/Account|User:{_userAccessor.GetUsername()}");
-
+            var deleteRedisUserList = await _responseCacheService.RemoveDataAsync($"/Account/userlist");
 
             Console.WriteLine(deleteRedisUserProfile+"dellllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll");
 

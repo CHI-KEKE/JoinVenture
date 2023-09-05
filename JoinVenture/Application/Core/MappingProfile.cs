@@ -39,9 +39,19 @@ namespace Application.Core
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.Order, opt => opt.Ignore()); 
 
+
+            CreateMap<string, Ticket>() // Map a single string ticketId to a Ticket
+            .ConvertUsing<TicketIdToTicketConverter>();
+
+
             CreateMap<OrderDto,Order>()
             .ForMember(dest => dest.BookedTicketPackages, opt => opt.MapFrom(src => src.BookedTicketPackages))
+            .ForMember(dest => dest.Tickets, opt => opt.MapFrom(src => src.Tickets))
             .ForMember(dest => dest.Id, opt => opt.Ignore());
+
+
+
+
 
 
             CreateMap<ActivityCreateRequestDto, Activity>()

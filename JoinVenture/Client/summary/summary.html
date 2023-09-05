@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JoinVenture</title>
+    <!-- logo -->
+    <link rel="shortcut icon" type="image/png" href="../../logo.png" />
+    <!-- bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+        <!-- bootwatch -->
+    <link rel="stylesheet" href="../bootwatch.css">
+    <!-- fontawesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+      <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+    integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <!-- axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- payment-step2 -->
+    <link rel="stylesheet" href="summary.css">
+
+    <!-- CDNSSSSSSSSSSSSSss -->
+    <link href="https://unpkg.com/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker3.min.css" rel="stylesheet"/>
+    <script src="https://unpkg.com/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
+    
+    <link rel="stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+
+    <!-- SIgnalR -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.11/signalr.min.js"></script>
+
+    <!-- toastr -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+
+</head>
+
+<body class="sidebar-mini sidebar-closed sidebar-collapse">
+    <div class="row">
+  <div class="col-md-12">
+    <div id="content"></div>
+  </div>
+</div>
+<!-- AuthForm -->
+    <!-- Login-PopUp -->
+    <!-- <main class="app"> -->
+        <div class="wrapper">
+            <span class="icon-close"><ion-icon name="close"></ion-icon></span>
+            <div class="form-box login">
+              <h2>Login</h2>
+              <form action="#" id="loginForm">
+                <div class="input-box">
+                  <span class="icon"><ion-icon name="mail"></ion-icon></span>
+                  <input type="text" class = "login__input--user" required>
+                  <label>User</label>
+                </div>
+                <div class="input-box">
+                  <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                  <input type="password" class = "login__input--password" required>
+                  <label>Password</label>
+                </div>
+                <div class="remember-forgot">
+                  <label><input type="checkbox">Remember me</label>
+                  <a href="#">Forgot Password?</a>
+                </div>
+                <button type="submit" class="btn login-btn" style="font-size: 1.5rem;margin-left: 35%;border-color:#484D6D;">Login</button>
+                <div class="login-register">
+                  <p>No Account?<a href="#" class="register-link">Register</a></p>
+                </div>
+              </form>
+            </div>
+
+            <div class="form-box register">
+              <h2>Register</h2>
+              <form action="#" id="registerForm">
+                <div class="input-box">
+                  <span class="icon"><ion-icon name="person-add"></ion-icon></span>
+                  <input type="text" class = "register__input--user" required>
+                  <label>Username</label>
+                </div>
+                <div class="input-box">
+                  <span class="icon"><ion-icon name="mail"></ion-icon></span>
+                  <input type="email" class = "register__input--email" required>
+                  <label>Email</label>
+                </div>
+                <div class="input-box">
+                  <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                  <input type="password" class = "register__input--password" required>
+                  <label>Password</label>
+                </div>
+                <div class="input-box">
+                    <label for="main_image"></label>
+                    <input type="file" id="main_image" name="MainImage" required>
+                </div>
+                <div class="remember-forgot">
+                  <label><input type="checkbox">I agree to the terms and conditions</label>
+                </div>
+                <button type="submit" class="btn register-btn" style="font-size: 1.5rem;margin-left: 30%;border-color:#484D6D;">Register</button>
+                <div class="login-register">
+                  <p>Already have an Account?<a href="#" class="login-link">Login</a></p>
+                </div>
+              </form>
+            </div>
+        </div>
+    <!-- </main> -->
+
+     <div class="overlay" style="display:none;"></div>
+<!-- AuthForm -->
+
+
+
+
+<!-- Nav -->
+<div id="navbarContainer"></div>
+<!-- Nav -->
+
+
+
+<!-- Booking Profile -->
+
+<div class="container mt-5">
+<div class="row gutters">
+
+
+<!-- Right-hand side information -->
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+<div class="card h-100">
+	<div class="card-body">
+		<div class="row gutters">
+            <!-- title -->
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+				<h6 class="mb-2 text-primary">訂單紀錄</h6>
+			</div>
+		</div>
+
+        <!-- Stepper & Form -->
+		<div class="row gutters">
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                
+                    <div class="container">
+                            <!-- Order Summary -->
+                            <div class="row gutters">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <!-- Accordin -->
+                                        <div class="accordion" id="accordionExample">
+                                                    <!-- setup content -->
+                                                    <div class="row setup-content">
+
+
+                                                                    <!-- col-xs-6 -->
+                                                                    <div class="col-xs-6 col-md-offset-3">
+
+                                                                        <!-- accordionContainer -->
+                                                                        <div class="col-md-12 accordion-container">
+
+                                                                                <!-- accordionItem -->
+                                                                                <div class="accordion-item">
+                                                                                                <div class="accordion-header">
+                                                                                                    <div class="accordion-title">
+                                                                                                        <h5 class="p-3 userOrderSummary">UserDemo</h5>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                
+                                                                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="color:#5D99E2;">
+                                                                                                    Order Detail
+                                                                                                </button>
+                                                                                                
+
+                                                                                                <!-- accordionExample -->
+                                                                                                <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+
+
+                                                                                                <!-- Accordin for Order Detail -->
+                                                                                                <div class="accordion-body">
+                                                                                                    <table class="table table-hover text-nowrap">
+                                                                                                        <thead>
+                                                                                                            <tr>
+                                                                                                                <th>OrderId</th>
+                                                                                                                <th>InvoiceDate</th>
+                                                                                                                <th>ActivityTitle</th>
+                                                                                                            </tr>
+                                                                                                        </thead>
+                                                                                                        <tbody class = "OrderInfo">
+                                                                                                            <!-- Each Order row -->
+
+                                                                                                            <!-- Each Order row -->
+
+                                                                                                        </tbody>
+                                                                                                    </table>
+
+                                                                                                </div>
+                                                                                                <!-- Accordin for Order Detail -->
+                                                                                    </div>
+                                                                                    <!-- accordionExample -->
+
+
+
+                                                                                </div>
+                                                                                <!-- accordionItem -->
+                                                                        </div>
+                                                                        <!-- accordionContainer -->
+
+
+                                                                    </div>
+                                                                    <!-- col-xs-6 -->
+
+                                                    </div>
+                                                    <!-- setup content -->
+
+                                        </div>
+                                        <!-- Accordin -->
+                                </div>
+                            </div>
+                            <!-- Order Summary -->
+                            
+                    
+                    </div>
+
+
+                
+
+		    </div>
+            <br>
+            <br>
+
+
+
+	    </div>
+</div>
+</div>
+
+
+
+
+</div>
+</div>
+
+<script src="../shareVar.js"></script>
+<script src="../loginVar.js"></script>
+
+
+<script>
+    // Use jQuery to load the content of navbar.html into the #navbarContainer div
+    $(document).ready(function () {
+        $('#navbarContainer').load('../navbar.html');
+    });
+</script>
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+    </script>
+<script src="summary.js"></script>
+</body>
+</html>
+
+
+
+
+

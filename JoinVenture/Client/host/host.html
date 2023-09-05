@@ -31,12 +31,17 @@
     
     <link rel="stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
 
+    <!-- toastr -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
 </head>
 
 
 <body>
 
-   <!-- Login-PopUp -->
+ <!-- AuthForm -->
+    <!-- Login-PopUp -->
     <!-- <main class="app"> -->
         <div class="wrapper">
             <span class="icon-close"><ion-icon name="close"></ion-icon></span>
@@ -66,26 +71,30 @@
 
             <div class="form-box register">
               <h2>Register</h2>
-              <form action="#">
+              <form action="#" id="registerForm">
                 <div class="input-box">
                   <span class="icon"><ion-icon name="person-add"></ion-icon></span>
-                  <input type="text" required>
+                  <input type="text" class = "register__input--user" required>
                   <label>Username</label>
                 </div>
                 <div class="input-box">
                   <span class="icon"><ion-icon name="mail"></ion-icon></span>
-                  <input type="email" required>
+                  <input type="email" class = "register__input--email" required>
                   <label>Email</label>
                 </div>
                 <div class="input-box">
                   <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
-                  <input type="password" required>
+                  <input type="password" class = "register__input--password" required>
                   <label>Password</label>
+                </div>
+                <div class="input-box">
+                    <label for="main_image"></label>
+                    <input type="file" id="main_image" name="MainImage" required>
                 </div>
                 <div class="remember-forgot">
                   <label><input type="checkbox">I agree to the terms and conditions</label>
                 </div>
-                <button type="submit" class="btn register-btn">Register</button>
+                <button type="submit" class="btn register-btn" style="font-size: 1.5rem;margin-left: 30%;border-color:#484D6D;">Register</button>
                 <div class="login-register">
                   <p>Already have an Account?<a href="#" class="login-link">Login</a></p>
                 </div>
@@ -93,6 +102,10 @@
             </div>
         </div>
     <!-- </main> -->
+
+     <div class="overlay" style="display:none;"></div>
+<!-- AuthForm -->
+
 
 <!-- Nav -->
 <div id="navbarContainer"></div>
@@ -246,7 +259,26 @@
 
 </body>
   <script src="../shareVar.js"></script>
-
+  <script src="../loginVar.js"></script>
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+    </script>
   <script>
 
       $(document).ready(function () {

@@ -110,6 +110,7 @@ namespace API.Controllers
 
             var user = await _userManager.Users
                 .Include(u => u.Orders).ThenInclude(o => o.BookedTicketPackages)
+                .Include(u => u.Orders).ThenInclude(o => o.Tickets)
                 .Include(u => u.Photos)
                 .FirstOrDefaultAsync(u => u.Id == userData.Id);           
 
@@ -121,6 +122,27 @@ namespace API.Controllers
             return BadRequest("User not Found!");
             
         }
+        [Authorize(Roles = "Admin")]
+        [UserListCache(1800)]
+        [HttpGet("userlist")]
+        public async Task<ActionResult> GetUserList()
+        {
+
+            var users = await _userManager.Users
+                .Include(u => u.Orders).ThenInclude(o => o.BookedTicketPackages)
+                .Include(u => u.Orders).ThenInclude(o => o.Tickets)
+                .Include(u => u.Photos)
+                .ToListAsync();
+
+            if(users != null)
+            {
+                return Ok(users);
+            }
+
+            return BadRequest("Not getting any user!");
+            
+        }
+
 
         [HttpPost("edit")]
         public async Task<ActionResult<UserDto>> EditUser(UserDto userDto)

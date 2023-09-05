@@ -1,3 +1,8 @@
+if (!accessToken) {
+  openPopup();
+}
+
+
 // Handle the form submission
 $(".submit_btn").click(function () {
   // Prepare the data for the POST request
