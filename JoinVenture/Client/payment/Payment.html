@@ -87,7 +87,7 @@
 			</div>
 			<div class="about">
 				<h5>Refund policy</h5>
-				<p>The refund process of this event is delegated to ACCUPASS and is abided by refund policy. If you need to apply for a refund, please do it "24 hours after completing purchase and 8 days before available period of your ticket starts." 10% of ticket price will be reserved as refund handling fee. Application will not be accepted after expiration.How to request a refund?</p>
+				<p>The refund process of this event is delegated to JoinVenture and is abided by refund policy. If you need to apply for a refund, please do it "24 hours after completing purchase and 8 days before available period of your ticket starts." 10% of ticket price will be reserved as refund handling fee. Application will not be accepted after expiration.How to request a refund?</p>
 			</div>
 			<div class="about">
 				<h5>Booking Notice</h5>
@@ -121,15 +121,15 @@
                                 <div class="stepwizard col-md-offset-3 mt-4">
                                     <div class="stepwizard-row setup-panel">
                                         <div class="stepwizard-step">
-                                            <a href="#step-1" type="button" class="btn btn-primary btn-circle">1</a>
+                                            <a href="#step-1" type="button" id= "step-1-button" class="btn btn-primary btn-circle" >1</a>
                                             <p>Step 1</p>
                                         </div>
                                         <div class="stepwizard-step">
-                                            <a href="#step-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
+                                            <a href="#step-2" type="button" id= "step-2-button" class="btn btn-default btn-circle disabled" >2</a>
                                             <p>Step 2</p>
                                         </div>
                                         <div class="stepwizard-step">
-                                            <a href="#step-3" type="button" id = "step-3-button" class="btn btn-default btn-circle" disabled="disabled">3</a>
+                                            <a href="#step-3" type="button" id = "step-3-button" class="btn btn-default btn-circle disabled">3</a>
                                             <p>Step 3</p>
                                         </div>
                                     </div>
@@ -225,7 +225,7 @@
                                         <div class="form-check">
                                             <input id="MustBeChecked" class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked="">
                                             <label class="form-check-label" for="flexCheckChecked">
-                                            I have read and agree to ACCUPASS' Ticket Purchase and User Guide, Refund Policy and Booking Notice.
+                                            I have read and agree to JoinVenture' Ticket Purchase and User Guide, Refund Policy and Booking Notice.
                                             </label>
                                         </div>
                                         </fieldset>
@@ -245,7 +245,7 @@
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                     <!-- Accordin -->
                                 <div class="accordion" id="accordionExample">
-                                <div class="row setup-content" id="step-2">
+                                <div class="row setup-content" id="step-2" style="display: none;">
                                     <div class="col-xs-6 col-md-offset-3">
                                         <div class="col-md-12">
                                         <h3> Step 2</h3>
@@ -294,10 +294,10 @@
                                                         <h6 class="m-0">Online Payment</h6>
                                                     </li>
                                                      <hr>
-                                                    <li class="nav-item d-flex align-items-center"  style="vertical-align: center;color:darkgrey">
+                                                    <!-- <li class="nav-item d-flex align-items-center"  style="vertical-align: center;color:darkgrey">
                                                         <button type="button" class="btn"><img width="50" height="50" class= "me-2" src="https://img.icons8.com/ios/50/bank-card-back-side--v1.png" alt="bank-card-back-side--v1"/>Credit Cards - VISA / Master Card / JCB</button>
-                                                    </li>
-                                                    <hr>
+                                                    </li> -->
+                                                    <!-- <hr> -->
                                                     <li class="nav-item d-flex align-items-center"  style="vertical-align: center;color:darkgrey">
                                                         <button class="btn" type="button" onclick="requestPayment()"><img width="48" height="48" class= "me-2" src="https://img.icons8.com/color/48/line-me.png" alt="line-me" >LINE Pay </button>
                                                     </li>
@@ -321,7 +321,7 @@
 
                                 <!-- step3 -->
 
-                                <div class="row setup-content" id="step-3">
+                                <div class="row setup-content" id="step-3" style="display: none;">
                                     <div class="col-xs-6 col-md-offset-3">
                                         <div class="col-md-12">
                                             <!-- step-3-content -->
@@ -536,17 +536,32 @@
 
                     // Trigger a click event on the step3 button
                     if (step3Button) {
-                        console.log(step3Button+"ready to click!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-                        step3Button.removeAttribute("disabled");
+
+
+                        var step2Button = document.querySelector("#step-2-button");
+                        var step1Button = document.querySelector("#step-1-button");
                         step3Button.click();
-                        console.log(step3Button+"after clicking!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                        step1Button.setAttribute("href", "#");
+                        step2Button.setAttribute("href", "#");
+                        document.querySelector("#step-3").style.display = "block";
+                        document.querySelector("#step-1").style.display = "none";
+                        document.querySelector("#step-2").style.display = "none";
+
+                        // Adding a class to the step2Button
+                        step3Button.classList.add("btn-primary");
+                        step3Button.classList.add("btn-default");
+
+                        // Removing the class from the step1Button
+                        step2Button.classList.remove("btn-primary");
+                        step1Button.classList.remove("btn-primary");
+
                     }
 
 
 //////////////////////////////////////////////////////////////////////////////////////Step3 Page Info
 
                             //Price Info
-                            let totalPrice = localStorage.getItem("totalPrice");
+                            // let totalPrice = localStorage.getItem("totalPrice");
                             $(".finalTotalPrice").text("NT$ " + totalPrice);
 
                             //For Order Info
@@ -656,7 +671,6 @@
                 }
             }
 
-
     </script>
     <script>
         // ... (your existing code)
@@ -667,6 +681,25 @@
             autoClickStep3();
         });
     </script>
+  <script>
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+</script>
 </body>
 </html>
 

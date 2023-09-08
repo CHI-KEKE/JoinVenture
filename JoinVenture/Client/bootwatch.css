@@ -12175,8 +12175,8 @@ textarea.form-control-lg {
   margin-left: 40%;
   margin-top: 10%;
   width: 400px;
-  height: 440px;
-  background: transparent;
+  height: 480px;
+  background: black;
   border: 2px solid rgba(255, 255, 255, 0.6);
   border-radius: 20px;
   backdrop-filter: blur(20px);
@@ -12195,7 +12195,7 @@ textarea.form-control-lg {
 }
 
 .wrapper.active{
-  height: 580px;
+  height: 620px;
 }
 
 
@@ -12262,7 +12262,7 @@ textarea.form-control-lg {
 
 .form-box h2{
   font-size: 3rem;
-  color: #444;
+  color: white;
   text-align: center;
 }
 
@@ -12275,13 +12275,18 @@ textarea.form-control-lg {
   margin:30px 0;
 }
 
+
+.photo-input {
+  border-bottom: none;
+}
+
 .input-box label{
   position:absolute;
   top:50%;
   left: 5px;
   transform: translateY(-50%);
   font-size: 1.5rem;
-  color: black;
+  color: white;
   font-weight: 500;
   pointer-events:none;
   transition:.5s;
@@ -12301,7 +12306,7 @@ textarea.form-control-lg {
   border: none;
   outline: none;
   font-size: 1.5rem;
-  color: #444;
+  color: #29c1a3;
   font-weight: 600;
   padding: 0 35px 0 5px;
 }
@@ -12316,7 +12321,7 @@ textarea.form-control-lg {
 
 .remember-forgot{
   font-size: 1.2rem;
-  color: #444;
+  color: white;
   font-weight: 500;
   margin: -15px 0 15px;
   display: flex;
@@ -12341,14 +12346,14 @@ textarea.form-control-lg {
 
 .login-register{
   font-size: 1.5rem;
-  color: #444;
+  color: white;
   text-align: center;
   font-family: 500;
   margin: 25px 0 10px;
 }
 
 .login-register p a{
-  color: #444;
+  color: white;
   text-decoration: none;
   font-weight: 600;
 }
@@ -12356,5 +12361,11 @@ textarea.form-control-lg {
 .login-register p a:hover{
   text-decoration: underline;
   color:brown;
-  margin:1rem;
+}
+
+.login-btn{
+  color:white;
+}
+.register-btn{
+  color:white;
 }

@@ -1,41 +1,39 @@
 let thisUser = "";
-// const overlay = document.querySelector(".overlay");
 
-
-    $(document).ready(function () {
-      //check user
-      if (accessToken) {
-        $.get({
-          url: `${baseUrl}Account`,
-          dataType: "json",
-          contentType: "application/json",
-          beforeSend: function (xhr) {
-            // Set the Authorization header with the JWT token
-            xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
-          },
-          success: (res) => {
-            thisUser = res.userName;
-            //Get Activities
-            SearchActivities();
-          },
-          error: (xhr, status, error) => {
-            try {
-              // Attempt to handle the error gracefully without console output
-              // Log your custom message
-              console.log("just..no login user right now");
-
-              // Continue processing as needed
-              SearchActivities();
-            } catch (e) {
-              // Handle any other unexpected errors here
-              console.error(""); // Log an empty string or a harmless message
-            }
-          },
-        });
-      } else {
+$(document).ready(function () {
+  //check user
+  if (accessToken) {
+    $.get({
+      url: `${baseUrl}Account`,
+      dataType: "json",
+      contentType: "application/json",
+      beforeSend: function (xhr) {
+        // Set the Authorization header with the JWT token
+        xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
+      },
+      success: (res) => {
+        thisUser = res.userName;
+        //Get Activities
         SearchActivities();
-      }
+      },
+      error: (xhr, status, error) => {
+        try {
+          // Attempt to handle the error gracefully without console output
+          // Log your custom message
+          console.log("just..no login user right now");
+
+          // Continue processing as needed
+          SearchActivities();
+        } catch (e) {
+          // Handle any other unexpected errors here
+          console.error(""); // Log an empty string or a harmless message
+        }
+      },
     });
+  } else {
+    SearchActivities();
+  }
+});
 
 // Card Creating
 function createCard(activity, formattedDate, ifhost) {
@@ -49,12 +47,12 @@ function createCard(activity, formattedDate, ifhost) {
   }
   const deleteButton = ifhost
     ? `<div class="ftr text-center delete-btn"> 
-              <a href="#" class="btn btn-black btn-round btn-danger" data-id="${activity.id}">Delete</a> 
-          </div>`
+              <button type = "button" class="btn btn-black btn-round btn-danger" data-id="${activity.id}" onclick = "DeleteActivity(this)">Delete</button>
+        </div>`
     : "";
 
   return `
-              <div class="card mt-5 card-blog">
+              <div class="card mt-5 card-blog" data-id="${activity.id}">
                   <div class="card-image" style="width: 380px; height: 250px;">
                       
                       <a href="#"> <img class="img activity-image" src="${activity.image}"> </a>
@@ -119,34 +117,71 @@ function SearchActivities() {
     },
   });
 
-  //Delete Button
-  $(document).on("click", ".delete-btn", function () {
-    const activityId = $(this).find("a").data("id");
-    console.log(this);
-    const card = $(this).closest(".card-blog");
+  // //Delete Button
+  // $(document).on("click", ".delete-btn", function () {
+  //   const activityId = $(this).find("a").data("id");
+  //   console.log(this);
+  //   const card = $(this).closest(".card-blog"); // Store reference to the card
 
-    // Confirm before deleting
-    if (confirm("Are you sure you want to delete this activity?")) {
-        // Send DELETE request to API
+  //   // Confirm before deleting
+  //   if (confirm("Are you sure you want to delete this activity?")) {
+  //     // Send DELETE request to API
+  //   console.log(accessToken+"token is valid now!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
-        console.log(accessToken+"token is valid now!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+  //         $.ajax({
+  //           url: `${baseUrl}Activities/${activityId}`,
+  //           type: "DELETE",
+  //           headers: {
+  //             Authorization: "Bearer " + accessToken,
+  //           },
+  //           success: function (response) {
+  //             // Remove the deleted card from the UI
+  //             card.remove();
+  //           },
+  //           error: function (error) {
+  //             console.error("Error deleting activity:", error);
+  //           },
+  //         });
 
-        $.ajax({
-          url: `${baseUrl}Activities/${activityId}`,
-          type: "DELETE",
-          headers: {
-            Authorization: "Bearer " + accessToken,
-          },
-          success: function (response) {
-            // Remove the deleted card from the UI
-            card.remove();
-          },
-          error: function (error) {
-            console.error("Error deleting activity:", error);
-          },
-        });
-
-    }
-  });
+  //   }
+  // });
 }
 
+function DeleteActivity(button) {
+  // Get the activity ID from the data-id attribute of the clicked button
+  const activityId = button.getAttribute("data-id");
+
+  // Confirm with the user before proceeding with the deletion
+  const confirmDelete = confirm(
+    "Are you sure you want to delete this activity?"
+  );
+
+  if (confirmDelete) {
+    // Find the closest parent element with the class "card-blog"
+    let card = button.parentElement;
+    while (card && !card.classList.contains("card-blog")) {
+      card = card.parentElement;
+    }
+
+    // Perform an AJAX request to delete the activity
+    // Replace the URL and other details with your actual API endpoint and logic
+    $.ajax({
+      url: `${baseUrl}Activities/${activityId}`,
+      type: "DELETE",
+      headers: {
+        Authorization: "Bearer " + accessToken,
+      },
+      success: function (response) {
+        // Handle the success response, e.g., remove the card from the UI
+        if (card) {
+          card.remove();
+        }
+        toastr["info"]("", "活動已刪除");
+      },
+      error: function (error) {
+        console.error("Error deleting activity:", error);
+        toastr["error"]("錯誤", "無法刪除");
+      },
+    });
+  }
+}

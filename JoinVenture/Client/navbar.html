@@ -2,7 +2,7 @@
 	<!-- NavBar -->
     <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">JoinVenture</a>
+            <a class="navbar-brand" href="https://cofstyle.shop/list/Activity-List.html">JoinVenture</a>
             <!-- UserAvatar -->
             <div id="userImage"  style="display: none;object-fit:cover;object-position: center;">
             </div>
@@ -24,30 +24,30 @@
                 <li class="nav-item">
                     <a class="nav-link" href="https://cofstyle.shop/summary/summary.html">訂單紀錄</a>
                 </li>
+                <!-- Notification Bell! -->
+                <ul class="navbar-nav d-flex flex-row me-1" style= "margin-right:30px;">
+                    <li class="nav-item me-3 me-lg-0">
+                        <div class="dropdown">
+                            <a class="nav-link link-white me-3  hidden-arrow" data-bs-toggle="dropdown" href="#" id="navbarDropdownMenuLink" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-bell text-white"></i>
+                                    <span id="notificationBadge" class="badge rounded-pill badge-notification bg-danger"></span>
+                            </a>
+                            <ul id="dropdownMenu" class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
 
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+                <!-- Notification Bell! -->
             </ul>
-            <!-- Notification Bell! -->
+            
 
             
-            <ul class="navbar-nav d-flex flex-row me-1">
-                <li class="nav-item me-3 me-lg-0">
-                    <div class="dropdown">
-                        <a class="nav-link link-white me-3  hidden-arrow" data-bs-toggle="dropdown" href="#" id="navbarDropdownMenuLink" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-bell text-white"></i>
-                                <span id="notificationBadge" class="badge rounded-pill badge-notification bg-danger">1</span>
-                        </a>
-                        <ul id="dropdownMenu" class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
 
-                        </ul>
-                    </div>
-                </li>
-            </ul>
 
-            <!-- Notification Bell! -->
-            <form class="d-flex">
-                <input class="form-control me-sm-2" type="search" placeholder="Search">
-            </form>
+
+
             <button id = "loginButton" class="btn btn-secondary mx-2 my-2 my-sm-0" type="submit" onclick="loginNative()">Login</button>
             <button id = "logoutButton" class="btn btn-secondary my-2 my-sm-0" type="submit" onclick="logout()" style="display: none;">Logout</button>
 

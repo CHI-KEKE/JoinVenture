@@ -359,21 +359,27 @@ function CheckTicketAvailible() {
       },
 
       success: (res) => {
-        console.log(res);
 
-        localStorage.setItem("ticketInfo", JSON.stringify(res));
 
-        const totalPriceElement = document.querySelector(".total-price");
-        const totalPriceText = totalPriceElement.textContent;
-        const numericPart = totalPriceText.match(/\d+/);
-        const totalPrice = parseInt(numericPart, 10);
-        localStorage.setItem("totalPrice", totalPrice);
+        if (res.length > 0) {
+          localStorage.setItem("ticketInfo", JSON.stringify(res));
 
-        //Websocket Update ticket count in real time
+          const totalPriceElement = document.querySelector(".total-price");
+          const totalPriceText = totalPriceElement.textContent;
+          const numericPart = totalPriceText.match(/\d+/);
+          const totalPrice = parseInt(numericPart, 10);
+          localStorage.setItem("totalPrice", totalPrice);
 
-        ticketStore.updateTickets(activityId, ticketRequiredArray);
+          //Websocket Update ticket count in real time
 
-        window.location.href = `https://cofstyle.shop/payment/Payment.html?id=${activityId}`;
+          ticketStore.updateTickets(activityId, ticketRequiredArray);
+
+          window.location.href = `https://cofstyle.shop/payment/Payment.html?id=${activityId}`;
+
+        } else {
+          toastr["warning"]("票數不足", "請重新確認票數");
+        }
+
       },
 
       error: (err) => {

@@ -41,6 +41,7 @@ $(document).ready(function () {
 
   navListItems.click(function (e) {
     e.preventDefault();
+      
     var $target = $($(this).attr("href")),
       $item = $(this);
 
@@ -98,14 +99,18 @@ $(document).ready(function () {
 
 ///////////////////////////////////////////////////////////////////////////////////////Step 1 terms must be checked !! + Next Button logic
 
+//////////////////////////////////////nextButton/////////////////////////////////////////////
 const agreeCheckbox = document.getElementById("MustBeChecked");
 const nextButton = document.getElementById("nextButton");
+
+
+
 
 // Add a click event listener to the Next button
 nextButton.addEventListener("click", function (e) {
   // Check if the checkbox is checked
   if (!agreeCheckbox.checked) {
-    alert("Please agree to the terms and conditions.");
+    toastr["warning"]("", "請確認條款");
     e.preventDefault();
   } else {
     const name = document.querySelector("#name").value;
@@ -131,27 +136,40 @@ nextButton.addEventListener("click", function (e) {
     localStorage.setItem("step1FormData", JSON.stringify(userInfoData));
 
     // (allNextBtn = $(".nextBtn")),
-      // allNextBtn.click(function () {
-        var curStep = $(this).closest(".setup-content"),
-          curStepBtn = curStep.attr("id"),
-          nextStepWizard = $(
-            'div.setup-panel div a[href="#' + curStepBtn + '"]'
-          )
-            .parent()
-            .next()
-            .children("a"),
-          curInputs = curStep.find("input[type='text'],input[type='url']"),
-          isValid = true;
+    // allNextBtn.click(function () {
+    var curStep = $(this).closest(".setup-content"),
+      curStepBtn = curStep.attr("id"),
+      nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]')
+        .parent()
+        .next()
+        .children("a"),
+      curInputs = curStep.find("input[type='text'],input[type='url']"),
+      isValid = true;
 
-        $(".form-group").removeClass("has-error");
-        for (var i = 0; i < curInputs.length; i++) {
-          if (!curInputs[i].validity.valid) {
-            isValid = false;
-            $(curInputs[i]).closest(".form-group").addClass("has-error");
-          }
-        }
+    $(".form-group").removeClass("has-error");
+    for (var i = 0; i < curInputs.length; i++) {
+      if (!curInputs[i].validity.valid) {
+        isValid = false;
+        $(curInputs[i]).closest(".form-group").addClass("has-error");
+      }
+    }
 
-        if (isValid) nextStepWizard.removeAttr("disabled").trigger("click");
-      // });
+    if (isValid) nextStepWizard.removeAttr("disabled").trigger("click");
+    // });
+    var step2Button = document.querySelector("#step-2-button");
+    var step1Button = document.querySelector("#step-1-button");
+    var step3Button = document.querySelector("#step-3-button");
+    step2Button.click();
+    step1Button.setAttribute("href", "#");
+    step3Button.setAttribute("href", "#");
+    document.querySelector("#step-2").style.display = "block";
+    document.querySelector("#step-1").style.display = "none";
+    document.querySelector("#step-3").style.display = "none";
+
+    // Adding a class to the step2Button
+    step2Button.classList.add("btn-primary");
+
+    // Removing the class from the step1Button
+    step1Button.classList.remove("btn-primary");
   }
 });

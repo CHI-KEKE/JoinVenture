@@ -142,15 +142,10 @@ function updateUIWithComments(comments) {
           <div class="media-body">
               <div class="mar-btm">
                   <a href="#" class="btn-link text-semibold media-heading box-inline">${comment.showName}</a>
-                  <p class="text-muted text-sm"><i class="fa fa-mobile fa-lg"></i> - From Mobile - Just now</p>
               </div>
               <p>${comment.body}</p>
               <div class="pad-ver">
-                  <div class="btn-group">
-                      <a class="btn btn-sm btn-default btn-hover-success" href="#"><i class="fa fa-thumbs-up"></i></a>
-                      <a class="btn btn-sm btn-default btn-hover-danger" href="#"><i class="fa fa-thumbs-down"></i></a>
-                  </div>
-                  <a class="btn btn-sm btn-default btn-hover-primary" href="#">Comment</a>
+
               </div>
               <hr>
           </div>
@@ -173,15 +168,9 @@ function addCommentToUI(comment) {
     <div class="media-body">
         <div class="mar-btm">
             <a href="#" class="btn-link text-semibold media-heading box-inline">${comment.showName}</a>
-            <p class="text-muted text-sm"><i class="fa fa-mobile fa-lg"></i> - From Mobile - Just now</p>
         </div>
         <p>${comment.body}</p>
         <div class="pad-ver">
-            <div class="btn-group">
-                <a class="btn btn-sm btn-default btn-hover-success" href="#"><i class="fa fa-thumbs-up"></i></a>
-                <a class="btn btn-sm btn-default btn-hover-danger" href="#"><i class="fa fa-thumbs-down"></i></a>
-            </div>
-            <a class="btn btn-sm btn-default btn-hover-primary" href="#">Comment</a>
         </div>
         <hr>
     </div>
@@ -242,28 +231,35 @@ function BookingRecover() {
 //Following
 
 function FollowActivity() {
-  $.post({
-    url: baseUrl + `Activities/${activityId}/follow`,
-    dataType: "json",
-    contentType: "application/json",
-    beforeSend: function (xhr) {
-      // Set the Authorization header with the JWT token
-      xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
-    },
+      if (accessToken != null) {
+      $.post({
+        url: baseUrl + `Activities/${activityId}/follow`,
+        dataType: "json",
+        contentType: "application/json",
+        beforeSend: function (xhr) {
+          // Set the Authorization header with the JWT token
+          xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
+        },
 
-    success: (res) => {
-      console.log(res);
-    },
+        success: (res) => {
+          console.log(res);
+        },
 
-    error: (err) => {
-      console.log(err);
-    },
-  });
+        error: (err) => {
+          console.log(err);
+        },
+      });
+      
 
-  FollowButton.disabled = true;
-  FollowButton.innerText = "已追蹤";
-  FollowButton.style.backgroundColor = "#A0A0A0";
-  FollowButton.style.borderColor = "#A0A0A0";
+      FollowButton.disabled = true;
+      FollowButton.innerText = "已追蹤";
+      FollowButton.style.backgroundColor = "#A0A0A0";
+      FollowButton.style.borderColor = "#A0A0A0";
 
-  commentStore.follow(accessToken);
+      commentStore.follow(accessToken);
+    }
+    else
+    {
+      openPopup();
+    }
 }

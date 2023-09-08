@@ -23,21 +23,29 @@ const closePopup = function () {
 };
 
 
+
+function isValidEmail(email) {
+  // Use a regular expression to check if the email format is valid
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+
 //Login Form
 document
   .getElementById("loginForm")
   .addEventListener("submit", function (event) {
     event.preventDefault();
 
-    // Get input values
     const emailValue = document.querySelector(".login__input--user").value;
     const passwordValue = document.querySelector(
       ".login__input--password"
     ).value;
 
-    // Now you can use emailValue and passwordValue for further processing
-    console.log("Email:", emailValue);
-    console.log("Password:", passwordValue);
+  if (!isValidEmail(emailValue)) {
+   toastr["warning"]("登入失敗", "Email格式不正確");
+    return;
+  }
 
     let loginData = {
       email: emailValue,
@@ -54,19 +62,22 @@ document
         console.log(res);
         localStorage.setItem("token", res.token);
         toastr["success"]("歡迎回來!", "成功登入");
+        wrapper.classList.remove("active-popup");
+        setTimeout(function () {
+          window.location.reload();
+        }, 1000);
       },
       error: (xhr, status, error) => {
-        // Handle the error response
-        console.log(error);
+        if(xhr.status === 401)
+        {
+          toastr["warning"]("登入失敗", "帳號或密碼不正確");
+          return;
+        }
       },
     });
 
-    wrapper.classList.remove("active-popup");
-    setTimeout(function () {
-      window.location.reload();
-    }, 1000);
-  });
 
+  });
 
 
 //Close Form
@@ -84,15 +95,60 @@ document
     event.preventDefault();
 
     // Get input values
-    const registerUserNameValue = document.querySelector(".register__input--user").value;
-    const registerEmailValue = document.querySelector(".register__input--email").value;
-    const registerPasswordValue = document.querySelector(".register__input--password").value;
+    const registerUserNameValue = document.querySelector(
+      ".register__input--user"
+    ).value;
+    const registerEmailValue = document.querySelector(
+      ".register__input--email"
+    ).value;
+    const registerPasswordValue = document.querySelector(
+      ".register__input--password"
+    ).value;
     const mainImageInput = document.getElementById("main_image");
 
-    // Now you can use emailValue and passwordValue for further processing
-    console.log("UserName:", registerUserNameValue);
-    console.log("EMail:", registerEmailValue);
-    console.log("Password:", registerPasswordValue);
+    const emailError = document.getElementById("emailError");
+
+  if (!isValidEmail(registerEmailValue)) {
+    emailError.textContent = "Email 格式不符";
+    event.preventDefault(); // Prevent the form from submitting
+    return;
+  } else {
+    emailError.textContent = "";
+  }
+
+    // Create an array to store error messages
+    const errorMessages = [];
+
+    // Check password requirements one by one
+    if (!/(?=.*\d)/.test(registerPasswordValue)) {
+      errorMessages.push("密碼至少一個數字.");
+    }
+
+    if (!/(?=.*[a-z])/.test(registerPasswordValue)) {
+      errorMessages.push(
+        "至少一個小寫字元."
+      );
+    }
+
+    if (!/(?=.*[A-Z])/.test(registerPasswordValue)) {
+      errorMessages.push(
+        "至少一個大寫字元."
+      );
+    }
+
+    if (registerPasswordValue.length < 6 || registerPasswordValue.length > 8) {
+      errorMessages.push("密碼包含數字需要6~8個字元.");
+    }
+    // Display error messages if there are any
+    const passwordError = document.getElementById("passwordError");
+    if (errorMessages.length > 0) {
+      passwordError.textContent = errorMessages.join(" ");
+      event.preventDefault(); // Prevent the form from submitting
+      return;
+    } else {
+      passwordError.textContent = ""; // Clear any previous error message
+    }
+
 
 
     const formData = new FormData();
@@ -104,7 +160,6 @@ document
 
     console.log(formData);
 
-
     $.ajax({
       url: `${baseUrl}Account/register`,
       type: "POST",
@@ -113,20 +168,20 @@ document
       data: formData,
       success: (res) => {
         // Handle the success response
-        console.log(res+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
+        console.log(res + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
         localStorage.setItem("token", res.token);
         toastr["success"]("歡迎成為會員!", "成功註冊");
+        wrapper.classList.remove("active-popup");
+        setTimeout(function () {
+          window.location.reload();
+        }, 3000);
       },
       error: (xhr, status, error) => {
         // Handle the error response
         console.log(error);
-        toastr["error"]("錯誤", "註冊失敗");
+        toastr["error"]("", "該用戶已註冊過");
       },
     });
 
-    wrapper.classList.remove("active-popup");
-    setTimeout(function () {
-      window.location.reload();
-    }, 2000);
   });
 

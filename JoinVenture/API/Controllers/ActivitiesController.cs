@@ -138,7 +138,9 @@ namespace API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteActivity(int id)
         {
-            return Ok(await Mediator.Send(new Delete.Command {Id = id}));
+            var result = await Mediator.Send(new Delete.Command {Id = id});
+            await _responseCacheService.RemoveDataAsync("/Activities");
+            return Ok(result);
         }
         
         [HttpPost("{id}/follow")]
