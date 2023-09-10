@@ -35,21 +35,15 @@ namespace Application.Activities
                     .ThenInclude(u => u.AppUser)
                     .SingleOrDefaultAsync(x => x.Id == request.Id);
 
-                Console.WriteLine("after getting activities~~~~~~~~~~~" + activity);
 
                 if(activity == null) return null;
 
-                Console.WriteLine("before GetUSerName~~~~~~~~~~~~~~" + activity);
                 var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUsername());
-                Console.WriteLine(user);
-
-
                 
                 // var hostUserName = activity.Attendees.FirstOrDefault(x => x.IsHost)?.AppUser?.UserName;
                 // Console.WriteLine(hostUserName);
 
                 var attendance = activity.Attendees.FirstOrDefault(x => x.AppUser.UserName == user.UserName);
-                Console.WriteLine(attendance);
 
                 // if(attendance != null && hostUserName == user.UserName)
                 //     activity.IsCancelled = !activity.IsCancelled;

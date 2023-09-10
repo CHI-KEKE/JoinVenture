@@ -46,7 +46,7 @@ namespace API.Controllers
         {
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
 
-            if(user == null) return Unauthorized();
+            if(user == null) return Unauthorized("User Not Found");
 
             var result = await _userManager.CheckPasswordAsync(user,loginDto.Password);
 
@@ -55,8 +55,10 @@ namespace API.Controllers
                 return CreateUserObject(user);
             }
 
-            return Unauthorized();
+            return Unauthorized("Password in not valid");
         }
+
+
 
         [AllowAnonymous]
         [HttpPost("register")]
@@ -101,7 +103,9 @@ namespace API.Controllers
             return BadRequest(result.Errors);
         }
 
-        [UserProfileCache(600)]
+        
+
+        [UserProfileCache(1800)]
         [HttpGet]
         public async Task<ActionResult<UserDto>> GetCurrentUser()
         {
@@ -122,6 +126,7 @@ namespace API.Controllers
             return BadRequest("User not Found!");
             
         }
+
         [Authorize(Roles = "Admin")]
         [UserListCache(1800)]
         [HttpGet("userlist")]
@@ -134,12 +139,13 @@ namespace API.Controllers
                 .Include(u => u.Photos)
                 .ToListAsync();
 
-            if(users != null)
+            if(users == null)
             {
-                return Ok(users);
+                return BadRequest("Not getting any user!");
             }
 
-            return BadRequest("Not getting any user!");
+            return Ok(users);
+            
             
         }
 
@@ -149,44 +155,39 @@ namespace API.Controllers
         {
             var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
 
-            if(user != null)
+            if(user == null)
             {
-                user.ShowName = userDto.ShowName;
-                user.UserName = userDto.UserName;
-                user.PhoneNumber = userDto.PhoneNumber;
-                user.Mobile = userDto.Mobile;
-                user.Address = userDto.Address;
-                user.Email = userDto.Email;
-
-                var result = await _userManager.UpdateAsync(user);
-
-                if (result.Succeeded)
-                {
-                    return Ok(userDto + "Update Successful!");
-                }
-                else
-                {
-                    var errors = result.Errors.Select(e => e.Description);
-                    return BadRequest(new { Errors = errors }); // Return a bad request with error details.
-
-                }
+                return BadRequest("User not found");
             }
+
+            user.ShowName = userDto.ShowName;
+            user.UserName = userDto.UserName;
+            user.PhoneNumber = userDto.PhoneNumber;
+            user.Mobile = userDto.Mobile;
+            user.Address = userDto.Address;
+            user.Email = userDto.Email;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                return Ok(userDto);
+            }
+
             else
             {
-                return NotFound("User not found");
+                var errors = result.Errors.Select(e => e.Description);
+                return BadRequest(new { Errors = errors }); 
             }
+
+            
+
                    
         }
 
         private UserDto CreateUserObject(AppUser user)
         {
-            return new UserDto
-            {
-                ShowName = user.ShowName,
-                Image = null,
-                Token = _tokenService.CreateToken(user),
-                UserName = user.UserName
-            };
+            return new UserDto(user.ShowName,_tokenService.CreateToken(user),user.Photos.FirstOrDefault().Url,user.UserName);
         }
 
     }

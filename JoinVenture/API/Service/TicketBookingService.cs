@@ -26,7 +26,7 @@ namespace API.Service
         }
 
 
-        public async Task<(List<Ticket>, string)> BookTickets(TicketPackage ticketPackage,int quantity)
+        public async Task<(List<Ticket>, string,string)> BookTickets(TicketPackage ticketPackage,int quantity)
         {
 
             // var transactionTimeout = TimeSpan.FromSeconds(10);
@@ -58,23 +58,53 @@ namespace API.Service
                             //         WHERE Id = {Guid.Parse("FF057E1C-5FCF-4B89-97C9-08DBA6EE514E")}
                             //     ")
                             //     .FirstOrDefault();
-                            var availableTicketList = ticketPackage.Tickets
+
+
+                            // var availableTicketList = ticketPackage.Tickets
+                            //     .Where(t => t.Status == "Available")
+                            //     .Take(quantity)
+                            //     .ToList();
+
+                            // var ticketIdsToLock = availableTicketList.Select(t => t.Id).ToList();
+                            // var ticketIdStrings = ticketIdsToLock.Select(id => $"'{id}'");
+                            // var ticketIdList = string.Join(",", ticketIdStrings);
+                            // var rawSql = $@"
+                            //                 SELECT *
+                            //                 FROM Tickets WITH (UPDLOCK)
+                            //                 WHERE Id IN ({ticketIdList})
+                            //             ";
+
+                            // var lockedTickets = _dbContext.Tickets.FromSqlRaw(rawSql).ToList();
+
+                            var random = new Random();
+                            var availableTicketIds = ticketPackage.Tickets
                                 .Where(t => t.Status == "Available")
+                                .OrderBy(t => random.Next()) // Randomly order the available tickets
                                 .Take(quantity)
+                                .Select(t => t.Id)
+                                .ToList();
+                            
+                            if(availableTicketIds.Count != quantity)
+                            {
+                                return (null,"400","Not Enough Tickets Availible");
+                            }
+
+
+                            //testing other lock not UPDLOCK
+                            var lockedTickets = _dbContext.Tickets
+                                .FromSqlRaw($@"
+                                    SELECT *
+                                    FROM Tickets WITH (UPDLOCK)   
+                                    WHERE Id IN ({string.Join(",", availableTicketIds.Select(id => $"'{id}'"))})
+                                ")
                                 .ToList();
 
-                            var ticketIdsToLock = availableTicketList.Select(t => t.Id).ToList();
-                            var ticketIdStrings = ticketIdsToLock.Select(id => $"'{id}'");
-                            var ticketIdList = string.Join(",", ticketIdStrings);
-                            var rawSql = $@"
-                                            SELECT *
-                                            FROM Tickets WITH (UPDLOCK)
-                                            WHERE Id IN ({ticketIdList})
-                                        ";
 
-                            var lockedTickets = _dbContext.Tickets.FromSqlRaw(rawSql).ToList();
+
+
                             // await Task.Delay(8000);
                             // Thread.Sleep(11000);
+
 
 
                             if (lockedTickets.Count == quantity)               //檢查是否真的抓到指定得票數
@@ -104,9 +134,7 @@ namespace API.Service
 
                                         else
                                         {
-                                            // Handle the case where the ticket was booked by another user simultaneously
-                                            
-                                            // Notify the user that the ticket is no longer available
+
                                             errorCondition = "Some of the selected tickets are no longer available.";
                                             throw new DbUpdateConcurrencyException("Some of the selected tickets are no longer available.");
 
@@ -119,12 +147,12 @@ namespace API.Service
                                 errorCondition = null;
                                 Console.WriteLine("just committed!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
-                                return (lockedTickets,null);
+                                return (lockedTickets,null,null);
                             }
                             else
                             {
                                 // Handle the case where there are not enough available tickets
-                                return (null,"400");
+                                return (null,"400","Not Enough Tickets Availible");
                                 // Thread.Sleep(retryDelayMilliseconds);
                             }
 
@@ -133,7 +161,7 @@ namespace API.Service
                         {
                             // Transaction timed out
                             transaction.Rollback();
-                            return (null, "Timeout");
+                            return (null, "Timeout","Timeout");
                         }
                         catch (DbUpdateConcurrencyException ex)                                    //歸類為Concurrency Conflict, 就REtry
                         {
@@ -142,24 +170,19 @@ namespace API.Service
                             transaction.Rollback();
                             // Wait for a while before retrying
                             // Thread.Sleep(retryDelayMilliseconds);
-                            return (null,"409");
+                            if(errorCondition != null)
+                            {
+                                return (null,"409",errorCondition);
+                            }
+                            return (null,"409",ex.Message);
                         }
                         catch (Exception ex)                                                        ////其他問題 先不retry
                         {
-                            return (null,"500");
+                            return (null,"500",ex.Message);
                             // break; 
                         }
 
-                // }
-
-
-                if (errorCondition != null)               //retry 耗盡 還是沒能走到成功,把error return 出來
-                {
-                    transaction.Rollback();
-                    return (null,errorCondition);
-                }
-
-                return (null,errorCondition);
+        
             }
 
         }

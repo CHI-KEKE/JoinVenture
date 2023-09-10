@@ -43,6 +43,8 @@ namespace API.Controllers
             return Ok(await Mediator.Send(new List.Query()));
         }
 
+
+
         [ActivityDetailCache(600)]
         [AllowAnonymous]
         [HttpGet("{id}")]
@@ -51,22 +53,20 @@ namespace API.Controllers
             return Ok(await Mediator.Send(new Details.Query{Id = id}));
         }
 
+
         [HttpPost]
         public async Task<IActionResult> CreateActivity([FromForm] ActivityCreateRequestDto activityCreateRequestDto)
         {
-            var jsonData = JsonSerializer.Serialize(activityCreateRequestDto);
-            Console.WriteLine(jsonData+"nice catch@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
             var activityTransformed = _mapper.Map<ActivityCreateRequestDto, Activity>(activityCreateRequestDto);
-            Console.WriteLine(activityTransformed+"Transformed done##################################################");
-            Console.WriteLine(activityCreateRequestDto.Image+"Image!?????????????????????????????????????????????");
+
 
             //Image Handling
             string CloudFrontImagePath = await _fileService.SaveUploadedFileMethod(activityCreateRequestDto.Image);
             activityTransformed.Image = CloudFrontImagePath;
-            Console.WriteLine(CloudFrontImagePath+"Image done##################################################");
 
 
+            //Handling complex strucutre with Form
             var ticketPackagesJson = HttpContext.Request.Form["ticketPackages"];
             var ticketPackages = _jsonProvider.Deserialize<List<TicketPackageDTO>>(ticketPackagesJson);
 
@@ -104,7 +104,6 @@ namespace API.Controllers
                     // Add the TicketPackage to the Activity
                     activityTransformed.TicketPackages.Add(ticketPackage);
                 }
-            Console.WriteLine(ticketPackagesTransformed+"TicketPackages done##################################################");
 
             }
 
@@ -113,7 +112,9 @@ namespace API.Controllers
                 var NewActivity = await Mediator.Send(new Create.Command {Activity = activityTransformed});
                 await _responseCacheService.RemoveDataAsync("/Activities");
 
-                 return Ok(NewActivity);
+                //  return Ok(NewActivity);
+                 return CreatedAtAction("ActivityCreation",NewActivity);
+
 
             }
             catch(Exception ex)
@@ -148,7 +149,6 @@ namespace API.Controllers
         {
             var result = await Mediator.Send(new UpdateFollowers.Command{Id =id});
 
-            Console.WriteLine(result);
             if(result.IsSuccess)
             {
                 return Ok(result);

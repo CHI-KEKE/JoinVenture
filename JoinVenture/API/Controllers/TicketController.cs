@@ -49,7 +49,7 @@ namespace API.Controllers
             {
                 var TicketPackage = Activity.TicketPackages.SingleOrDefault(tp => tp.Title == packageInfoDto.PackageTitle);
 
-                var (Bookedtickets, message) = await _ticketBookingService.BookTickets(TicketPackage,packageInfoDto.Quantity);
+                var (Bookedtickets, status,message) = await _ticketBookingService.BookTickets(TicketPackage,packageInfoDto.Quantity);
                 Console.WriteLine($"outside transaction {Bookedtickets} & {message}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
   
                 if(Bookedtickets != null)
@@ -75,16 +75,18 @@ namespace API.Controllers
 
                 }
 
-                if(message == "409")
+                if(status == "409")
                 {
+                    
                     return Conflict(message);
                 }
-                if(message == "400")
+                
+                if(status == "400")
                 {
                     return BadRequest(message);
                 }
 
-                if(message == "504")
+                if(status == "504")
                 {
                     return Problem(message);
                 }
