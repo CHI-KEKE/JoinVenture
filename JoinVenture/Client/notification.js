@@ -62,6 +62,7 @@ function AddItemToNotification(comment, ActivityTitle) {
   console.log(itemCount+"!!!!!!!!!!!!!!!!!!!!!!");
   const badge = document.getElementById("notificationBadge");
   badge.textContent = itemCount.toString();
+  toastr["info"]("", "新通知");
 }
 
 const notificationHub = new NotificationHub();

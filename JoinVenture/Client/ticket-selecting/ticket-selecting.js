@@ -140,6 +140,7 @@ $(document).ready(function () {
           .querySelector(".ps-3").textContent;
 
         const ticketPrice = parseInt(ticketPriceText.replace(/[^0-9]/g, ""));
+      
 
         //Grab the corressponding remain Tickets
         const ticketRemainText = button
@@ -165,9 +166,7 @@ $(document).ready(function () {
             ticketCounts[ticketType]++;
             totalTicketPrice += ticketPrice;
 
-            updateTotals();
-
-            //For LocalStorage
+            //////////////////////////////////////////////////////local storage//////////
 
             //First check if the ticket exists
             const selectedTicketIndex = selectedTickets.findIndex((ticket) => {
@@ -229,6 +228,8 @@ $(document).ready(function () {
               "selectedTickets",
               JSON.stringify(selectedTickets)
             );
+            //////////////////////////////////////////////////////local storage//////////
+            updateTotals(selectedTickets);
           }
         });
       });
@@ -243,56 +244,60 @@ $(document).ready(function () {
           if (ticketCounts[ticketType] > 0) {
             ticketCounts[ticketType]--;
             totalTicketPrice -= ticketPrices[ticketType];
+              //For LocalStorage///////////////////////////////////////////////////////////////////////////////
 
-            updateTotals();
+              const selectedTicketIndex = selectedTickets.findIndex((ticket) => {
+                return (
+                  ticket.activityId === activityId &&
+                  ticket.activityImage === activity.image &&
+                  ticket.venue === activity.venue &&
+                  ticket.activityTitle === activity.title &&
+                  ticket.title === activityPackages[ticketType].title &&
+                  ticket.price === activityPackages[ticketType].price &&
+                  ticket.bookingAvailability ===
+                    `${formatDate(
+                      activityPackages[ticketType].bookingAvailableStart
+                    )} - ${formatDate(
+                      activityPackages[ticketType].bookingAvailableEnd
+                    )}` &&
+                  ticket.validDate ===
+                    `${formatDate(
+                      activityPackages[ticketType].validatedDateStart
+                    )} - ${formatDate(
+                      activityPackages[ticketType].validatedDateEnd
+                    )}` &&
+                  ticket.description === activityPackages[ticketType].description
+                );
+              });
+
+              if (selectedTicketIndex !== -1) {
+                if (selectedTickets[selectedTicketIndex].quantity > 1) {
+                  selectedTickets[selectedTicketIndex].quantity--;
+                } else {
+                  selectedTickets.splice(selectedTicketIndex, 1);
+                }
+              }
+
+              // Update selectedTickets array in local storage
+              localStorage.setItem(
+                "selectedTickets",
+                JSON.stringify(selectedTickets)
+              );
+              //For LocalStorage///////////////////////////////////////////////////////////////////////////////
+
+
+
+            updateTotals(selectedTickets);
           }
 
-          //For LocalStorage
 
-          const selectedTicketIndex = selectedTickets.findIndex((ticket) => {
-            return (
-              ticket.activityId === activityId &&
-              ticket.activityImage === activity.image &&
-              ticket.venue === activity.venue &&
-              ticket.activityTitle === activity.title &&
-              ticket.title === activityPackages[ticketType].title &&
-              ticket.price === activityPackages[ticketType].price &&
-              ticket.bookingAvailability ===
-                `${formatDate(
-                  activityPackages[ticketType].bookingAvailableStart
-                )} - ${formatDate(
-                  activityPackages[ticketType].bookingAvailableEnd
-                )}` &&
-              ticket.validDate ===
-                `${formatDate(
-                  activityPackages[ticketType].validatedDateStart
-                )} - ${formatDate(
-                  activityPackages[ticketType].validatedDateEnd
-                )}` &&
-              ticket.description === activityPackages[ticketType].description
-            );
-          });
-
-          if (selectedTicketIndex !== -1) {
-            if (selectedTickets[selectedTicketIndex].quantity > 1) {
-              selectedTickets[selectedTicketIndex].quantity--;
-            } else {
-              selectedTickets.splice(selectedTicketIndex, 1);
-            }
-          }
-
-          // Update selectedTickets array in local storage
-          localStorage.setItem(
-            "selectedTickets",
-            JSON.stringify(selectedTickets)
-          );
         });
       });
 
       //Minus Button............................................................................................................................
 
       // Update total Cost
-      function updateTotals() {
+      function updateTotals(arrayofTickets) {
         const totalTicketCount = Object.values(ticketCounts).reduce(
           (sum, count) => sum + count,
           0
@@ -301,6 +306,19 @@ $(document).ready(function () {
           totalTicketCount !== 1 ? "s" : ""
         }`;
         totalPrice.textContent = `NT$ ${totalTicketPrice}`;
+
+      const elementsToRemove = document.querySelectorAll(".newP");
+      elementsToRemove.forEach((element) => {
+        element.remove();
+      });
+      arrayofTickets.forEach((ticket) => {
+        const pElement = document.createElement("p");
+        pElement.classList.add("newP");
+        pElement.textContent = `${ticket.title} x ${ticket.quantity}`;
+        const totalTicketsElement = document.querySelector(".total-tickets");
+        totalTicketsElement.parentNode.insertBefore(pElement, totalTicketsElement);
+      });
+
       }
     })
     // Update total Cost

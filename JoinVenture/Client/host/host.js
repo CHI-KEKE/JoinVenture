@@ -3,11 +3,66 @@ if (!accessToken) {
 }
 
 
+function isValidPositiveNumber(value) {
+  var positiveIntegerPattern = /^\d+$/;
+  return positiveIntegerPattern.test(value) && parseInt(value) > 0;
+}
+
+
 // Handle the form submission
 $(".submit_btn").click(function () {
-  // Prepare the data for the POST request
-
   var ticketPackages = [];
+  $(".error-message").empty();
+
+  //Checking ticket Price should be Positive!
+  var priceInputs = $(".ticketPackage-price");
+  var allInputsValid = true;
+
+  priceInputs.each(function () {
+    var inputValue = $(this).val();
+
+    if (!isValidPositiveNumber(inputValue)) {
+      $(this).next(".error-message").text("請符合實際使用考量");
+      allInputsValid = false; // Mark that at least one input is invalid
+    }
+  });
+
+
+  //Checking ticket count should be Positive!
+  var countInputs = $(".ticketPackage-count");
+
+  countInputs.each(function () {
+    var inputValue = $(this).val();
+
+    if (!isValidPositiveNumber(inputValue)) {
+      $(this).next(".error-message").text("請符合實際使用考量");
+      allInputsValid = false; // Mark that at least one input is invalid
+    }
+  });
+
+
+
+  //Checking no empty
+
+  var allInputs = $("form :input");
+  allInputs.each(function () {
+    var inputValue = $(this).val();
+
+    // Check if the input is empty
+    if (!inputValue.trim()) {
+      // Display an error message under the input
+      $(this).next(".error-message").text("請填答");
+      allInputsValid = false; // Mark that at least one required input is invalid
+    }
+  });
+
+
+  //summary prevent or not
+  if (!allInputsValid) {
+    event.preventDefault();
+  }
+
+
 
   // Iterate through the ticket package form groups
   $(".ticketPackage").each(function () {
@@ -53,9 +108,9 @@ $(".submit_btn").click(function () {
       xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
     },
     success: (res) => {
-      console.log(res);
-
-      window.location.href = "https://cofstyle.shop/list/Activity-List.html";
+      toastr["success"]("", "活動建立成功!");
+      setTimeout(window.location.href = "https://cofstyle.shop/list/Activity-List.html",2000);
+      
     },
     error: (err) => {
       console.log(err);

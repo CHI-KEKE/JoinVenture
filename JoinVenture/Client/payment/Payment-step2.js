@@ -1,3 +1,15 @@
+const queryParams = new URLSearchParams(window.location.search);
+const activityIdFromURL = queryParams.get("id");
+
+
+  ////////////////////////Back to Ticket Selecrting///////////////////////////////////////
+  function BackToTicketSelecting() {
+    window.location.href = `https://cofstyle.shop/ticket-selecting/Ticket-Selecting.html?id=${activityIdFromURL}`;
+  }
+
+  ////////////////////////Back to Ticket Selecrting///////////////////////////////////////
+
+  
 /////////////////////////////////////////////////////////////////////////////////////Date Transfer
 
 function formatDate(dateString) {
@@ -13,9 +25,6 @@ function formatDate(dateString) {
 $(document).ready(function () {
   ///////////////////////////////////////////////////////////////////////////////////////Activity Theme
 
-  const queryParams = new URLSearchParams(window.location.search);
-  const activityIdFromURL = queryParams.get("id");
-
   axios
     .get(`${baseUrl}Activities/${activityIdFromURL}`)
     .then(function (response) {
@@ -30,6 +39,8 @@ $(document).ready(function () {
       $(".activity-image img").attr("src", activity.image);
     });
 
+
+
   ///////////////////////////////////////////////////////////////////////////////////////Stepper Settings
 
   var navListItems = $("div.setup-panel div a"),
@@ -41,7 +52,7 @@ $(document).ready(function () {
 
   navListItems.click(function (e) {
     e.preventDefault();
-      
+
     var $target = $($(this).attr("href")),
       $item = $(this);
 
@@ -102,9 +113,6 @@ $(document).ready(function () {
 //////////////////////////////////////nextButton/////////////////////////////////////////////
 const agreeCheckbox = document.getElementById("MustBeChecked");
 const nextButton = document.getElementById("nextButton");
-
-
-
 
 // Add a click event listener to the Next button
 nextButton.addEventListener("click", function (e) {

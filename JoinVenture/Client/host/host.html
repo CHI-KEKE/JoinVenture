@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="../bootwatch.css">
 
     <!-- CSS -->
-
+    <link rel="stylesheet" href="host.css">
     <!-- fontawesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
 
@@ -58,10 +58,6 @@
                   <input type="password" class = "login__input--password" required>
                   <label>Password</label>
                 </div>
-                <div class="remember-forgot">
-                  <label><input type="checkbox">Remember me</label>
-                  <a href="#">Forgot Password?</a>
-                </div>
                 <button type="submit" class="btn login-btn" style="font-size: 1.5rem;margin-left: 35%;border-color:#484D6D;">Login</button>
                 <div class="login-register">
                   <p>No Account?<a href="#" class="register-link">Register</a></p>
@@ -91,12 +87,11 @@
                     <label for="main_image"></label>
                     <input type="file" id="main_image" name="MainImage" required>
                 </div>
-                <div class="remember-forgot">
-                  <label><input type="checkbox">I agree to the terms and conditions</label>
-                </div>
                 <button type="submit" class="btn register-btn" style="font-size: 1.5rem;margin-left: 30%;border-color:#484D6D;">Register</button>
                 <div class="login-register">
                   <p>Already have an Account?<a href="#" class="login-link">Login</a></p>
+                  <p style = "font-size: 15px;color:bisque">Admin : admin@gmail.com || Pa$$w0rd</p>
+                  <p style = "font-size: 15px;color:bisque">Member : gina@gmail.com || Pa$$w0rd</p>
                 </div>
               </form>
             </div>
@@ -141,30 +136,35 @@
 
         <div class="form-group">
             <label for="Title" class="form-label mt-4">活動名稱</label>
-            <input type="text" class="form-control" id="Title" placeholder="請描述你的活動標題" name="title">
+            <input type="text" class="form-control" id="Title" placeholder="請描述你的活動標題" name="title" maxlength="10" required>
+            <span class="error-message"></span>
         </div>
 
         <div class="form-group">
             <label for="Description" class="form-label mt-4">說明</label>
-            <textarea class="form-control" id="Description" rows="3" name="description" placeholder="這是一個怎麼樣的活動?"></textarea>
+            <textarea class="form-control" id="Description" rows="3" name="description" placeholder="這是一個怎麼樣的活動?" maxlength="20" required></textarea>
+            <span class="error-message"></span>
         </div>
 
         <div class="form-group">
             <label for="city" class="form-label mt-4">城市</label>
-            <input type="text" class="form-control" id="city" name="city"></textarea>
+            <input type="text" class="form-control" id="city" name="city" maxlength="10" required></textarea>
+            <span class="error-message"></span>
         </div>
 
 
 
         <div class="form-group">
             <label for="venue" class="form-label mt-4">場地</label>
-            <input type="text" class="form-control" id="venue"  name="venue">
+            <input type="text" class="form-control" id="venue"  name="venue" maxlength="10" required>
+            <span class="error-message"></span>
         </div>
 
 
         <div class="form-group">
             <label for="image" class="form-label mt-4">圖檔</label>
             <input type="file" id="image" class="form-control" name="image" accept = "image/*" required>
+            <span class="error-message"></span>
         </div>
 
         <div class="form-group mt-3">
@@ -173,7 +173,7 @@
                 class="input-group date mt-2" 
                 data-date-format="mm-dd-yyyy">
                 <input id = "dateOfActivity" class="form-control" 
-                    type="text" readonly />
+                    type="text" readonly required/>
                 <span class="input-group-addon">
                     <i class="glyphicon glyphicon-calendar"></i>
                 </span>
@@ -185,16 +185,22 @@
         <div id="ticketPackage-container">
             <div class="ticketPackage form-group">
                 <label for="ticketPackage-title" class="form-label mt-4 mx-3">票種</label>
-                <input type="text" class="ticketPackage-title mx-3" name = "Titles[]" required>
+                <input type="text" class="ticketPackage-title mx-3" name = "Titles[]" maxlength="10" required>
+                <span class="error-message"></span>
     
                 <label for="ticketPackage-price" class="form-label mt-4 mx-3">價格</label>
                 <input type="text" class="ticketPackage-price mx-3" name = "Prices[]" required>
+                <span class="error-message"></span>
+
 
                 <label for="ticketPackage-description" class="form-label mt-4 mx-3">說明</label>
-                <input type="text" class="ticketPackage-description mx-3" name = "Descriptions[]" required>
+                <input type="text" class="ticketPackage-description mx-3" name = "Descriptions[]" maxlength="10"required>
+                <span class="error-message"></span>
 
                 <label for="ticketPackage-count" class="form-label mt-4 mx-3">票數</label>
                 <input type="number" class="ticketPackage-count mx-3" name = "Counts[]" required>
+                <span class="error-message"></span>
+
                 <br>
 
                     <label  class = "mt-3" for="datepicker1">開始日期</label>
@@ -202,7 +208,7 @@
                         class="ticketPackage-validateDateStart date mt-2" 
                         data-date-format="mm-dd-yyyy">
                         <input id = "dateOfActivityStart" class="form-control" 
-                            type="text" readonly  name = "TicketPackage-validateDateStarts[]"/>
+                            type="text" readonly  name = "TicketPackage-validateDateStarts[]" required/>
                         <span class="input-group-addon">
                             <i class="glyphicon glyphicon-calendar"></i>
                         </span>
@@ -213,7 +219,7 @@
                     class="ticketPackage-validateDateEnd date mt-2" 
                     data-date-format="mm-dd-yyyy">
                     <input id = "datepicker2" class="form-control" 
-                        type="text" readonly name = "TicketPackage-validateDateEnds[]"/>
+                        type="text" readonly name = "TicketPackage-validateDateEnds[]" required/>
                     <span class="input-group-addon">
                         <i class="glyphicon glyphicon-calendar"></i>
                     </span>
@@ -223,7 +229,7 @@
                     class="ticketPackage-bookingAvailibleStart date mt-2" 
                     data-date-format="mm-dd-yyyy">
                     <input id = "datepicker3" class="form-control" 
-                        type="text" readonly name = "TicketPackage-BookingAvailibleStarts[]"/>
+                        type="text" readonly name = "TicketPackage-BookingAvailibleStarts[]" required/>
                     <span class="input-group-addon">
                         <i class="glyphicon glyphicon-calendar"></i>
                     </span>
@@ -233,7 +239,7 @@
                     class="ticketPackage-bookingAvailibleEnd date mt-2" 
                     data-date-format="mm-dd-yyyy">
                     <input id = "datepicker4" class="form-control" 
-                        type="text" readonly name = "TicketPackage-BookingAvailibleEnds[]"/>
+                        type="text" readonly name = "TicketPackage-BookingAvailibleEnds[]" required/>
                     <span class="input-group-addon">
                         <i class="glyphicon glyphicon-calendar"></i>
                     </span>
@@ -292,30 +298,35 @@
             $("#datepicker").datepicker({ 
                 autoclose: true, 
                 todayHighlight: true,
+                startDate: new Date()
             }).datepicker('update', new Date());
         });
         $(function () {
             $("#datepicker1").datepicker({ 
                 autoclose: true, 
                 todayHighlight: true,
+                startDate: new Date()
             }).datepicker('update', new Date());
         });
         $(function () {
             $("#datepicker2").datepicker({ 
                 autoclose: true, 
                 todayHighlight: true,
+                startDate: new Date()
             }).datepicker('update', new Date());
         });
         $(function () {
             $("#datepicker3").datepicker({ 
                 autoclose: true, 
                 todayHighlight: true,
+                startDate: new Date()
             }).datepicker('update', new Date());
         });
         $(function () {
             $("#datepicker4").datepicker({ 
                 autoclose: true, 
                 todayHighlight: true,
+                startDate: new Date()
             }).datepicker('update', new Date());
         });
   </script>
@@ -353,14 +364,16 @@
             // Initialize datepickers for the new date input fields
             newTicketPackage.find(".date").datepicker({
                 autoclose: true,
-                todayHighlight: true
+                todayHighlight: true,
+                startDate: new Date()
             }).datepicker('update', new Date());
         });
 
         // Initialize datepickers for the existing date input fields
         $(".date").datepicker({
             autoclose: true,
-            todayHighlight: true
+            todayHighlight: true,
+            startDate: new Date()
         }).datepicker('update', new Date());
     });
   </script>

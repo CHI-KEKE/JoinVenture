@@ -136,7 +136,7 @@
                                 </div>
                             <!-- Stepper -->
                             <!-- Timer! -->
-                                <div class=" count text-right">
+                                <div class=" count text-right timer">
                                 <!-- This part will display Minutes left till the event -->
                                     <div class="box t3"> <span class="Count_time" id="min"></span><span class="name">Minutes</span></div>
                                     <!-- This part will display Seconds left till the event -->
@@ -232,7 +232,7 @@
 
 
                                         <div button-wrapper class = "mt-5" style="display: flex;justify-content: space-between;">
-                                            <button class="btn btn-primary RegisterAgainButton btn-lg pull-right" type="button" style="width: calc(50% - 10px);">Register Again</button>
+                                            <button class="btn btn-primary RegisterAgainButton btn-lg pull-right" type="button" style="width: calc(50% - 10px);" onclick="BackToTicketSelecting()">重新選票</button>
                                             <button id="nextButton" class="btn btn-primary nextBtn btn-lg pull-right" type="button" style="width: calc(50% - 10px);">Next</button>
                                         </div>
 
@@ -329,7 +329,7 @@
                                                         <div class="card card-1">
                                                             <div class="card-header bg-white">
                                                                 <div class="media flex-sm-row flex-column-reverse justify-content-between  ">
-                                                                    <div class="col my-auto"> <h4 class="mb-0">訂購成功,<span class="change-color">宥辰</span> !</h4> </div>
+                                                                    <div class="col my-auto"> <h4 class="mb-0">訂購成功,<span class="change-color orderUser">宥辰</span> !</h4> </div>
                                                                 </div>
                                                             </div>
                                                             <div class="card-body">
@@ -402,7 +402,7 @@
 </div>
 
 <script src="../shareVar.js"></script>
-
+<script src="Payment-step2.js"></script>
 <script>
     // Use jQuery to load the content of navbar.html into the #navbarContainer div
     $(document).ready(function () {
@@ -410,7 +410,6 @@
     });
 </script>
 
-<script src="Payment-step2.js"></script>
 
 <script>
 
@@ -554,6 +553,11 @@
                         // Removing the class from the step1Button
                         step2Button.classList.remove("btn-primary");
                         step1Button.classList.remove("btn-primary");
+
+                        //Timer disppear
+
+                        var timerElement = document.querySelector(".timer")
+                        timerElement.style.display = "none";
 
                     }
 

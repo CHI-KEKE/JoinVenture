@@ -25,6 +25,13 @@ $(document).ready(function () {
         const loginButton = document.getElementById("loginButton");
         loginButton.style.display = "none";
 
+        if (res.userName === "admin") {
+          const adminNavItem = document.querySelector(".admin");
+          if (adminNavItem) {
+            adminNavItem.style.display = "block";
+          }
+        }
+
         //////////////////////Profile part
         let phonenumberElement = document.querySelector(".phoneNumber");
         if (phonenumberElement != null) {
@@ -99,8 +106,14 @@ $(document).ready(function () {
             OrderSection.append(orderCard);
           });
         }
-//////////////////////Profile part
+        //////////////////////Profile part
 
+        /////////////////////OrderStep3 Part
+        let orderStep3UserElement = document.querySelector(".orderUser");
+        if (orderStep3UserElement != null) {
+          orderStep3UserElement.textContent = res.showName;
+        }      
+        /////////////////////OrderStep3 Part
       },
       error: (xhr, status, error) => {
         if (err.status === 401)
@@ -119,6 +132,7 @@ function loginNative() {
 
 function logout() {
   localStorage.removeItem("token");
+  toastr["info"]("", "已登出");
   setTimeout(function () {
     window.location.reload();
   }, 1000);
