@@ -62,67 +62,76 @@ namespace API.Controllers
 
 
             //Image Handling
-            string CloudFrontImagePath = await _fileService.SaveUploadedFileMethod(activityCreateRequestDto.Image);
-            activityTransformed.Image = CloudFrontImagePath;
+            var(CloudFrontImagePath,failMessage) = await _fileService.SaveUploadedFileMethod(activityCreateRequestDto.Image);
 
-
-            //Handling complex strucutre with Form
-            var ticketPackagesJson = HttpContext.Request.Form["ticketPackages"];
-            var ticketPackages = _jsonProvider.Deserialize<List<TicketPackageDTO>>(ticketPackagesJson);
-
-            var ticketPackagesTransformed = _mapper.Map<List<TicketPackageDTO>, List<TicketPackage>>(ticketPackages);
-
-            // TicketPackages Handling
-            if (ticketPackagesTransformed != null)
+            if(CloudFrontImagePath != null)
             {
-                foreach (var ticketPackagetrans in ticketPackagesTransformed)
-                {
-                    var ticketPackage = new TicketPackage
-                    {
-                        Title = ticketPackagetrans.Title,
-                        Price = (int)ticketPackagetrans.Price,
-                        Description = ticketPackagetrans.Description,
-                        Count = ticketPackagetrans.Count,
-                        ValidatedDateStart = ticketPackagetrans.ValidatedDateStart,
-                        ValidatedDateEnd = ticketPackagetrans.ValidatedDateEnd,
-                        BookingAvailableStart = ticketPackagetrans.BookingAvailableStart,
-                        BookingAvailableEnd = ticketPackagetrans.BookingAvailableEnd,
-                    };
+                    activityTransformed.Image = CloudFrontImagePath;
 
-                    for (int i = 0; i < ticketPackage.Count; i++) 
+
+                    //Handling complex strucutre with Form
+                    var ticketPackagesJson = HttpContext.Request.Form["ticketPackages"];
+                    var ticketPackages = _jsonProvider.Deserialize<List<TicketPackageDTO>>(ticketPackagesJson);
+
+                    var ticketPackagesTransformed = _mapper.Map<List<TicketPackageDTO>, List<TicketPackage>>(ticketPackages);
+
+                    // TicketPackages Handling
+                    if (ticketPackagesTransformed != null)
                     {
-                        var ticket = new Ticket
+                        foreach (var ticketPackagetrans in ticketPackagesTransformed)
                         {
-                            Status = "Available", 
-                            UserId = null,
-                            Version =null,
-                        };
+                            var ticketPackage = new TicketPackage
+                            {
+                                Title = ticketPackagetrans.Title,
+                                Price = (int)ticketPackagetrans.Price,
+                                Description = ticketPackagetrans.Description,
+                                Count = ticketPackagetrans.Count,
+                                ValidatedDateStart = ticketPackagetrans.ValidatedDateStart,
+                                ValidatedDateEnd = ticketPackagetrans.ValidatedDateEnd,
+                                BookingAvailableStart = ticketPackagetrans.BookingAvailableStart,
+                                BookingAvailableEnd = ticketPackagetrans.BookingAvailableEnd,
+                            };
 
-                        ticketPackage.Tickets.Add(ticket);
+                            for (int i = 0; i < ticketPackage.Count; i++) 
+                            {
+                                var ticket = new Ticket
+                                {
+                                    Status = "Available", 
+                                    UserId = null,
+                                    Version =null,
+                                };
+
+                                ticketPackage.Tickets.Add(ticket);
+                            }
+
+                            // Add the TicketPackage to the Activity
+                            activityTransformed.TicketPackages.Add(ticketPackage);
+                        }
+
                     }
 
-                    // Add the TicketPackage to the Activity
-                    activityTransformed.TicketPackages.Add(ticketPackage);
-                }
+                    try
+                    {
+                        var NewActivity = await Mediator.Send(new Create.Command {Activity = activityTransformed});
+                        await _responseCacheService.RemoveDataAsync("/Activities");
 
+                         return Ok(NewActivity);
+                        // return CreatedAtAction("ActivityCreation",NewActivity);
+
+
+                    }
+                    catch(Exception ex)
+                    {
+                        Console.Error.WriteLine($"Error creating activity: {ex.Message}");
+                        return StatusCode(StatusCodes.Status500InternalServerError, "Error creating activity"); 
+
+                    }
             }
-
-            try
+            else
             {
-                var NewActivity = await Mediator.Send(new Create.Command {Activity = activityTransformed});
-                await _responseCacheService.RemoveDataAsync("/Activities");
-
-                //  return Ok(NewActivity);
-                 return CreatedAtAction("ActivityCreation",NewActivity);
-
-
+                return BadRequest(failMessage);
             }
-            catch(Exception ex)
-            {
-                Console.Error.WriteLine($"Error creating activity: {ex.Message}");
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error creating activity"); 
 
-            }
 
         }
 

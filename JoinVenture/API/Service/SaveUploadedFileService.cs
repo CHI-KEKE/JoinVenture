@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.DTOs.S3;
 using API.Service.IService;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Service
@@ -17,9 +18,9 @@ namespace API.Service
             _storageService = storageService;
             
         }
-        public async Task<string> SaveUploadedFileMethod(IFormFile image)
+        public async Task<(string, string)> SaveUploadedFileMethod(IFormFile image)
         {
-            S3ResponseDto result = new S3ResponseDto();
+                S3ResponseDto result = new S3ResponseDto();
 
 
                 await using var memoryStr = new MemoryStream();
@@ -48,10 +49,10 @@ namespace API.Service
 
             if(result.StatusCode == 200)
             {
-                return $"https://d1pjwdyi3jyxcs.cloudfront.net/{objName}";
+                return ($"https://d1pjwdyi3jyxcs.cloudfront.net/{objName}",null);
             }
 
-            return "Fail to Upload Image";
+            return (null,"Fail to Upload Image");
         }
     }
 }

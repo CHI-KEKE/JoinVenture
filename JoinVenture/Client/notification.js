@@ -35,34 +35,38 @@ class NotificationHub {
 
 //Add Notification UI
 function AddItemToNotification(comment, ActivityTitle) {
-  const dropdownMenu = document.querySelector(".dropdown-menu");
-  const listItem = document.createElement("li");
-  const link = document.createElement("a");
-  link.classList.add("dropdown-item");
-  link.href = "#";
+  console.log(localStorage.getItem("showName"));
+  if (localStorage.getItem("showName") != comment.showName) {
+    const dropdownMenu = document.querySelector(".dropdown-menu");
+    const listItem = document.createElement("li");
+    const link = document.createElement("a");
+    link.classList.add("dropdown-item");
+    link.href = "#";
 
-  link.textContent = `(${ActivityTitle})${comment.showName} 說 : ${comment.body}`;
+    link.textContent = `(${ActivityTitle})${comment.showName} 說 : ${comment.body}`;
 
-  const image = document.createElement("img");
-  image.classList.add("img-circle", "img-sm");
-  image.alt = "Profile Picture";
-  image.src = comment.image;
+    const image = document.createElement("img");
+    image.classList.add("img-circle", "img-sm");
+    image.alt = "Profile Picture";
+    image.src = comment.image;
 
-  image.style.borderRadius = "50%";
-  image.style.width = "50px";
-  image.style.height = "50px";
-  image.style.objectFit = "cover";
-  image.style.display = "inline-block";
+    image.style.borderRadius = "50%";
+    image.style.width = "50px";
+    image.style.height = "50px";
+    image.style.objectFit = "cover";
+    image.style.display = "inline-block";
 
-  link.appendChild(image);
+    link.appendChild(image);
 
-  listItem.appendChild(link);
-  dropdownMenu.appendChild(listItem);
-  itemCount = dropdownMenu.getElementsByTagName("li").length;
-  console.log(itemCount+"!!!!!!!!!!!!!!!!!!!!!!");
-  const badge = document.getElementById("notificationBadge");
-  badge.textContent = itemCount.toString();
-  toastr["info"]("", "新通知");
+    listItem.appendChild(link);
+    dropdownMenu.appendChild(listItem);
+    itemCount = dropdownMenu.getElementsByTagName("li").length;
+    console.log(itemCount + "!!!!!!!!!!!!!!!!!!!!!!");
+    const badge = document.getElementById("notificationBadge");
+    badge.textContent = itemCount.toString();
+    toastr["info"]("", "新通知");
+  }
+
 }
 
 const notificationHub = new NotificationHub();

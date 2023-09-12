@@ -49,16 +49,11 @@ namespace API.Service
             var response = await _client.SendAsync(request);
             var linePayRequestResponse = _jsonProvider.Deserialize<PaymentRequestResponseDto>(await response.Content.ReadAsStringAsync());
 
-            Console.WriteLine(nonce);
-            Console.WriteLine(signature);
-
             return linePayRequestResponse;
         } 
 
 
         //確認付款請求
-
-// 取得 transactionId 後進行確認交易
         public async Task<PaymentRequestConfirmResponseDto> ConfirmPayment(string transactionId, string orderId, PaymentRequestConfirmDto dto) 
         {
             var json = _jsonProvider.Serialize(dto);
@@ -85,7 +80,7 @@ namespace API.Service
 
         public async void TransactionCancel(string transactionId)
         {
-            //使用者取消交易則會到這裏。
+            //使用者取消交易則會到這
             Console.WriteLine($"訂單 {transactionId} 已取消");
         }
 

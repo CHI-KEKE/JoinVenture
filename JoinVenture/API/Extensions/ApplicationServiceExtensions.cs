@@ -50,7 +50,7 @@ namespace API.Extensions
 
             //BackGoundService
 
-            // services.AddHostedService<ExpiredTicketCleanUpService>();
+            services.AddHostedService<ExpiredTicketCleanUpService>();
 
 
             //AutoMapper
@@ -94,46 +94,46 @@ namespace API.Extensions
 
 
             //Redis for localTesting
-            services.AddSingleton<IConnectionMultiplexer>(c => {
-                var options = ConfigurationOptions.Parse(config.GetConnectionString("Redis"));
-                var connection =  ConnectionMultiplexer.Connect(options);
-                if (connection.IsConnected)
-                {
-                    Console.WriteLine("Redis connection established.@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-                }
-                else
-                {
-                    Console.WriteLine("Failed to connect to Redis.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-                }
+            // services.AddSingleton<IConnectionMultiplexer>(c => {
+            //     var options = ConfigurationOptions.Parse(config.GetConnectionString("Redis"));
+            //     var connection =  ConnectionMultiplexer.Connect(options);
+            //     if (connection.IsConnected)
+            //     {
+            //         Console.WriteLine("Redis connection established.@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            //     }
+            //     else
+            //     {
+            //         Console.WriteLine("Failed to connect to Redis.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+            //     }
 
-                return connection;
-            });
+            //     return connection;
+            // });
 
 
 
             //Redis for Elastic Cache
 
-            // string ElasticCachePassword = Environment.GetEnvironmentVariable("AwsElasticCachePassword");
+            string ElasticCachePassword = Environment.GetEnvironmentVariable("AwsElasticCachePassword");
 
-            // services.AddSingleton<IConnectionMultiplexer>(c => {
-            //     var options = ConfigurationOptions.Parse("master.redis.cgmc5z.apne1.cache.amazonaws.com:6379");
-            //     options.Password = ElasticCachePassword;
-            //     options.Ssl = true;
-            //     options.AllowAdmin = true; // 如果需要進行管理操作，可以設置為 true
-            //     options.AbortOnConnectFail = false; // 如果要允許重試連接，可以設置為 false
+            services.AddSingleton<IConnectionMultiplexer>(c => {
+                var options = ConfigurationOptions.Parse("master.redis.cgmc5z.apne1.cache.amazonaws.com:6379");
+                options.Password = ElasticCachePassword;
+                options.Ssl = true;
+                options.AllowAdmin = true; // 如果需要進行管理操作，可以設置為 true
+                options.AbortOnConnectFail = false; // 如果要允許重試連接，可以設置為 false
 
-            //     var connection =  ConnectionMultiplexer.Connect(options);
-            //     if (connection.IsConnected)
-            //     {
-            //         Console.WriteLine("ElasticRedis connection established.");
-            //     }
-            //     else
-            //     {
-            //         Console.WriteLine("Failed to connect to Redis.");
-            //     }
+                var connection =  ConnectionMultiplexer.Connect(options);
+                if (connection.IsConnected)
+                {
+                    Console.WriteLine("ElasticRedis connection established.");
+                }
+                else
+                {
+                    Console.WriteLine("Failed to connect to Redis.");
+                }
 
-            //     return connection;
-            // });
+                return connection;
+            });
 
             services.AddSingleton<IResponseCacheService,ResponseCacheService>();
 

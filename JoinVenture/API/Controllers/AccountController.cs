@@ -77,30 +77,35 @@ namespace API.Controllers
 
 
             //Image Handling
-            string CloudFrontImagePath = await _fileService.SaveUploadedFileMethod(registerDto.MainImage);
+            var (CloudFrontImagePath,failMessage) = await _fileService.SaveUploadedFileMethod(registerDto.MainImage);
 
-            var user = new AppUser
+            if(CloudFrontImagePath != null)
             {
-                ShowName = registerDto.ShowName,
-                Email = registerDto.Email,
-                UserName = registerDto.UserName
-            };
-            var photo = new Photo
-            {
-                Url = CloudFrontImagePath,
-                IsMain = true 
-            };
+                var user = new AppUser
+                {
+                    ShowName = registerDto.ShowName,
+                    Email = registerDto.Email,
+                    UserName = registerDto.UserName
+                };
+                var photo = new Photo
+                {
+                    Url = CloudFrontImagePath,
+                    IsMain = true 
+                };
 
-            user.Photos.Add(photo);
+                user.Photos.Add(photo);
 
-            var result = await _userManager.CreateAsync(user, registerDto.Password);
+                var result = await _userManager.CreateAsync(user, registerDto.Password);
 
-            if(result.Succeeded)
-            {
-                return CreateUserObject(user);
+                if(result.Succeeded)
+                {
+                    return CreateUserObject(user);
+                }
+
+                return BadRequest(result.Errors);
             }
+            return BadRequest(failMessage);
 
-            return BadRequest(result.Errors);
         }
 
         
@@ -187,7 +192,13 @@ namespace API.Controllers
 
         private UserDto CreateUserObject(AppUser user)
         {
-            return new UserDto(user.ShowName,_tokenService.CreateToken(user),user.Photos.FirstOrDefault().Url,user.UserName);
+            return new UserDto
+            {
+                ShowName = user.ShowName,
+                Image = null,
+                Token = _tokenService.CreateToken(user),
+                UserName = user.UserName
+            };
         }
 
     }

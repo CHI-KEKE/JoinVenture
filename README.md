@@ -6,15 +6,40 @@ A web application for event hosting and ticket booking built using HTML, CSS, Ja
 
 ## Demo
 
-### Event List
+### Site
 
 https://cofstyle.shop/list/Activity-List.html
 
-### Click View to check the Detail
+### As a member We can...
 
-ex: https://cofstyle.shop/detail/Activity-Detail.html?id=2
+- Register / Login
+- View the detail of each activity
+- Be a Follower of each activity, and receive real-time notification if someone interact with the activity(ex. leave a comment)
+- Register for ticket, and go through ticket package selecting as well as payment flow
+- Check the Order in personal profile page
+- Host an activity
+- real-time comment
+- real-time ticket updating
 
-...more website service info will be updated soon on README
+### As a Admin We can...
+
+- Check Members Order Records
+
+### WebSite Features
+
+- WebSocket for realtime comment/ notification / ticket updating
+- Cache for better user experience
+- Apply Transaction on ticket picking to deal with race condition
+- AWS Service (EC2 / S3 / RDS / Elastic Cache)
+- k6 metrics on CloudWatch
+
+### k6 testing on t2.micro for ticket picking API (check race condition)
+
+- Cloud Watch ()
+
+- Console output
+
+- Grafana(100Vus)
 
 ## Prerequisites
 
@@ -30,10 +55,6 @@ Before you begin, ensure you have met the following requirements:
 2. Install back-end dependencies: `dotnet restore`
 3. Run database migrations: `dotnet ef database update`
 4. Start the app: `dotnet run`
-
-## Usage
-
-Will soon release for Usage...
 
 ## Configuration
 

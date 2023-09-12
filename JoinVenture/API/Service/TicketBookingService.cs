@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Interface;
@@ -33,12 +34,12 @@ namespace API.Service
             var transactionCancellationTokenSource = new CancellationTokenSource(3000);
 
             
-            using (var transaction = await _dbContext.Database.BeginTransactionAsync(transactionCancellationTokenSource.Token))
+            using (var transaction = await _dbContext.Database.BeginTransactionAsync(isolationLevel: IsolationLevel.ReadCommitted, transactionCancellationTokenSource.Token))
             {
 
                     // int maxRetries = 3; 
                     // int retryDelayMilliseconds = 100; 
-                    string errorCondition = null;
+                        string errorCondition = null;
                 
                 // for (int retryCount = 0; retryCount < maxRetries; retryCount++)
                 // {
@@ -109,7 +110,6 @@ namespace API.Service
 
                             if (lockedTickets.Count == quantity)               //檢查是否真的抓到指定得票數
                             {
-                                Console.WriteLine("the count is match!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
                                 foreach(var ticket in lockedTickets)
                                 {
@@ -122,7 +122,6 @@ namespace API.Service
                                             ticket.Status = "Pending";
                                             ticket.ExpiredAt = DateTime.Now.AddSeconds(10);
                                             var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUsername());
-                                            Console.WriteLine(user + "Inside the transaction Update process and grab user successfully!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
                                             ticket.UserId = user.Id;
                                             // var UpdatedTicket = await _mediator.Send(new Application.Booking.Edit.Command {Ticket = ticket});
@@ -161,7 +160,7 @@ namespace API.Service
                         {
                             // Transaction timed out
                             transaction.Rollback();
-                            return (null, "Timeout","Timeout");
+                            return (null, "408","Timeout");
                         }
                         catch (DbUpdateConcurrencyException ex)                                    //歸類為Concurrency Conflict, 就REtry
                         {
@@ -188,27 +187,27 @@ namespace API.Service
         }
 
 
-        public static List<int> GenerateRandomIndices(int maxIndex, int count)
-        {
-            if (count >= maxIndex)
-            {
-                throw new ArgumentException("Count must be less than the maximum index.");
-            }
+        // public static List<int> GenerateRandomIndices(int maxIndex, int count)
+        // {
+        //     if (count >= maxIndex)
+        //     {
+        //         throw new ArgumentException("Count must be less than the maximum index.");
+        //     }
 
-            Random random = new Random();
-            List<int> indices = new List<int>();
+        //     Random random = new Random();
+        //     List<int> indices = new List<int>();
 
-            while (indices.Count < count)
-            {
-                int newIndex = random.Next(0, maxIndex);
-                if (!indices.Contains(newIndex))
-                {
-                    indices.Add(newIndex);
-                }
-            }
+        //     while (indices.Count < count)
+        //     {
+        //         int newIndex = random.Next(0, maxIndex);
+        //         if (!indices.Contains(newIndex))
+        //         {
+        //             indices.Add(newIndex);
+        //         }
+        //     }
 
-            return indices;
-        }
+        //     return indices;
+        // }
 
     }
 }

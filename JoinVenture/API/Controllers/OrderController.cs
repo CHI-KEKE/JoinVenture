@@ -30,9 +30,9 @@ namespace API.Controllers
             // var orderDtoJson = JsonSerializer.Serialize(orderDto);
             Order order = _autoMapper.Map<OrderDto,Order>(orderDto);
 
-            var orderJson = JsonSerializer.Serialize(order);
-            Console.WriteLine("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"+orderJson+"++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-            // return Ok();
+            // var orderJson = JsonSerializer.Serialize(order);
+            // Console.WriteLine("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"+orderJson+"++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            // // return Ok();
 
             return Ok(await Mediator.Send(new Create.Command {Order = order}));
 

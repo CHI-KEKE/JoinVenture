@@ -73,58 +73,72 @@ namespace API.Controllers
                     var deleteRedisActivity = await _responseCacheService.RemoveDataAsync($"/Activities/{id}");
 
 
-                }
 
-                if(status == "409")
+                }
+                else
                 {
-                    
-                    return Conflict(message);
-                }
-                
-                if(status == "400")
-                {
-                    return BadRequest(message);
+                        if(status == "408")
+                        {
+                           return StatusCode(408, "Request Timeout");
+                        }
+
+                        if(status == "409")
+                        {
+                            
+                            return Conflict(message);
+                        }
+
+                        if(status == "400")
+                        {
+                            return BadRequest(message);
+                        }
+
+                        if(status == "500")
+                        {
+                            return Problem(message);
+                        }
+
+
+
+                        return StatusCode(504, "GatewayTimeout");
+
                 }
 
-                if(status == "504")
-                {
-                    return Problem(message);
-                }
 
-
-                
                 
             }
-            
-            Console.WriteLine($"before return the tickcetListDto {ListOfSelectedTicketsToReturn}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
 
-            return Ok(ListOfSelectedTicketsToReturn);
+                Console.WriteLine($"before return the tickcetListDto {ListOfSelectedTicketsToReturn}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+
+                return Ok(ListOfSelectedTicketsToReturn);
+
             
         }       
 
 
-        public static List<int> GenerateRandomIndices(int maxIndex, int count)
-        {
-            if (count >= maxIndex)
-            {
-                throw new ArgumentException("Count must be less than the maximum index.");
-            }
+        // public static List<int> GenerateRandomIndices(int maxIndex, int count)
+        // {
+        //     if (count >= maxIndex)
+        //     {
+        //         throw new ArgumentException("Count must be less than the maximum index.");
+        //     }
 
-            Random random = new Random();
-            List<int> indices = new List<int>();
+        //     Random random = new Random();
+        //     List<int> indices = new List<int>();
 
-            while (indices.Count < count)
-            {
-                int newIndex = random.Next(0, maxIndex);
-                if (!indices.Contains(newIndex))
-                {
-                    indices.Add(newIndex);
-                }
-            }
+        //     while (indices.Count < count)
+        //     {
+        //         int newIndex = random.Next(0, maxIndex);
+        //         if (!indices.Contains(newIndex))
+        //         {
+        //             indices.Add(newIndex);
+        //         }
+        //     }
 
-            return indices;
-        }
+        //     return indices;
+        // }
 
         [HttpPost]
         public async Task<IActionResult> TicketToSuccess (List<AvailibleTicketsDto> ticketsDto)
@@ -145,12 +159,10 @@ namespace API.Controllers
 
 
             }
-            Console.WriteLine($"/Account|User:{_userAccessor.GetUsername()}"+"dellllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll");
 
             var deleteRedisUserProfile = await _responseCacheService.RemoveDataAsync($"/Account|User:{_userAccessor.GetUsername()}");
             var deleteRedisUserList = await _responseCacheService.RemoveDataAsync($"/Account/userlist");
 
-            Console.WriteLine(deleteRedisUserProfile+"dellllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll");
 
             return Ok("All tickets stats changed to Success successfully!"); 
         }

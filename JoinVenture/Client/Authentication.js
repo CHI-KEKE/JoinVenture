@@ -1,5 +1,4 @@
 //To Check if user is Authenticated
-
 $(document).ready(function () {
   const getUserUrl = `${baseUrl}Account`;
 
@@ -13,6 +12,8 @@ $(document).ready(function () {
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
       },
       success: (res) => {
+        //for notification use
+        localStorage.setItem("showName", res.showName);
         //Nav part
         const userImage = document.getElementById("userImage");
         if (res.photos[0] != undefined) {
