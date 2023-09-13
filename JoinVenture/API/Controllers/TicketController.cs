@@ -39,7 +39,7 @@ namespace API.Controllers
         public async Task<IActionResult> GetAvailibleTickets (int id, List<DTOs.Tickets.TicketCheckingDto> ticketCheckingDtos)
         {
 
-            var ActivityId = id;
+             var ActivityId = id;
             var Activity = await Mediator.Send(new Details.Query{Id = ActivityId});
 
 
@@ -49,7 +49,7 @@ namespace API.Controllers
             {
                 var TicketPackage = Activity.TicketPackages.SingleOrDefault(tp => tp.Title == packageInfoDto.PackageTitle);
 
-                var (Bookedtickets, status,message) = await _ticketBookingService.BookTickets(TicketPackage,packageInfoDto.Quantity);
+                var (Bookedtickets,status, message) = await _ticketBookingService.BookTickets(TicketPackage,packageInfoDto.Quantity);
                 Console.WriteLine($"outside transaction {Bookedtickets} & {message}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
   
                 if(Bookedtickets != null)
@@ -72,48 +72,37 @@ namespace API.Controllers
 
                     var deleteRedisActivity = await _responseCacheService.RemoveDataAsync($"/Activities/{id}");
 
+                    Console.WriteLine($"before return the tickcetListDto {ListOfSelectedTicketsToReturn}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
 
+                    return Ok(ListOfSelectedTicketsToReturn);
                 }
-                else
+
+                if(status == "409")
                 {
-                        if(status == "408")
-                        {
-                           return StatusCode(408, "Request Timeout");
-                        }
-
-                        if(status == "409")
-                        {
-                            
-                            return Conflict(message);
-                        }
-
-                        if(status == "400")
-                        {
-                            return BadRequest(message);
-                        }
-
-                        if(status == "500")
-                        {
-                            return Problem(message);
-                        }
-
-
-
-                        return StatusCode(504, "GatewayTimeout");
-
+                    return Conflict(message);
                 }
 
+                if(status == "408")
+                {
+                    return StatusCode(408, "Request Timeout");
+                }
 
+                if(status == "400")
+                {
+                    return BadRequest(message);
+                }
+
+                if(status == "500")
+                {
+                    return Problem(message);
+                }
+                
                 
             }
+            
 
-
-                Console.WriteLine($"before return the tickcetListDto {ListOfSelectedTicketsToReturn}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
-
-                return Ok(ListOfSelectedTicketsToReturn);
-
+            return StatusCode(504, "Other Error...");
             
         }       
 

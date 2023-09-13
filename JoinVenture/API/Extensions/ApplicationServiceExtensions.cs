@@ -50,7 +50,7 @@ namespace API.Extensions
 
             //BackGoundService
 
-            services.AddHostedService<ExpiredTicketCleanUpService>();
+            // services.AddHostedService<ExpiredTicketCleanUpService>();
 
 
             //AutoMapper
