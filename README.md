@@ -3,6 +3,7 @@
 ## Project Description
 
 A web application for event hosting and ticket booking built using HTML, CSS, JavaScript, ASP.NET Core, and Entity Framework Core.
+![Alt text](https://d1pjwdyi3jyxcs.cloudfront.net/JoinVenture/main.png)
 
 ## Demo
 
