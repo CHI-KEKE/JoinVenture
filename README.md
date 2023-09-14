@@ -2,7 +2,8 @@
 
 ## Project Description
 
-A web application for event hosting and ticket booking built using HTML, CSS, JavaScript, ASP.NET Core, and Entity Framework Core.
+Welcome to EventHub, the premier platform that transforms event planning and attendance into a seamless and interactive experience. Whether you're an event organizer looking to host a successful gathering or an attendee searching for the hottest tickets in town, EventHub has got you covered. With our cutting-edge technology and user-friendly interface, we're redefining the way you engage with events.
+
 ![Alt text](https://d1pjwdyi3jyxcs.cloudfront.net/JoinVenture/main.png)
 
 ## Demo
@@ -11,11 +12,19 @@ A web application for event hosting and ticket booking built using HTML, CSS, Ja
 
 https://cofstyle.shop/list/Activity-List.html
 
+### Test Account
+
+- email : gina@gmail.com / allen@gmail.com / admin@gmail.com
+- password : Pa$$w0rd
+
+### Structure
+
+![Alt text](https://d1pjwdyi3jyxcs.cloudfront.net/JoinVenture/server_structure.png)
+
 ### As a member We can...
 
-- Register / Login
-- View the detail of each activity
-- Be a Follower of each activity, and receive real-time notification if someone interact with the activity(ex. leave a comment)
+- View the detail of each event
+- Be a Follower of each event, and receive real-time notification if someone interact with the activity(ex. leave a comment)
 - Register for ticket, and go through ticket package selecting as well as payment flow
 - Check the Order in personal profile page
 - Host an activity
@@ -35,12 +44,6 @@ https://cofstyle.shop/list/Activity-List.html
 - k6 metrics on CloudWatch
 
 ### k6 testing on t2.micro for ticket picking API (check race condition)
-
-- Cloud Watch ()
-
-- Console output
-
-- Grafana(100Vus)
 
 ## Prerequisites
 
